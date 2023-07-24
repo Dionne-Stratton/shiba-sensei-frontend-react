@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 export default function Register(props) {
+  const { setAuth } = props;
+  const history = useHistory();
+
   const initialFormState = {
     email: "",
     password: "",
@@ -22,7 +26,8 @@ export default function Register(props) {
       .then((res) => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
-        props.history.push("/dashboard");
+        setAuth(true);
+        history.push("/dashboard");
       })
       .catch((err) => {
         console.log(err);

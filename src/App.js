@@ -32,18 +32,23 @@ function App() {
   }, [auth]);
 
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
+  const landingPage = auth ? <Dashboard /> : <LandingPage />;
 
   return (
     <div className="App">
       {navToUse}
       <Switch>
         {/* Marketing Pages */}
-        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/">
+          {landingPage}
+        </Route>
         <Route path="/about" component={About} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/contact" component={Contact} />
         {/* Auth Pages */}
-        <Route path="/register" setAuth={setAuth} component={Register} />
+        <Route path="/register">
+          <Register setAuth={setAuth} />
+        </Route>
         <Route path="/login">
           <Login setAuth={setAuth} />
         </Route>
