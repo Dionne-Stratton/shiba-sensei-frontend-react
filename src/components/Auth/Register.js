@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { testURL } from "../../BaseURLs";
 
 export default function Register(props) {
   const initialFormState = {
@@ -31,7 +30,7 @@ export default function Register(props) {
   };
 
   return (
-    <div>
+    <div className="main-page">
       <h3>Register Page</h3>
       <form>
         <label htmlFor="email">Email</label>

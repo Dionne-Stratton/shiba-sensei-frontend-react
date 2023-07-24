@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { testURL } from "../../BaseURLs";
+import { useHistory } from "react-router-dom";
 
 export default function LogIn(props) {
+  const history = useHistory();
+  const { setAuth } = props;
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  console.log("login form", form);
   const handleSubmit = () => {
     axios
-      .post(`${testURL}/auth/login`, form)
+      .post(`${testURL}auth/login`, form)
       .then((res) => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
-        props.history.push("/dashboard");
+        setAuth(true);
+        history.push("/dashboard");
       })
       .catch((err) => {
         console.log(err);
@@ -23,7 +28,7 @@ export default function LogIn(props) {
   };
 
   return (
-    <div>
+    <div className="main-page">
       <h3>Login Page</h3>
       <form>
         <label htmlFor="email">Email</label>

@@ -21,7 +21,7 @@ export default function Profile(props) {
 
   console.log(profile);
   return (
-    <div>
+    <div className="main-page">
       <h3>Profile Page</h3>
       <h4>User Name: {profile.user_name}</h4>
       <h4>Email: {profile.email}</h4>
