@@ -48,7 +48,8 @@ nav {
   /* border: #000000 1px solid; */
 }
 
-nav a {
+nav a,
+a {
   color: #000000;
   text-decoration: none;
   padding: 0 3%;
@@ -69,32 +70,68 @@ button {
   padding: 1%;
   display: flex;
   /* border: #000000 1px solid; */
+  justify-content: space-between;
 }
 
 .auth-nav {
   color: #000000;
   text-decoration: none;
-  margin-left: 65%;
+  margin: 0 4%;
   font-size: 2.6rem;
-  align-self: center;
-  justify-self: flex-end;
+  /* align-self: center;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-self: center; */
+  display: flex;
   /* border: #000000 1px solid; */
 }
 
 .auth-nav a {
   color: #000000;
   text-decoration: none;
-  margin-left: 20%;
   font-size: 2.6rem;
   align-self: center;
-  justify-self: flex-end;
   /* border: #000000 1px solid; */
 }
+
+/* .logout {
+  padding: 0 2%;
+  border: #000000 1px solid;
+} */
 
 .main-page {
   display: flex;
   padding: 5%;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
+}
+
+.lessons-reviews-box {
+  display: flex;
+  /* background-color: aliceblue; */
+  width: 100%;
+  padding: 5%;
+  /* border: #000000 1px solid; */
+}
+
+.lessons-box {
+  display: flex;
+  align-items: center;
+  background-color: beige;
+  justify-content: center;
+  margin: 0 5%;
+  width: 50%;
+  border: #000000 1px solid;
+}
+
+.reviews-box {
+  display: flex;
+  align-items: center;
+  background-color: beige;
+  justify-content: center;
+  margin: 0 5%;
+  width: 50%;
+  border: #000000 1px solid;
 }

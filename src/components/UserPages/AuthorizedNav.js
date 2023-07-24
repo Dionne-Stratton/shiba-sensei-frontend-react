@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/RabbiRabbitLogo2.png";
+import AccountIcon from "../../assets/account-icon.png";
 
 const HeaderNav = (props) => {
   const { setAuth } = props;
@@ -15,11 +16,16 @@ const HeaderNav = (props) => {
               activeClassName="active"
               to="/account"
             >
-              Account
+              <img
+                width={50}
+                className="account-icon"
+                src={AccountIcon}
+                alt="Account"
+              />
             </NavLink>
             {/* clicking logout button will remove the token from local storage and redirect to landingpage */}
             <NavLink
-              className="main-nav"
+              className="main-nav logout"
               activeClassName="active"
               to="/"
               onClick={() => {
