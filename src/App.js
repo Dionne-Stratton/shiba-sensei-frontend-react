@@ -10,29 +10,17 @@ import Login from "./components/Auth/LogIn";
 import Register from "./components/Auth/Register";
 import Account from "./components/Account";
 import HeaderNav from "./components/HeaderNav";
+import AuthorizedNav from "./components/AuthorizedNav";
 
 function App() {
-  const [profile, setProfile] = useState({});
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios
-        .get("https://rabbi-rabbit-api.herokuapp.com/api/users/profile", {
-          headers: { Authorization: token },
-        })
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
-
+  let navToUse = localStorage.getItem("token") ? (
+    <AuthorizedNav />
+  ) : (
+    <HeaderNav />
+  );
   return (
     <div className="App">
-      <HeaderNav />
+      {navToUse}
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route path="/profile" component={Profile} />
@@ -40,10 +28,7 @@ function App() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route
-          path="/account"
-          render={(props) => <Account {...props} profile={profile} />}
-        />
+        <Route path="/account" component={Account} />
       </Switch>
     </div>
   );

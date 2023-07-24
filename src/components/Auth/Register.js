@@ -3,7 +3,15 @@ import axios from "axios";
 import { testURL } from "../../BaseURLs";
 
 export default function Register(props) {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const initialFormState = {
+    email: "",
+    password: "",
+    user_name: "",
+    user_level: 1,
+    user_vocab: [],
+  };
+
+  const [form, setForm] = useState(initialFormState);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,7 +19,7 @@ export default function Register(props) {
 
   const handleSubmit = () => {
     axios
-      .post(`${testURL}/auth/register`, form)
+      .post("http://localhost:5000/auth/register", form)
       .then((res) => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
@@ -38,6 +46,13 @@ export default function Register(props) {
           type="password"
           name="password"
           value={form.password}
+          onChange={handleChange}
+        />
+        <label htmlFor="user_name">Username</label>
+        <input
+          type="text"
+          name="user_name"
+          value={form.user_name}
           onChange={handleChange}
         />
         <button type="button" onClick={handleSubmit}>
