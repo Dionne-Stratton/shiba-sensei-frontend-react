@@ -18,6 +18,7 @@ import Reading from "./components/UserPages/Reading";
 import Account from "./components/UserPages/Account";
 import Profile from "./components/UserPages/Profile";
 import Lessons from "./components/UserPages/Lessons";
+import Reviews from "./components/UserPages/Reviews";
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -59,6 +60,7 @@ function App() {
         <Route path="/account" component={Account} />
         <Route path="/profile" component={Profile} />
         <Route path="/lessons" component={Lessons} />
+        <Route path="/reviews" component={Reviews} />
       </Switch>
     </div>
   );
