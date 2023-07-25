@@ -12,6 +12,7 @@ export default function Register(props) {
     user_name: "",
     user_level: 1,
     user_vocab: [],
+    next_lesson: 1,
   };
 
   const [form, setForm] = useState(initialFormState);
@@ -27,7 +28,7 @@ export default function Register(props) {
         console.log(res);
         localStorage.setItem("token", res.data.token);
         setAuth(true);
-        history.push("/dashboard");
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);

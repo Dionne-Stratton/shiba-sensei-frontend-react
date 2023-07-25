@@ -1,16 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Dashboard = ({ user_name, user_level, num_lessons, num_reviews }) => {
-  user_name = "testuser";
-  user_level = 1;
-  num_lessons = 10;
-  num_reviews = 20;
+const Dashboard = (props) => {
+  const { user, vocab } = props;
+
+  const userLessons = vocab.filter((word) => word.lesson === user.next_lesson);
+  let num_lessons = userLessons.length;
+  let num_reviews = user.user_vocab.length;
+
+  console.log("dashboard vocab:", vocab);
+  console.log("dashboard userLessons:", userLessons);
+  console.log("dashboard user:", user);
 
   return (
     <div className="main-page">
-      <h2>Welcome, {user_name}!</h2>
-      <p>Level: {user_level}</p>
+      <h2>Welcome, {user.user_name}!</h2>
+      <p>Level: {user.user_level}</p>
       <div className="lessons-reviews-box">
         <div className="lessons-box">
           <NavLink to="/lessons">

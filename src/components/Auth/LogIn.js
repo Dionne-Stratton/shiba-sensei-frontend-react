@@ -20,7 +20,7 @@ export default function LogIn(props) {
         console.log(res);
         localStorage.setItem("token", res.data.token);
         setAuth(true);
-        history.push("/dashboard");
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);

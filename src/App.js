@@ -17,20 +17,28 @@ import Dashboard from "./components/UserPages/Dashboard";
 import Vocabulary from "./components/UserPages/Vocabulary";
 import Reading from "./components/UserPages/Reading";
 import Account from "./components/UserPages/Account";
-import Profile from "./components/UserPages/Profile";
 import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews";
 
 function App() {
   const [auth, setAuth] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    user_name: "",
+    email: "",
+    user_level: 0,
+    user_vocab: [],
+    next_lesson: 0,
+  });
+
   const [vocab, setVocab] = useState([]);
+  const token = localStorage.getItem("token");
+  console.log("app user:", user);
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
     if (token) {
       setAuth(true);
       getVocab();
+      getUser();
     } else {
       setAuth(false);
     }
@@ -47,8 +55,27 @@ function App() {
       });
   }
 
+  function getUser() {
+    if (token) {
+      axios
+        .get("http://localhost:5000/profile", {
+          headers: { Authorization: token },
+        })
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
-  const landingPage = auth ? <Dashboard setUser={setUser} /> : <LandingPage />;
+  const landingPage = auth ? (
+    <Dashboard user={user} vocab={vocab} />
+  ) : (
+    <LandingPage />
+  );
 
   return (
     <div className="App">
@@ -75,9 +102,6 @@ function App() {
         <Route path="/reading" component={Reading} />
         <Route path="/account">
           <Account user={user} setUser={setUser} />
-        </Route>
-        <Route path="/profile">
-          <Profile user={user} setUser={setUser} />
         </Route>
         <Route path="/lessons">
           <Lessons user={user} setUser={setUser} vocab={vocab} />

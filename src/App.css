@@ -24,7 +24,6 @@ body {
 }
 
 header {
-  height: 25vh;
   background-color: #e9f5f5;
   background-repeat: no-repeat;
   background-size: cover;
@@ -100,11 +99,6 @@ button {
   /* border: #000000 1px solid; */
 }
 
-/* .logout {
-  padding: 0 2%;
-  border: #000000 1px solid;
-} */
-
 .main-page {
   display: flex;
   padding: 1% 3%;
@@ -156,7 +150,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5%;
   /* border: #000000 1px solid; */
 }
 
