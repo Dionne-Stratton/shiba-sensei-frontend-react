@@ -104,7 +104,7 @@ function App() {
           <Account user={user} setUser={setUser} />
         </Route>
         <Route path="/lessons">
-          <Lessons user={user} setUser={setUser} vocab={vocab} />
+          <Lessons user={user} setUser={setUser} token={token} vocab={vocab} />
         </Route>
         <Route path="/reviews">
           <Reviews user={user} setUser={setUser} vocab={vocab} />
