@@ -11,7 +11,6 @@ const Dashboard = ({ user_name, user_level, num_lessons, num_reviews }) => {
     <div className="main-page">
       <h2>Welcome, {user_name}!</h2>
       <p>Level: {user_level}</p>
-
       <div className="lessons-reviews-box">
         <div className="lessons-box">
           <NavLink to="/lessons">

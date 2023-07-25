@@ -1,11 +1,12 @@
 import React from "react";
 import Profile from "./Profile";
+import Settings from "./Settings";
 
 export default function Account(props) {
   return (
     <div className="main-page">
-      <h3>Account Page</h3>
       <Profile />
+      <Settings />
     </div>
   );
 }

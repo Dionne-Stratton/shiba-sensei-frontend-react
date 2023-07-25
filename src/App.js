@@ -1,4 +1,5 @@
 import "./App.css";
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 //Auth
@@ -22,18 +23,32 @@ import Reviews from "./components/UserPages/Reviews";
 
 function App() {
   const [auth, setAuth] = useState(false);
+  const [user, setUser] = useState({});
+  const [vocab, setVocab] = useState([]);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
     if (token) {
       setAuth(true);
+      getVocab();
     } else {
       setAuth(false);
     }
   }, [auth]);
 
+  function getVocab() {
+    axios
+      .get("http://localhost:5000/vocab")
+      .then((res) => {
+        setVocab(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
-  const landingPage = auth ? <Dashboard /> : <LandingPage />;
+  const landingPage = auth ? <Dashboard setUser={setUser} /> : <LandingPage />;
 
   return (
     <div className="App">
@@ -54,13 +69,22 @@ function App() {
           <Login setAuth={setAuth} />
         </Route>
         {/* User Pages */}
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/vocab" component={Vocabulary} />
+        <Route path="/vocab">
+          <Vocabulary vocab={vocab} />
+        </Route>
         <Route path="/reading" component={Reading} />
-        <Route path="/account" component={Account} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/lessons" component={Lessons} />
-        <Route path="/reviews" component={Reviews} />
+        <Route path="/account">
+          <Account user={user} setUser={setUser} />
+        </Route>
+        <Route path="/profile">
+          <Profile user={user} setUser={setUser} />
+        </Route>
+        <Route path="/lessons">
+          <Lessons user={user} setUser={setUser} vocab={vocab} />
+        </Route>
+        <Route path="/reviews">
+          <Reviews user={user} setUser={setUser} vocab={vocab} />
+        </Route>
       </Switch>
     </div>
   );

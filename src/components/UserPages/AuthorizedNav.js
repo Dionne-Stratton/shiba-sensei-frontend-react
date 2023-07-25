@@ -39,11 +39,7 @@ const HeaderNav = (props) => {
         </div>
 
         <nav id="hnavbuttons">
-          <NavLink
-            className="main-nav"
-            activeClassName="active"
-            to="/dashboard"
-          >
+          <NavLink className="main-nav" activeClassName="active" to="/">
             Dashboard
           </NavLink>
           <NavLink className="main-nav" activeClassName="active" to="/vocab">
