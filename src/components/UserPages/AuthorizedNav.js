@@ -11,11 +11,7 @@ const HeaderNav = (props) => {
         <div className="header-title">
           <img className="logo" src={Logo} alt="Rabbi Rabbit Logo" />
           <div className="auth-nav">
-            <NavLink
-              className="main-nav"
-              activeClassName="active"
-              to="/account"
-            >
+            <NavLink to="/account">
               <img
                 width={50}
                 className="account-icon"
@@ -25,8 +21,6 @@ const HeaderNav = (props) => {
             </NavLink>
             {/* clicking logout button will remove the token from local storage and redirect to landingpage */}
             <NavLink
-              className="main-nav logout"
-              activeClassName="active"
               to="/"
               onClick={() => {
                 localStorage.removeItem("token");
