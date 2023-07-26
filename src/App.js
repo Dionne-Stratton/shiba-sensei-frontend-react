@@ -69,6 +69,7 @@ function App() {
     <Dashboard
       user={user}
       vocab={vocab}
+      setUser={setUser}
       setUserLessons={setUserLessons}
       userLessons={userLessons}
     />

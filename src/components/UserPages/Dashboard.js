@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Dashboard = (props) => {
-  const { user, vocab, setUserLessons, userLessons } = props;
+  const { user, vocab, setUserLessons, setUser, userLessons } = props;
 
   useEffect(() => {
     if (vocab && user.next_lesson) {

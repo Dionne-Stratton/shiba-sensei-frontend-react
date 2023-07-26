@@ -8,22 +8,18 @@ export default function Lessons(props) {
   const [addVocab, setAddVocab] = useState([]);
   const [index, setIndex] = useState(0);
   const [currentWord, setCurrentWord] = useState({});
-  const [currentSet, setCurrentSet] = useState([]);
+  // const [currentSet, setCurrentSet] = useState([]);
   const history = useHistory();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (user.next_lesson && vocab) {
+      let userLessons = vocab.filter(
+        (word) => word.lesson === user.next_lesson
+      );
+      console.log("userLessons:", userLessons);
       if (userLessons.length > 0) {
-        //create a subset of lessons called lessonsSet that is the first 5 words of the userLessons array
-        let lessonsSet = userLessons.slice(0, 1);
-        //set the currentSet to the lessonsSet
-        setCurrentSet(lessonsSet);
-        //set the currentWord to the first word in the lessonsSet
-        setCurrentWord(lessonsSet[0]);
-        console.log("lessonsSet:", lessonsSet);
-        console.log("currentWord:", currentWord);
-        console.log("currentSet:", currentSet);
+        setCurrentWord(userLessons[index]);
       }
       // setCurrentWord(newUserLessons[index]);
     }
@@ -32,10 +28,9 @@ export default function Lessons(props) {
   function getNextWord(index) {
     setAddVocab([...addVocab, { _id: currentWord._id, rank: 1 }]);
     setIndex(index + 1);
-    setCurrentWord(index + 1);
   }
 
-  console.log("currentSet:", currentSet);
+  // console.log("currentSet:", currentSet);
 
   console.log("currentWord:", currentWord);
   console.log("addVocab:", addVocab);
@@ -73,7 +68,9 @@ export default function Lessons(props) {
           </h4>
           <button
             onClick={() =>
-              index + 1 < currentSet.length ? getNextWord(index) : submitVocab()
+              index + 1 < userLessons.length
+                ? getNextWord(index)
+                : submitVocab()
             }
           >
             Next
