@@ -4,24 +4,28 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Lessons(props) {
-  const { user, setUser, vocab } = props;
+  const { user, setUser, userLessons, vocab } = props;
   const [addVocab, setAddVocab] = useState([]);
   const [index, setIndex] = useState(0);
-  const [lessonCount, setLessonCount] = useState(0);
   const [currentWord, setCurrentWord] = useState({});
+  const [currentSet, setCurrentSet] = useState([]);
   const history = useHistory();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (user.next_lesson && vocab) {
-      let userLessons = vocab.filter(
-        (word) => word.lesson === user.next_lesson
-      );
-      // console.log("userLessons:", userLessons);
       if (userLessons.length > 0) {
-        setCurrentWord(userLessons[index]);
-        setLessonCount(userLessons.length);
+        //create a subset of lessons called lessonsSet that is the first 5 words of the userLessons array
+        let lessonsSet = userLessons.slice(0, 1);
+        //set the currentSet to the lessonsSet
+        setCurrentSet(lessonsSet);
+        //set the currentWord to the first word in the lessonsSet
+        setCurrentWord(lessonsSet[0]);
+        console.log("lessonsSet:", lessonsSet);
+        console.log("currentWord:", currentWord);
+        console.log("currentSet:", currentSet);
       }
+      // setCurrentWord(newUserLessons[index]);
     }
   }, [currentWord, index, user.next_lesson, vocab]);
 
@@ -31,15 +35,19 @@ export default function Lessons(props) {
     setCurrentWord(index + 1);
   }
 
+  console.log("currentSet:", currentSet);
+
   console.log("currentWord:", currentWord);
   console.log("addVocab:", addVocab);
+
   function submitVocab() {
     let newVocab = [...addVocab, { _id: currentWord._id, rank: 1 }];
     console.log(token);
     console.log("newVocab:", newVocab);
     axiosWithAuth
       .put("profile", {
-        user_vocab: newVocab,
+        user_vocab: [...user.user_vocab, ...newVocab],
+        user_lessons: [user.userLessons],
         // next_lesson: user.next_lesson + 1,
       })
       .then((res) => {
@@ -56,7 +64,7 @@ export default function Lessons(props) {
 
   return (
     <div className="main-page">
-      {currentWord.meaning ? (
+      {currentWord ? (
         <div className="lesson-box">
           <h3>{currentWord.meaning}</h3>
           <h4>{currentWord.reading}</h4>
@@ -65,7 +73,7 @@ export default function Lessons(props) {
           </h4>
           <button
             onClick={() =>
-              index + 1 < lessonCount ? getNextWord(index) : submitVocab()
+              index + 1 < currentSet.length ? getNextWord(index) : submitVocab()
             }
           >
             Next

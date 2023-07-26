@@ -22,14 +22,8 @@ import Reviews from "./components/UserPages/Reviews";
 
 function App() {
   const [auth, setAuth] = useState(false);
-  const [user, setUser] = useState({
-    user_name: "",
-    email: "",
-    user_level: 0,
-    user_vocab: [],
-    next_lesson: 0,
-  });
-
+  const [user, setUser] = useState({});
+  const [userLessons, setUserLessons] = useState([]);
   const [vocab, setVocab] = useState([]);
   const token = localStorage.getItem("token");
   console.log("app user:", user);
@@ -72,7 +66,12 @@ function App() {
 
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
   const landingPage = auth ? (
-    <Dashboard user={user} vocab={vocab} />
+    <Dashboard
+      user={user}
+      vocab={vocab}
+      setUserLessons={setUserLessons}
+      userLessons={userLessons}
+    />
   ) : (
     <LandingPage />
   );
@@ -104,7 +103,13 @@ function App() {
           <Account user={user} setUser={setUser} />
         </Route>
         <Route path="/lessons">
-          <Lessons user={user} setUser={setUser} token={token} vocab={vocab} />
+          <Lessons
+            user={user}
+            setUser={setUser}
+            setUserLessons={setUserLessons}
+            userLessons={userLessons}
+            vocab={vocab}
+          />
         </Route>
         <Route path="/reviews">
           <Reviews user={user} setUser={setUser} vocab={vocab} />
