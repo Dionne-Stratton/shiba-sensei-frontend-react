@@ -39,25 +39,25 @@ export default function Lessons(props) {
     let newVocab = [...addVocab, { _id: currentWord._id, rank: 1 }];
     userLessons.shift();
     // console.log("userLessons submit:", userLessons);
-    let lessonsToPut;
-    let lessonToPut;
-    if (userLessons.length === 0) {
-      // console.log("I'm here", userLessons);
-      lessonToPut = user.next_lesson + 1;
-      // console.log("lessonToPut:", lessonToPut);
-      lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
-      // console.log("lessonsToPut:", lessonsToPut);
-    } else {
-      lessonToPut = user.next_lesson;
-      // console.log("I'm here else", userLessons);
-      lessonsToPut = userLessons;
-    }
+    // let lessonsToPut;
+    // let lessonToPut;
+    // if (userLessons.length === 0) {
+    //   // console.log("I'm here", userLessons);
+    //   lessonToPut = user.next_lesson + 1;
+    //   // console.log("lessonToPut:", lessonToPut);
+    //   lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
+    //   // console.log("lessonsToPut:", lessonsToPut);
+    // } else {
+    //   lessonToPut = user.next_lesson;
+    //   // console.log("I'm here else", userLessons);
+    //   lessonsToPut = userLessons;
+    // }
     // console.log("newVocab:", newVocab);
     axiosWithAuth
       .put("profile", {
         user_vocab: [...user.user_vocab, ...newVocab],
-        user_lessons: lessonsToPut,
-        next_lesson: lessonToPut,
+        user_lessons: userLessons,
+        // next_lesson: lessonToPut,
       })
       .then((res) => {
         console.log("res:", res);

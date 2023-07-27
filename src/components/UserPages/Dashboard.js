@@ -5,7 +5,7 @@ const Dashboard = (props) => {
   const { user, vocab } = props;
 
   useEffect(() => {}, [vocab, user]);
-  // console.log("user:", user);
+  console.log("user:", user);
   // console.log("vocab:", vocab);
 
   return (
