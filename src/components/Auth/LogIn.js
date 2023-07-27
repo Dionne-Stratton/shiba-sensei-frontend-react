@@ -17,7 +17,7 @@ export default function LogIn(props) {
     axios
       .post(`${testURL}auth/login`, form)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         localStorage.setItem("token", res.data.token);
         setAuth(true);
         history.push("/");

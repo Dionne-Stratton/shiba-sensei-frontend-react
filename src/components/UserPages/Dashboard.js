@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const Dashboard = (props) => {
-  const { user, vocab, setUser } = props;
+  const { user, vocab } = props;
 
   useEffect(() => {}, [vocab, user]);
-  console.log("user:", user);
-  console.log("vocab:", vocab);
+  // console.log("user:", user);
+  // console.log("vocab:", vocab);
 
   return (
     <div className="main-page">

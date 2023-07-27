@@ -27,7 +27,7 @@ function App() {
   const [vocab, setVocab] = useState([]);
   const [lesson1, setLesson1] = useState([]);
   const token = localStorage.getItem("token");
-  console.log("app user:", user);
+  // console.log("app user:", user);
 
   useEffect(() => {
     getVocab();
@@ -45,7 +45,7 @@ function App() {
       .then((res) => {
         setVocab(res.data);
         let lesson1set = res.data.filter((word) => word.lesson === 1);
-        console.log("lesson1set:", lesson1set);
+        // console.log("lesson1set:", lesson1set);
         setLesson1(lesson1set);
       })
       .catch((err) => {
@@ -68,7 +68,7 @@ function App() {
     }
   }
 
-  console.log("lesson1:", lesson1);
+  // console.log("lesson1:", lesson1);
 
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
   const landingPage = auth ? (
@@ -110,13 +110,7 @@ function App() {
           <Account user={user} setUser={setUser} />
         </Route>
         <Route path="/lessons">
-          <Lessons
-            user={user}
-            setUser={setUser}
-            setUserLessons={setUserLessons}
-            userLessons={userLessons}
-            vocab={vocab}
-          />
+          <Lessons user={user} setUser={setUser} vocab={vocab} />
         </Route>
         <Route path="/reviews">
           <Reviews user={user} setUser={setUser} vocab={vocab} />

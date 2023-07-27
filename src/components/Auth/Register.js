@@ -22,7 +22,7 @@ export default function Register(props) {
       setForm({ ...form, user_lessons: lessonsID });
 
       // setForm({ ...form, user_lessons: lesson1 });
-    }
+    } //eslint-disable-next-line
   }, [lesson1]);
 
   const [form, setForm] = useState(initialFormState);
