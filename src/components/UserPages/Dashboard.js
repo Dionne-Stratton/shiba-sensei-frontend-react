@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Dashboard = (props) => {
-  const { user, vocab, setUserLessons, setUser, userLessons } = props;
+  const { user, vocab, setUser } = props;
 
-  useEffect(() => {
-    if (vocab && user.next_lesson) {
-      const filtered = vocab.filter((word) => word.lesson === user.next_lesson);
-      setUserLessons(filtered);
-    }
-  }, [vocab, user.next_lesson, setUserLessons]);
+  useEffect(() => {}, [vocab, user]);
+  console.log("user:", user);
+  console.log("vocab:", vocab);
 
   return (
     <div className="main-page">
@@ -20,7 +17,7 @@ const Dashboard = (props) => {
           <div className="lessons-reviews-box">
             <div className="lessons-box">
               <NavLink to="/lessons">
-                <h3>Lessons: {userLessons.length}</h3>
+                <h3>Lessons: {user.user_lessons.length}</h3>
               </NavLink>
             </div>
 

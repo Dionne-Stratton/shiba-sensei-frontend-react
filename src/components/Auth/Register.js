@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 export default function Register(props) {
-  const { setAuth } = props;
+  const { setAuth, lesson1 } = props;
   const history = useHistory();
 
   const initialFormState = {
@@ -13,9 +13,20 @@ export default function Register(props) {
     user_level: 1,
     user_vocab: [],
     next_lesson: 1,
+    user_lessons: [],
   };
 
+  useEffect(() => {
+    if (lesson1.length > 0) {
+      let lessonsID = lesson1.map((word) => word._id);
+      setForm({ ...form, user_lessons: lessonsID });
+
+      // setForm({ ...form, user_lessons: lesson1 });
+    }
+  }, [lesson1]);
+
   const [form, setForm] = useState(initialFormState);
+  console.log("lesson1", lesson1);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,7 +45,7 @@ export default function Register(props) {
         console.log(err);
       });
   };
-
+  console.log("form", form);
   return (
     <div className="main-page">
       <h3>Register Page</h3>

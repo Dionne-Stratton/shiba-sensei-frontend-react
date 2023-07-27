@@ -25,13 +25,14 @@ function App() {
   const [user, setUser] = useState({});
   const [userLessons, setUserLessons] = useState([]);
   const [vocab, setVocab] = useState([]);
+  const [lesson1, setLesson1] = useState([]);
   const token = localStorage.getItem("token");
   console.log("app user:", user);
 
   useEffect(() => {
+    getVocab();
     if (token) {
       setAuth(true);
-      getVocab();
       getUser();
     } else {
       setAuth(false);
@@ -43,6 +44,9 @@ function App() {
       .get("http://localhost:5000/vocab")
       .then((res) => {
         setVocab(res.data);
+        let lesson1set = res.data.filter((word) => word.lesson === 1);
+        console.log("lesson1set:", lesson1set);
+        setLesson1(lesson1set);
       })
       .catch((err) => {
         console.log(err);
@@ -63,6 +67,8 @@ function App() {
         });
     }
   }
+
+  console.log("lesson1:", lesson1);
 
   const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
   const landingPage = auth ? (
@@ -90,7 +96,7 @@ function App() {
         <Route path="/contact" component={Contact} />
         {/* Auth Pages */}
         <Route path="/register">
-          <Register setAuth={setAuth} />
+          <Register setAuth={setAuth} lesson1={lesson1} />
         </Route>
         <Route path="/login">
           <Login setAuth={setAuth} />

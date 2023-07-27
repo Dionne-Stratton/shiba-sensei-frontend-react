@@ -4,46 +4,65 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Lessons(props) {
-  const { user, setUser, userLessons, vocab } = props;
+  const { user, setUser, vocab } = props;
   const [addVocab, setAddVocab] = useState([]);
+  const [userLessons, setUserLessons] = useState([]);
   const [index, setIndex] = useState(0);
   const [currentWord, setCurrentWord] = useState({});
-  // const [currentSet, setCurrentSet] = useState([]);
+  const [currentSet, setCurrentSet] = useState([]);
   const history = useHistory();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (user.next_lesson && vocab) {
-      let userLessons = vocab.filter(
-        (word) => word.lesson === user.next_lesson
+    if (user.user_lessons && vocab.length > 0 && userLessons.length === 0) {
+      let userLessons = vocab.filter((word) =>
+        user.user_lessons.includes(word._id)
       );
-      console.log("userLessons:", userLessons);
-      if (userLessons.length > 0) {
-        setCurrentWord(userLessons[index]);
-      }
-      // setCurrentWord(newUserLessons[index]);
+      setUserLessons(userLessons);
+      setCurrentWord(userLessons[0]);
     }
-  }, [currentWord, index, user.next_lesson, vocab]);
+    if (userLessons.length > 0) {
+      console.log("I exist");
+      setCurrentWord(userLessons[0]);
+    }
+  }, [user, vocab, userLessons, addVocab]);
 
-  function getNextWord(index) {
+  function getNextWord() {
     setAddVocab([...addVocab, { _id: currentWord._id, rank: 1 }]);
-    setIndex(index + 1);
+    userLessons.shift();
   }
 
-  // console.log("currentSet:", currentSet);
-
+  console.log("user:", user);
+  console.log("vocab:", vocab);
+  // console.log("currentSet:", currentSet);s
+  console.log("userLessons:", userLessons);
   console.log("currentWord:", currentWord);
   console.log("addVocab:", addVocab);
 
   function submitVocab() {
     let newVocab = [...addVocab, { _id: currentWord._id, rank: 1 }];
-    console.log(token);
+    userLessons.shift();
+    console.log("userLessons submit:", userLessons);
+    let lessonsToPut;
+    let lessonToPut;
+    if (userLessons.length === 0) {
+      console.log("I'm here", userLessons);
+      lessonToPut = user.next_lesson + 1;
+      console.log("lessonToPut:", lessonToPut);
+      lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
+      console.log("lessonsToPut:", lessonsToPut);
+    } else {
+      lessonToPut = user.next_lesson;
+      console.log("I'm here else", userLessons);
+      lessonsToPut = userLessons;
+    }
     console.log("newVocab:", newVocab);
     axiosWithAuth
       .put("profile", {
         user_vocab: [...user.user_vocab, ...newVocab],
-        user_lessons: [user.userLessons],
-        // next_lesson: user.next_lesson + 1,
+        //set user_lessons to userLessons
+        user_lessons: lessonsToPut,
+        next_lesson: lessonToPut,
       })
       .then((res) => {
         console.log("res:", res);
@@ -68,9 +87,7 @@ export default function Lessons(props) {
           </h4>
           <button
             onClick={() =>
-              index + 1 < userLessons.length
-                ? getNextWord(index)
-                : submitVocab()
+              userLessons.length > 1 ? getNextWord() : submitVocab()
             }
           >
             Next
