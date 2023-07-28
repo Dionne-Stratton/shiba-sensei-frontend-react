@@ -1,21 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Vocabulary(props) {
-  const { vocab } = props;
+  const { vocab, selectedLesson } = props;
+  const [vocabLessons, setVocabLessons] = useState([]);
+
+  useEffect(() => {
+    if (vocab.length > 0 && selectedLesson !== "") {
+      console.log("vocab: ", vocab);
+      let vocabLessons = vocab.filter((vocabItem) => {
+        return vocabItem.lesson === selectedLesson;
+      });
+      console.log("Here");
+      console.log("Vocabulary.js: useEffect: vocabLessons: ", vocabLessons);
+      setVocabLessons(vocabLessons);
+    }
+    console.log("Vocabulary.js: useEffect: selectedLesson: ", selectedLesson);
+  }, [selectedLesson]);
+
   return (
     <div className="main-page">
-      <h2>Unlocked Vocabulary</h2>
+      <h2>Vocabulary Lesson {selectedLesson}</h2>
+      {vocabLessons.length === 0 && <p>Loading...</p>}
+      Vocabulary: {vocabLessons.length}
       <div className="vocab-page">
-        {vocab.length === 0 && <p>Loading...</p>}
-        {vocab.map((vocabItem) => {
+        {vocabLessons.map((vocabItem) => {
           return (
             <div className="vocab-words" key={vocabItem._id}>
-              {/* <p>Lesson: {vocabItem.lesson}</p> */}
-              <h4>{vocabItem.meaning}</h4>
-              <h4>{vocabItem.reading}</h4>
-              <h4>
-                {vocabItem.hebrew_with_nikkud} / {vocabItem.hebrew}
-              </h4>
+              <div className="vocab-left">
+                <h4>
+                  {vocabItem.hebrew_with_nikkud} / {vocabItem.hebrew}
+                </h4>
+                <p>
+                  Lesson: {vocabItem.lesson} Gender: {vocabItem.gender}
+                </p>
+              </div>
+              <div className="vocab-right">
+                <p>{vocabItem.meaning}</p>
+                <p>{vocabItem.reading}</p>
+              </div>
             </div>
           );
         })}

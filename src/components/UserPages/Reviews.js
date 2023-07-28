@@ -53,24 +53,30 @@ export default function Reviews(props) {
 
   async function submitVocab() {
     let allVocab = await getNextWord();
+    let lessonFiltered = allVocab.filter(
+      (word) => word.lesson_number === user.available_lesson
+    );
+    console.log("lessonFiltered:", lessonFiltered);
+    let rankFiltered = lessonFiltered.filter((word) => word.rank > 2);
+    console.log("rankFiltered:", rankFiltered);
     // console.log("allVocab submit:", allVocab);
     let lessonToPut;
     let lessonsToPut;
-    if (userVocab.length === 0) {
+    if (rankFiltered.length === lessonFiltered.length) {
       // console.log("I'm here", userVocab);
-      lessonToPut = user.next_lesson + 1;
-      // console.log("lessonToPut:", lessonToPut);
+      lessonToPut = user.available_lesson + 1;
+      console.log("lessonToPut:", lessonToPut);
       lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
       // console.log("lessonsToPut:", lessonsToPut);
     } else {
-      lessonToPut = user.next_lesson;
+      lessonToPut = user.available_lesson;
       lessonsToPut = [];
     }
     axiosWithAuth
       .put("profile", {
         user_vocab: allVocab,
         user_lessons: lessonsToPut,
-        next_lesson: lessonToPut,
+        available_lesson: lessonToPut,
       })
       .then((res) => {
         console.log("res:", res);

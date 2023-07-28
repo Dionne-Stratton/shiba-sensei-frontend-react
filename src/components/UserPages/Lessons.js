@@ -25,7 +25,10 @@ export default function Lessons(props) {
   }, [user, vocab, addVocab]);
 
   function getNextWord() {
-    setAddVocab([...addVocab, { _id: currentWord._id, rank: 1 }]);
+    setAddVocab([
+      ...addVocab,
+      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+    ]);
     userLessons.shift();
   }
 
@@ -36,7 +39,10 @@ export default function Lessons(props) {
   // console.log("addVocab:", addVocab);
 
   function submitVocab() {
-    let newVocab = [...addVocab, { _id: currentWord._id, rank: 1 }];
+    let newVocab = [
+      ...addVocab,
+      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+    ];
     userLessons.shift();
     // console.log("userLessons submit:", userLessons);
     // let lessonsToPut;

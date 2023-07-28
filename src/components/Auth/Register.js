@@ -10,9 +10,8 @@ export default function Register(props) {
     email: "",
     password: "",
     user_name: "",
-    user_level: 1,
     user_vocab: [],
-    next_lesson: 1,
+    available_lesson: 1,
     user_lessons: [],
   };
 
