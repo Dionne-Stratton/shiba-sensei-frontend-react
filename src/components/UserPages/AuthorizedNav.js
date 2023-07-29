@@ -27,7 +27,6 @@ const HeaderNav = (props) => {
                 alt="Account"
               />
             </NavLink>
-            {/* clicking logout button will remove the token from local storage and redirect to landingpage */}
             <NavLink
               to="/"
               onClick={() => {
@@ -44,7 +43,6 @@ const HeaderNav = (props) => {
           <NavLink className="main-nav" activeClassName="active" to="/">
             Dashboard
           </NavLink>
-          {/* create a button below with a dropdown for vocabulary component to select lesson by number */}
           <select className="main-nav select" name="lesson-select">
             <option value="select">Vocabulary</option>
             <option value="1" onClick={handleClick}>
@@ -57,9 +55,6 @@ const HeaderNav = (props) => {
               Lesson 3
             </option>
           </select>
-          {/* <NavLink className="main-nav" activeClassName="active" to="/vocab">
-            Vocabulary
-          </NavLink> */}
           <NavLink className="main-nav" activeClassName="active" to="/reading">
             Reading
           </NavLink>

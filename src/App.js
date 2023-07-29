@@ -1,8 +1,8 @@
 import "./App.css";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 //Auth
+import axiosWithAuth from "./components/Auth/axiosWithAuth";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/LogIn";
 //Marketing Pages
@@ -28,7 +28,6 @@ function App() {
   const [lesson1, setLesson1] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState("");
   const token = localStorage.getItem("token");
-  // console.log("app user:", user);
 
   useEffect(() => {
     getVocab();
@@ -37,16 +36,15 @@ function App() {
       getUser();
     } else {
       setAuth(false);
-    }
+    } //eslint-disable-next-line
   }, [auth]);
 
   function getVocab() {
-    axios
+    axiosWithAuth
       .get("http://localhost:5000/vocab")
       .then((res) => {
         setVocab(res.data);
         let lesson1set = res.data.filter((word) => word.lesson === 1);
-        // console.log("lesson1set:", lesson1set);
         setLesson1(lesson1set);
       })
       .catch((err) => {
@@ -56,10 +54,8 @@ function App() {
 
   function getUser() {
     if (token) {
-      axios
-        .get("http://localhost:5000/profile", {
-          headers: { Authorization: token },
-        })
+      axiosWithAuth
+        .get("http://localhost:5000/profile")
         .then((res) => {
           setUser(res.data);
         })
@@ -68,8 +64,6 @@ function App() {
         });
     }
   }
-
-  // console.log("lesson1:", lesson1);
 
   const navToUse = auth ? (
     <AuthorizedNav

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function About() {
   return (
-    <div div className="main-page">
+    <div className="main-page">
       <h2>
         About Rabbi Rabbit: Igniting a Passion for Hebrew Language Mastery
       </h2>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosWithAuth from "./axiosWithAuth";
 import { useHistory } from "react-router-dom";
 
 export default function Register(props) {
@@ -19,8 +19,6 @@ export default function Register(props) {
     if (lesson1.length > 0) {
       let lessonsID = lesson1.map((word) => word._id);
       setForm({ ...form, user_lessons: lessonsID });
-
-      // setForm({ ...form, user_lessons: lesson1 });
     } //eslint-disable-next-line
   }, [lesson1]);
 
@@ -32,7 +30,7 @@ export default function Register(props) {
   };
 
   const handleSubmit = () => {
-    axios
+    axiosWithAuth
       .post("http://localhost:5000/auth/register", form)
       .then((res) => {
         console.log(res);
@@ -44,7 +42,7 @@ export default function Register(props) {
         console.log(err);
       });
   };
-  console.log("form", form);
+
   return (
     <div className="main-page">
       <h3>Register Page</h3>

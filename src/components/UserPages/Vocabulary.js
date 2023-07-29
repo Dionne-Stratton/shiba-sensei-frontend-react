@@ -6,15 +6,11 @@ export default function Vocabulary(props) {
 
   useEffect(() => {
     if (vocab.length > 0 && selectedLesson !== "") {
-      console.log("vocab: ", vocab);
       let vocabLessons = vocab.filter((vocabItem) => {
         return vocabItem.lesson === selectedLesson;
       });
-      console.log("Here");
-      console.log("Vocabulary.js: useEffect: vocabLessons: ", vocabLessons);
       setVocabLessons(vocabLessons);
-    }
-    console.log("Vocabulary.js: useEffect: selectedLesson: ", selectedLesson);
+    } //eslint-disable-next-line
   }, [selectedLesson]);
 
   return (

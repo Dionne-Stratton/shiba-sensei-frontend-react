@@ -18,30 +18,27 @@ export default function Reviews(props) {
   useEffect(() => {
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
-      let idFiltered = user.user_vocab.map((word) => word._id);
-      // console.log("idFiltered:", idFiltered);
-      let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
-      // console.log("userVocab inside useeffect:", userVocab);
-      // console.log("user.user_vocab inside useeffect:", user.user_vocab);
-      setUserVocab(userVocab);
-      setCurrentWord(userVocab[0]);
-      let correctAnswerArray = userVocab[0].meaning
-        .split(", ")
-        .map((word) => word.toLowerCase());
-      // console.log("correctAnswerArray:", correctAnswerArray);
-      setCorrectAnswer(correctAnswerArray);
+      console.log("user:", user);
+      console.log("user.user_vocab:", user.user_vocab);
+      if (user.user_vocab.length > 0) {
+        let idFiltered = user.user_vocab.map((word) => word._id);
+        console.log("idFiltered:", idFiltered);
+        let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
+        setUserVocab(userVocab);
+        setCurrentWord(userVocab[0]);
+        let correctAnswerArray = userVocab[0].meaning
+          .split(", ")
+          .map((word) => word.toLowerCase());
+        setCorrectAnswer(correctAnswerArray);
+      }
     }
-    // console.log("userVocab:", userVocab);
+    console.log("currentWord:", currentWord);
     if (userVocab.length > 0) {
-      // console.log("I exist", userVocab);
-      // console.log("userVocab[0]:", userVocab[0]);
       setCurrentWord(userVocab[0]);
       let correctAnswerArray = userVocab[0].meaning
         .split(", ")
         .map((word) => word.toLowerCase());
-      // console.log("correctAnswerArray:", correctAnswerArray);
       setCorrectAnswer(correctAnswerArray);
-      // console.log("rankVocab:", rankVocab);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
 
@@ -63,54 +60,37 @@ export default function Reviews(props) {
     }
     setMessage(message);
     let rankChange = message === "correct" ? 1 : "incorrect" ? -1 : 0;
-    // console.log("rankChange:", rankChange);
-    // console.log("message:", message);
     setRankVocab(rankChange);
   }
 
   function getNextWord() {
     setMessage("");
     let allVocab = user.user_vocab;
-    // console.log("currentWord:", currentWord);
 
     let replacementIndex = allVocab.findIndex(
       (word) => word._id === currentWord._id
     );
     let wordRank = allVocab[replacementIndex].rank;
-    // console.log("wordRank:", wordRank);
+
     let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab;
-    // console.log("newTank:", newRank);
+
     allVocab[replacementIndex].rank = newRank;
     setRemovedWord(userVocab.shift());
-    // console.log("allVocab:", allVocab);
-    // console.log("userVocab:", userVocab);
     setAnswer("");
     return allVocab;
   }
-
-  // console.log("user:", user);
-  // console.log("vocab:", vocab);
-  // console.log("userVocab:", userVocab);
-  // console.log("currentWord:", currentWord);
-  // console.log("rankVocab:", rankVocab);
 
   async function submitVocab() {
     let allVocab = await getNextWord();
     let lessonFiltered = allVocab.filter(
       (word) => word.lesson_number === user.available_lesson
     );
-    // console.log("lessonFiltered:", lessonFiltered);
     let rankFiltered = lessonFiltered.filter((word) => word.rank > 2);
-    // console.log("rankFiltered:", rankFiltered);
-    // console.log("allVocab submit:", allVocab);
     let lessonToPut;
     let lessonsToPut;
     if (rankFiltered.length === lessonFiltered.length) {
-      // console.log("I'm here", userVocab);
       lessonToPut = user.available_lesson + 1;
-      // console.log("lessonToPut:", lessonToPut);
       lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
-      // console.log("lessonsToPut:", lessonsToPut);
     } else {
       lessonToPut = user.available_lesson;
       lessonsToPut = [];
@@ -129,14 +109,11 @@ export default function Reviews(props) {
       .catch((err) => {
         console.log(err);
       });
-    // .finally(() => {
-    //   history.push("/");
-    // });
   }
 
   return (
     <div className="main-page">
-      {currentWord ? (
+      {userVocab.length > 0 ? (
         <div className="review-box">
           <div className="review-header">
             <h2>{currentWord.hebrew}</h2>
