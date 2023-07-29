@@ -309,3 +309,61 @@ input[name="answer"] {
   outline: none;
   /* border: #9e0d0d 1px solid; */
 }
+
+.alefbet {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* background-color: seagreen; */
+  padding: 2%;
+  /* border: #000000 1px solid; */
+}
+
+.paragraph-image {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  /* border: #000000 1px solid; */
+  margin: 3% 0;
+}
+
+.paragraph-image img {
+  margin-left: 5%;
+  height: auto;
+}
+
+li {
+  list-style: none;
+  /* border: #000000 1px solid; */
+  margin-bottom: 2%;
+}
+
+.nikkud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  /* border: #000000 1px solid; */
+}
+
+.dagesh {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  /* border: #000000 1px solid; */
+}
+
+.dagesh img {
+  height: 9rem;
+  margin: 3%;
+}
+
+.dagesh p {
+  font-size: 2.6rem;
+  margin: 3%;
+}
