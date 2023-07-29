@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axiosWithAuth from "./axiosWithAuth";
-import { testURL } from "../../BaseURLs";
 import { useHistory } from "react-router-dom";
 
 export default function LogIn(props) {
@@ -15,7 +14,7 @@ export default function LogIn(props) {
   console.log("login form", form);
   const handleSubmit = () => {
     axiosWithAuth
-      .post(`${testURL}/auth/login`, form)
+      .post("auth/login", form)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         setAuth(true);

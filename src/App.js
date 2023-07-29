@@ -41,7 +41,7 @@ function App() {
 
   function getVocab() {
     axiosWithAuth
-      .get("http://localhost:5000/vocab")
+      .get("vocab")
       .then((res) => {
         setVocab(res.data);
         let lesson1set = res.data.filter((word) => word.lesson === 1);
@@ -55,7 +55,7 @@ function App() {
   function getUser() {
     if (token) {
       axiosWithAuth
-        .get("http://localhost:5000/profile")
+        .get("profile")
         .then((res) => {
           setUser(res.data);
         })

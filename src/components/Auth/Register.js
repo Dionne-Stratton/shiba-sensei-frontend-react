@@ -31,7 +31,7 @@ export default function Register(props) {
 
   const handleSubmit = () => {
     axiosWithAuth
-      .post("http://localhost:5000/auth/register", form)
+      .post("auth/register", form)
       .then((res) => {
         console.log(res);
         localStorage.setItem("token", res.data.token);
