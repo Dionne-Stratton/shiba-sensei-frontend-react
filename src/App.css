@@ -164,7 +164,7 @@ button {
 .vocab-words {
   display: flex;
   flex-wrap: wrap;
-  border: #000000 1px solid;
+  /* border: #000000 1px solid; */
   width: 100%;
   /* margin: 1%; */
   padding: 1%;
@@ -199,4 +199,113 @@ form {
 .vocab-page {
   display: flex;
   flex-wrap: wrap;
+}
+
+.vocab-right p {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reviews {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: #e9f907 1px solid; */
+}
+
+.review-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+  width: 100%;
+  /* border: none; */
+}
+
+.lesson-box {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+  width: 100%;
+  /* border: none; */
+}
+
+.lesson-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  /* border: red 1px solid; */
+}
+
+.next-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.review-header,
+.lesson-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(245, 245, 220);
+  margin: 0 5%;
+  width: 100%;
+  /* border: #9e0d0d 1px solid; */
+}
+
+.incorrect,
+.incorrect .answer-input {
+  display: flex;
+  background-color: rgb(246, 172, 172);
+  width: 100%;
+}
+
+.correct,
+.correct .answer-input {
+  display: flex;
+  background-color: rgb(163, 246, 163);
+  width: 100%;
+  font-size: 3rem;
+}
+
+.neutral,
+.neutral .answer-input {
+  display: flex;
+  background-color: rgb(220, 241, 245);
+  width: 100%;
+  font-size: 3rem;
+  /* border: #4a76fa 1px solid; */
+}
+
+.meaning {
+  padding-right: 2%;
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.answer-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 3%;
+  /* border: #9e0d0d 1px solid; */
+}
+
+input[type="text"] {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  /* border: #9e0d0d 1px solid; */
 }

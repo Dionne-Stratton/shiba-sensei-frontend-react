@@ -20,7 +20,9 @@ export default function Vocabulary(props) {
   return (
     <div className="main-page">
       <h2>Vocabulary Lesson {selectedLesson}</h2>
-      {vocabLessons.length === 0 && <p>Loading...</p>}
+      {vocabLessons.length === 0 && (
+        <p>Loading... Please select a lesson number.</p>
+      )}
       Vocabulary: {vocabLessons.length}
       <div className="vocab-page">
         {vocabLessons.map((vocabItem) => {
@@ -30,9 +32,7 @@ export default function Vocabulary(props) {
                 <h4>
                   {vocabItem.hebrew_with_nikkud} / {vocabItem.hebrew}
                 </h4>
-                <p>
-                  Lesson: {vocabItem.lesson} Gender: {vocabItem.gender}
-                </p>
+                <p>{vocabItem.gender}</p>
               </div>
               <div className="vocab-right">
                 <p>{vocabItem.meaning}</p>
