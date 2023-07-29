@@ -303,7 +303,7 @@ form {
   /* border: #9e0d0d 1px solid; */
 }
 
-input[type="text"] .answer-input {
+input[name="answer"] {
   border: none;
   background-color: transparent;
   outline: none;

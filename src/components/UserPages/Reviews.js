@@ -133,6 +133,7 @@ export default function Reviews(props) {
               className="answer-input"
               autoFocus="autofocus"
               placeholder="Enter Answer"
+              name="answer"
               type="text"
               value={answer}
               onChange={handleChange}
