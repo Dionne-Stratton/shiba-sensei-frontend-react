@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Lessons(props) {
-  const { user, setUser, vocab } = props;
+  const { user, setUser, vocab, setShowNav } = props;
   const [addVocab, setAddVocab] = useState([]);
   const [userLessons, setUserLessons] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
@@ -11,6 +11,7 @@ export default function Lessons(props) {
   let nextArrow = ">";
 
   useEffect(() => {
+    setShowNav(false);
     if (user.user_lessons && vocab.length > 0 && userLessons.length === 0) {
       let userLessons = vocab.filter((word) =>
         user.user_lessons.includes(word._id)
@@ -53,6 +54,7 @@ export default function Lessons(props) {
       })
       .finally(() => {
         history.push("/");
+        setShowNav(true);
       });
   }
 

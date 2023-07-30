@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Reviews(props) {
-  const { user, setUser, vocab } = props;
+  const { user, setUser, vocab, setShowNav } = props;
   const [rankVocab, setRankVocab] = useState(0);
   const [userVocab, setUserVocab] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
@@ -16,6 +16,7 @@ export default function Reviews(props) {
   let nextArrow = ">";
 
   useEffect(() => {
+    setShowNav(false);
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
       console.log("user:", user);
@@ -96,6 +97,7 @@ export default function Reviews(props) {
       lessonsToPut = [];
     }
     history.push("/");
+    setShowNav(true);
     axiosWithAuth
       .put("profile", {
         user_vocab: allVocab,

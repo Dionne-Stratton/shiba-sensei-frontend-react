@@ -28,6 +28,7 @@ function App() {
   const [lesson1, setLesson1] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState("");
   const token = localStorage.getItem("token");
+  const [showNav, setShowNav] = useState(true);
 
   useEffect(() => {
     getVocab();
@@ -65,7 +66,12 @@ function App() {
     }
   }
 
-  const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
+  const navToUse =
+    auth && showNav ? (
+      <AuthorizedNav setAuth={setAuth} />
+    ) : showNav ? (
+      <HeaderNav />
+    ) : null;
   const landingPage = auth ? (
     <Dashboard
       user={user}
@@ -78,8 +84,7 @@ function App() {
     <LandingPage />
   );
 
-  console.log("selectedLesson", selectedLesson);
-
+  console.log("showNav", showNav);
   return (
     <div className="App">
       {navToUse}
@@ -111,10 +116,20 @@ function App() {
           <Account user={user} setUser={setUser} />
         </Route>
         <Route path="/lessons">
-          <Lessons user={user} setUser={setUser} vocab={vocab} />
+          <Lessons
+            user={user}
+            setUser={setUser}
+            vocab={vocab}
+            setShowNav={setShowNav}
+          />
         </Route>
         <Route path="/reviews">
-          <Reviews user={user} setUser={setUser} vocab={vocab} />
+          <Reviews
+            user={user}
+            setUser={setUser}
+            vocab={vocab}
+            setShowNav={setShowNav}
+          />
         </Route>
       </Switch>
     </div>
