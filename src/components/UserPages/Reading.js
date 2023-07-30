@@ -245,12 +245,9 @@ export default function Reading(props) {
             dagesh. With most letters, the dagesh does not significantly affect
             pronunciation. With the letters Bet, Kaf and Pe, however, the dagesh
             indicates that the letter should be pronounced with its hard sound
-            (the first sound) rather than the soft sound (the second sound). In
-            Ashkenazic pronunciation (the pronunciation used by many Orthodox
-            Jews and by older Jews), Tav also has a soft sound, and is
-            pronounced as an "s" when it does not have a dagesh. Shin is
-            pronounced "sh" when it has a dot over the right branch and "s" when
-            it has a dot over the left branch.
+            (the first sound) rather than the soft sound (the second sound).
+            Shin is pronounced "sh" when it has a dot over the right branch and
+            "s" when it has a dot over the left branch.
           </p>
           <img className="dagesh-chart" src={dagesh} alt="dagesh" />
         </div>

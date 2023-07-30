@@ -15,11 +15,10 @@ export default function Vocabulary(props) {
 
   return (
     <div className="main-page">
-      <h2>Vocabulary Lesson {selectedLesson}</h2>
+      <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
       {vocabLessons.length === 0 && (
         <p>Loading... Please select a lesson number.</p>
       )}
-      Vocabulary: {vocabLessons.length}
       <div className="vocab-page">
         {vocabLessons.map((vocabItem) => {
           return (
