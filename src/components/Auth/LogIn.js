@@ -11,7 +11,6 @@ export default function LogIn(props) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  console.log("login form", form);
   const handleSubmit = () => {
     axiosWithAuth
       .post("auth/login", form)

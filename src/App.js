@@ -84,7 +84,6 @@ function App() {
     <LandingPage />
   );
 
-  console.log("showNav", showNav);
   return (
     <div className="App">
       {navToUse}

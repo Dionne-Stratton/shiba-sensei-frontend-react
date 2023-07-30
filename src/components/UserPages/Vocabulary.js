@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
 
 export default function Vocabulary(props) {
   const { vocab, selectedLesson, setSelectedLesson, user } = props;
   const [vocabLessons, setVocabLessons] = useState([]);
   const [availableLessons, setAvailableLessons] = useState([]);
-  // let testing = [1, 2, 3, 4];
-  let N = 5;
 
   useEffect(() => {
     if (vocab.length > 0 && selectedLesson !== "" && user.available_lesson) {
