@@ -323,7 +323,6 @@ input[name="answer"] {
 
 .paragraph-image {
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
   /* border: #000000 1px solid; */
@@ -367,4 +366,17 @@ li {
 .dagesh p {
   font-size: 2.6rem;
   margin: 3%;
+}
+
+.no-header-dashboard-button {
+  cursor: pointer;
+  font-size: 1.6rem;
+  /* border: #000000 1px solid; */
+}
+
+.account-icon {
+  display: flex;
+  /* border: #000000 1px solid; */
+  height: 3rem;
+  width: 3rem;
 }

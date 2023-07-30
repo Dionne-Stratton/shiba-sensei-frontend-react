@@ -3,19 +3,21 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Reviews(props) {
-  const { user, setUser, vocab } = props;
+  const { user, setUser, vocab, setShowNav } = props;
   const [rankVocab, setRankVocab] = useState(0);
   const [userVocab, setUserVocab] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
   const [removedWord, setRemovedWord] = useState({});
   const [message, setMessage] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState([]);
+  const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answer, setAnswer] = useState("");
   const history = useHistory();
 
   let nextArrow = ">";
 
   useEffect(() => {
+    setShowNav(false);
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
       console.log("user:", user);
@@ -64,6 +66,7 @@ export default function Reviews(props) {
   }
 
   function getNextWord() {
+    setQuestionsAnswered(questionsAnswered + 1);
     setMessage("");
     let allVocab = user.user_vocab;
 
@@ -81,6 +84,11 @@ export default function Reviews(props) {
   }
 
   async function submitVocab() {
+    if (!currentWord || questionsAnswered === 0) {
+      history.push("/");
+      setShowNav(true);
+      return;
+    }
     let allVocab = await getNextWord();
     let lessonFiltered = allVocab.filter(
       (word) => word.lesson_number === user.available_lesson
@@ -95,7 +103,10 @@ export default function Reviews(props) {
       lessonToPut = user.available_lesson;
       lessonsToPut = [];
     }
+
+    console.log("allVocab:", allVocab);
     history.push("/");
+    setShowNav(true);
     axiosWithAuth
       .put("profile", {
         user_vocab: allVocab,
@@ -113,6 +124,9 @@ export default function Reviews(props) {
 
   return (
     <div className="main-page">
+      <p className="no-header-dashboard-button" onClick={submitVocab}>
+        Dashboard
+      </p>
       {userVocab.length > 0 ? (
         <div className="review-box">
           <div className="review-header">

@@ -11,7 +11,6 @@ const Dashboard = (props) => {
       {user.user_vocab ? (
         <div className="dashboard-box">
           <h2>Welcome, {user.user_name}!</h2>
-          <p>Level: {user.user_level}</p>
           <div className="lessons-reviews-box">
             <div className="lessons-box">
               <NavLink to="/lessons">
