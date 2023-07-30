@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 export default function Vocabulary(props) {
-  const { vocab, selectedLesson } = props;
+  const { vocab, selectedLesson, setSelectedLesson } = props;
   const [vocabLessons, setVocabLessons] = useState([]);
 
   useEffect(() => {
     if (vocab.length > 0 && selectedLesson !== "") {
+      if (selectedLesson !== "select") {
+        setSelectedLesson(Number(selectedLesson));
+      }
       let vocabLessons = vocab.filter((vocabItem) => {
         return vocabItem.lesson === selectedLesson;
       });
@@ -15,6 +18,24 @@ export default function Vocabulary(props) {
 
   return (
     <div className="main-page">
+      {/* <select
+            className="main-nav select"
+            name="lesson-select"
+            onClick={handleClick}
+          >
+            <option value="select" onClick={handleClick}>
+              Vocabulary
+            </option>
+            <option value="1" onClick={handleClick}>
+              Lesson 1
+            </option>
+            <option value="2" onClick={handleClick}>
+              Lesson 2
+            </option>
+            <option value="3" onClick={handleClick}>
+              Lesson 3
+            </option>
+          </select> */}
       <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
       {vocabLessons.length === 0 && (
         <p>Loading... Please select a lesson number.</p>
