@@ -109,6 +109,7 @@ function App() {
             vocab={vocab}
             selectedLesson={selectedLesson}
             setSelectedLesson={setSelectedLesson}
+            user={user}
           />
         </Route>
         <Route path="/reading" component={Reading} />
