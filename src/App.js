@@ -65,15 +65,7 @@ function App() {
     }
   }
 
-  const navToUse = auth ? (
-    <AuthorizedNav
-      setAuth={setAuth}
-      setSelectedLesson={setSelectedLesson}
-      selectedLesson={selectedLesson}
-    />
-  ) : (
-    <HeaderNav />
-  );
+  const navToUse = auth ? <AuthorizedNav setAuth={setAuth} /> : <HeaderNav />;
   const landingPage = auth ? (
     <Dashboard
       user={user}
@@ -85,6 +77,8 @@ function App() {
   ) : (
     <LandingPage />
   );
+
+  console.log("selectedLesson", selectedLesson);
 
   return (
     <div className="App">

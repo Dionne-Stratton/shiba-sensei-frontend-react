@@ -2,27 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/RabbiRabbitLogo2.png";
 import AccountIcon from "../../assets/account-icon.png";
-import { useHistory } from "react-router-dom";
 
 const HeaderNav = (props) => {
-  const { setAuth, setSelectedLesson } = props;
-  const history = useHistory();
+  const { setAuth } = props;
 
-  // function handleClick(e) {
-  //   setSelectedLesson(Number(e.target.value));
-  //   //
-  //   history.push("/vocab");
-  // }
-  const handleClick = (e) => {
-    setSelectedLesson(e.target.value);
-    // console.log("e.target.value", e.target.value);
-    if (e.target.value !== "select") {
-      // console.log("inside if", e.target.value);
-      // console.log("clicked");
-      history.push("/vocab");
-    }
-    // document.querySelector(".select").value = "select";
-  };
   return (
     <div className="headernav">
       <header>
@@ -53,24 +36,9 @@ const HeaderNav = (props) => {
           <NavLink className="main-nav" activeClassName="active" to="/">
             Dashboard
           </NavLink>
-          <select
-            className="main-nav select"
-            name="lesson-select"
-            onClick={handleClick}
-          >
-            <option value="select" onClick={handleClick}>
-              Vocabulary
-            </option>
-            <option value="1" onClick={handleClick}>
-              Lesson 1
-            </option>
-            <option value="2" onClick={handleClick}>
-              Lesson 2
-            </option>
-            <option value="3" onClick={handleClick}>
-              Lesson 3
-            </option>
-          </select>
+          <NavLink className="main-nav" activeClassName="active" to="/vocab">
+            Vocabulary
+          </NavLink>
           <NavLink className="main-nav" activeClassName="active" to="/reading">
             Reading
           </NavLink>
