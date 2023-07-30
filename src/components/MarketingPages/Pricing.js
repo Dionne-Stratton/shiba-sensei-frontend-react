@@ -11,15 +11,15 @@ export default function Pricing() {
           testing phase. Enjoy all the lessons for free and help us shape the
           future of the app with your valuable feedback.
         </p>
-        <button>Sign Up for Free Beta</button>
+        {/* <button>Sign Up for Free Beta</button> */}
       </div>
       <div>
-        <p>Projected pricing after beta testing phase:</p>
+        <h3>Projected pricing after beta testing phase:</h3>
         <ul>
           <li>$10 per month for new users.</li>
           <li>$8 per month for previous beta testers.</li>
         </ul>
-        <p>Either will offer your first three levels for free.</p>
+        <p>Either will offer your first three lessons for free.</p>
       </div>
       {/* <div>
         <h3>New User Plan - $10/month</h3>

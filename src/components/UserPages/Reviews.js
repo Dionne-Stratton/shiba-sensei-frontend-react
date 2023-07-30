@@ -20,11 +20,8 @@ export default function Reviews(props) {
     setShowNav(false);
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
-      console.log("user:", user);
-      console.log("user.user_vocab:", user.user_vocab);
       if (user.user_vocab.length > 0) {
         let idFiltered = user.user_vocab.map((word) => word._id);
-        console.log("idFiltered:", idFiltered);
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
@@ -34,7 +31,7 @@ export default function Reviews(props) {
         setCorrectAnswer(correctAnswerArray);
       }
     }
-    console.log("currentWord:", currentWord);
+
     if (userVocab.length > 0) {
       setCurrentWord(userVocab[0]);
       let correctAnswerArray = userVocab[0].meaning
@@ -104,7 +101,6 @@ export default function Reviews(props) {
       lessonsToPut = [];
     }
 
-    console.log("allVocab:", allVocab);
     history.push("/");
     setShowNav(true);
     axiosWithAuth

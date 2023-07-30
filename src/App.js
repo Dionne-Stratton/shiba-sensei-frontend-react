@@ -84,7 +84,6 @@ function App() {
     <LandingPage />
   );
 
-  console.log("showNav", showNav);
   return (
     <div className="App">
       {navToUse}
@@ -109,6 +108,7 @@ function App() {
             vocab={vocab}
             selectedLesson={selectedLesson}
             setSelectedLesson={setSelectedLesson}
+            user={user}
           />
         </Route>
         <Route path="/reading" component={Reading} />

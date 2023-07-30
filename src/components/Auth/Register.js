@@ -23,7 +23,6 @@ export default function Register(props) {
   }, [lesson1]);
 
   const [form, setForm] = useState(initialFormState);
-  console.log("lesson1", lesson1);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

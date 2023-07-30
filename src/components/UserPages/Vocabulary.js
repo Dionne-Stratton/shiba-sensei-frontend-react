@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
 
 export default function Vocabulary(props) {
-  const { vocab, selectedLesson, setSelectedLesson } = props;
+  const { vocab, selectedLesson, setSelectedLesson, user } = props;
   const [vocabLessons, setVocabLessons] = useState([]);
-
-  // const history = useHistory();
+  const [availableLessons, setAvailableLessons] = useState([]);
 
   useEffect(() => {
-    if (vocab.length > 0 && selectedLesson !== "") {
+    if (vocab.length > 0 && selectedLesson !== "" && user.available_lesson) {
       let vocabLessons = vocab.filter((vocabItem) => {
         return vocabItem.lesson === Number(selectedLesson);
       });
+      let testing = Array.from(
+        { length: user.available_lesson },
+        (_, index) => index + 1
+      );
+      setAvailableLessons(testing);
       setVocabLessons(vocabLessons);
     } //eslint-disable-next-line
   }, [selectedLesson]);
 
   const handleClick = (e) => {
     setSelectedLesson(e.target.value);
-    // document.querySelector(".select").value = "select";
   };
 
   return (
@@ -33,15 +35,13 @@ export default function Vocabulary(props) {
         <option value="select" onClick={handleClick}>
           Select a Lesson
         </option>
-        <option value="1" onClick={handleClick}>
-          Lesson 1
-        </option>
-        <option value="2" onClick={handleClick}>
-          Lesson 2
-        </option>
-        <option value="3" onClick={handleClick}>
-          Lesson 3
-        </option>
+        {availableLessons.map((item) => {
+          return (
+            <option value={item} onClick={handleClick}>
+              Lesson {item}
+            </option>
+          );
+        })}
       </select>
       <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
       {vocabLessons.length === 0 && (

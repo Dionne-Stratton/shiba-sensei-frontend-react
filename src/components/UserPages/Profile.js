@@ -3,7 +3,6 @@ import React from "react";
 export default function Profile(props) {
   const { user } = props;
 
-  console.log("profile user", user);
   return (
     <div className="main-page profile">
       <h2>Profile:</h2>
