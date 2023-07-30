@@ -8,11 +8,21 @@ const HeaderNav = (props) => {
   const { setAuth, setSelectedLesson } = props;
   const history = useHistory();
 
-  function handleClick(e) {
+  // function handleClick(e) {
+  //   setSelectedLesson(Number(e.target.value));
+  //   //
+  //   history.push("/vocab");
+  // }
+  const handleClick = (e) => {
     setSelectedLesson(Number(e.target.value));
-    document.querySelector(".select").value = "select";
-    history.push("/vocab");
-  }
+    // console.log("e.target.value", e.target.value);
+    if (e.target.value !== "select") {
+      // console.log("inside if", e.target.value);
+      // console.log("clicked");
+      history.push("/vocab");
+    }
+    // document.querySelector(".select").value = "select";
+  };
   return (
     <div className="headernav">
       <header>
@@ -43,8 +53,14 @@ const HeaderNav = (props) => {
           <NavLink className="main-nav" activeClassName="active" to="/">
             Dashboard
           </NavLink>
-          <select className="main-nav select" name="lesson-select">
-            <option value="select">Vocabulary</option>
+          <select
+            className="main-nav select"
+            name="lesson-select"
+            onClick={handleClick}
+          >
+            <option value="select" onClick={handleClick}>
+              Vocabulary
+            </option>
             <option value="1" onClick={handleClick}>
               Lesson 1
             </option>
