@@ -106,7 +106,11 @@ function App() {
         </Route>
         {/* User Pages */}
         <Route path="/vocab">
-          <Vocabulary vocab={vocab} selectedLesson={selectedLesson} />
+          <Vocabulary
+            vocab={vocab}
+            selectedLesson={selectedLesson}
+            setSelectedLesson={setSelectedLesson}
+          />
         </Route>
         <Route path="/reading" component={Reading} />
         <Route path="/account">

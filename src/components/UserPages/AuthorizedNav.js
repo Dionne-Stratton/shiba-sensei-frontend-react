@@ -14,7 +14,7 @@ const HeaderNav = (props) => {
   //   history.push("/vocab");
   // }
   const handleClick = (e) => {
-    setSelectedLesson(Number(e.target.value));
+    setSelectedLesson(e.target.value);
     // console.log("e.target.value", e.target.value);
     if (e.target.value !== "select") {
       // console.log("inside if", e.target.value);
