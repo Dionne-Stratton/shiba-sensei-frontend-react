@@ -373,3 +373,10 @@ li {
   font-size: 1.6rem;
   /* border: #000000 1px solid; */
 }
+
+.account-icon {
+  display: flex;
+  /* border: #000000 1px solid; */
+  height: 3rem;
+  width: 3rem;
+}
