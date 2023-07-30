@@ -1,41 +1,48 @@
 import React, { useEffect, useState } from "react";
+// import { useHistory } from "react-router-dom";
 
 export default function Vocabulary(props) {
   const { vocab, selectedLesson, setSelectedLesson } = props;
   const [vocabLessons, setVocabLessons] = useState([]);
 
+  // const history = useHistory();
+
   useEffect(() => {
     if (vocab.length > 0 && selectedLesson !== "") {
-      if (selectedLesson !== "select") {
-        setSelectedLesson(Number(selectedLesson));
-      }
       let vocabLessons = vocab.filter((vocabItem) => {
-        return vocabItem.lesson === selectedLesson;
+        return vocabItem.lesson === Number(selectedLesson);
       });
       setVocabLessons(vocabLessons);
     } //eslint-disable-next-line
   }, [selectedLesson]);
 
+  const handleClick = (e) => {
+    setSelectedLesson(e.target.value);
+    // document.querySelector(".select").value = "select";
+  };
+
   return (
     <div className="main-page">
-      {/* <select
-            className="main-nav select"
-            name="lesson-select"
-            onClick={handleClick}
-          >
-            <option value="select" onClick={handleClick}>
-              Vocabulary
-            </option>
-            <option value="1" onClick={handleClick}>
-              Lesson 1
-            </option>
-            <option value="2" onClick={handleClick}>
-              Lesson 2
-            </option>
-            <option value="3" onClick={handleClick}>
-              Lesson 3
-            </option>
-          </select> */}
+      <select
+        className="main-nav select"
+        name="lesson-select"
+        onClick={handleClick}
+        value={selectedLesson}
+        onChange={(e) => setSelectedLesson(e.target.value)}
+      >
+        <option value="select" onClick={handleClick}>
+          Select a Lesson
+        </option>
+        <option value="1" onClick={handleClick}>
+          Lesson 1
+        </option>
+        <option value="2" onClick={handleClick}>
+          Lesson 2
+        </option>
+        <option value="3" onClick={handleClick}>
+          Lesson 3
+        </option>
+      </select>
       <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
       {vocabLessons.length === 0 && (
         <p>Loading... Please select a lesson number.</p>
