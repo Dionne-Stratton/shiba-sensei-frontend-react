@@ -7,6 +7,7 @@ export default function Lessons(props) {
   const [addVocab, setAddVocab] = useState([]);
   const [userLessons, setUserLessons] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
+  const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const history = useHistory();
   let nextArrow = ">";
 
@@ -31,9 +32,15 @@ export default function Lessons(props) {
       { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
     ]);
     userLessons.shift();
+    setQuestionsAnswered(questionsAnswered + 1);
   }
 
   function submitVocab() {
+    if (!currentWord || questionsAnswered === 0) {
+      history.push("/");
+      setShowNav(true);
+      return;
+    }
     let newVocab = [
       ...addVocab,
       { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
@@ -60,6 +67,9 @@ export default function Lessons(props) {
 
   return (
     <div className="main-page">
+      <p className="no-header-dashboard-button" onClick={submitVocab}>
+        Dashboard
+      </p>
       {currentWord ? (
         <div className="lesson-box">
           <div className="lesson-text">
