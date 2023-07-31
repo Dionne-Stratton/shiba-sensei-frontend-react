@@ -98,7 +98,7 @@ export default function Reviews(props) {
       lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
     } else {
       lessonToPut = user.available_lesson;
-      lessonsToPut = [];
+      lessonsToPut = user.user_lessons;
     }
 
     history.push("/");
@@ -128,7 +128,7 @@ export default function Reviews(props) {
           <div className="review-header">
             <h2>{currentWord.hebrew}</h2>
             <h4>{currentWord.hebrew_with_nikkud}</h4>
-            <h4>{currentWord.reading}</h4>
+            <h4>"{currentWord.reading}"</h4>
           </div>
           <div
             className={
@@ -142,7 +142,7 @@ export default function Reviews(props) {
             <input
               className="answer-input"
               autoFocus="autofocus"
-              placeholder="Enter Answer"
+              placeholder="meaning"
               name="answer"
               type="text"
               value={answer}

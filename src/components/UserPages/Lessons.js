@@ -33,6 +33,7 @@ export default function Lessons(props) {
     ]);
     userLessons.shift();
     setQuestionsAnswered(questionsAnswered + 1);
+    console.log("userLessons:", userLessons);
   }
 
   function submitVocab() {
@@ -75,7 +76,7 @@ export default function Lessons(props) {
           <div className="lesson-text">
             <h2>{currentWord.hebrew}</h2>
             <h4>{currentWord.hebrew_with_nikkud}</h4>
-            <h4>{currentWord.reading}</h4>
+            <h4>"{currentWord.reading}"</h4>
             <h4>{currentWord.meaning}</h4>
           </div>
           <div

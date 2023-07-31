@@ -60,7 +60,7 @@ export default function Vocabulary(props) {
               </div>
               <div className="vocab-right">
                 <p>{vocabItem.meaning}</p>
-                <p>{vocabItem.reading}</p>
+                <p>"{vocabItem.reading}"</p>
               </div>
             </div>
           );
