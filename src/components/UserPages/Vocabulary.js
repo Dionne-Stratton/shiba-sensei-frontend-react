@@ -53,7 +53,8 @@ export default function Vocabulary(props) {
             <div className="vocab-words" key={vocabItem._id}>
               <div className="vocab-left">
                 <h4>
-                  {vocabItem.hebrew_with_nikkud} / {vocabItem.hebrew}
+                  {vocabItem.hebrew_with_nikkud}
+                  {vocabItem.hebrew}
                 </h4>
                 <p>{vocabItem.gender}</p>
               </div>
