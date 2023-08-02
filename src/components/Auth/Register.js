@@ -60,13 +60,6 @@ export default function Register(props) {
           value={form.password}
           onChange={handleChange}
         />
-        <label htmlFor="user_name">Username</label>
-        <input
-          type="text"
-          name="user_name"
-          value={form.user_name}
-          onChange={handleChange}
-        />
         <button type="button" onClick={handleSubmit}>
           Register
         </button>

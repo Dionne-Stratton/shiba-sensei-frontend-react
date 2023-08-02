@@ -10,7 +10,7 @@ const Dashboard = (props) => {
     <div className="main-page">
       {user.user_vocab ? (
         <div className="dashboard-box">
-          <h2>Welcome, {user.user_name}!</h2>
+          <h2>Welcome, {user.email}!</h2>
           <div className="lessons-reviews-box">
             <div className="lessons-box">
               <NavLink to="/lessons">

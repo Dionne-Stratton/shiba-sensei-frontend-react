@@ -244,13 +244,18 @@ form {
   /* border: red 1px solid; */
 }
 
-.next-arrow {
+.arrow {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
   font-weight: 900;
   cursor: pointer;
+}
+
+.disabled {
+  color: #d3d3d3;
+  cursor: default;
 }
 
 .review-header,
