@@ -151,6 +151,7 @@ export default function Reviews(props) {
             ) : (
               <div className="reading">
                 <h2>{currentWord.meaning}</h2>
+                <h4>{currentWord.gender}</h4>
               </div>
             )}
           </div>
@@ -184,7 +185,7 @@ export default function Reviews(props) {
               }
             />
             <div
-              className="meaning"
+              className="message"
               onClick={() =>
                 userVocab.length > 1 && message
                   ? getNextWord()
@@ -196,6 +197,15 @@ export default function Reviews(props) {
               {nextArrow}
             </div>
           </div>
+          {message && meaningType ? (
+            <div className="correctAnswer">
+              <h3>{currentWord.meaning[0]}</h3>
+            </div>
+          ) : message && !meaningType ? (
+            <div className="correctAnswer">
+              <h3>{currentWord.reading}</h3>
+            </div>
+          ) : null}
         </div>
       ) : (
         <p>No Reviews Available</p>
