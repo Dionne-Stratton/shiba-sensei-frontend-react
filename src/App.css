@@ -294,7 +294,7 @@ form {
   /* border: #4a76fa 1px solid; */
 }
 
-.meaning {
+.message {
   padding-right: 2%;
   font-size: 4rem;
   font-weight: bold;
@@ -389,12 +389,10 @@ li {
 .review-nav {
   display: flex;
   justify-content: space-between;
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* border: #000000 1px solid; */
   margin: 2%;
 }
 
 .toggle {
   font-size: 1.6rem;
+  cursor: pointer;
 }
