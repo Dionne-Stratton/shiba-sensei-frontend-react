@@ -4,12 +4,15 @@ import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Lessons(props) {
   const { user, setUser, vocab, setShowNav } = props;
+  const [index, setIndex] = useState(0);
   const [addVocab, setAddVocab] = useState([]);
   const [userLessons, setUserLessons] = useState([]);
+  const [moveLessons, setMoveLessons] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
-  const [questionsAnswered, setQuestionsAnswered] = useState(0);
+  const [lessonsViewed, setLessonsViewed] = useState(0);
   const history = useHistory();
   let nextArrow = ">";
+  let previousArrow = "<";
 
   useEffect(() => {
     setShowNav(false);
@@ -18,13 +21,14 @@ export default function Lessons(props) {
         user.user_lessons.includes(word._id)
       );
       setUserLessons(userLessons);
+      setMoveLessons(userLessons);
       setCurrentWord(userLessons[0]);
     }
     if (userLessons.length > 0) {
-      setCurrentWord(userLessons[0]);
+      setCurrentWord(moveLessons[index]);
     }
     //eslint-disable-next-line
-  }, [user, vocab, addVocab]);
+  }, [user, vocab, addVocab, index]);
 
   function getNextWord() {
     setAddVocab([
@@ -32,12 +36,14 @@ export default function Lessons(props) {
       { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
     ]);
     userLessons.shift();
-    setQuestionsAnswered(questionsAnswered + 1);
+    setIndex(index + 1);
+    setLessonsViewed(lessonsViewed + 1);
     console.log("userLessons:", userLessons);
+    console.log("index:", index);
   }
 
   function submitVocab() {
-    if (!currentWord || questionsAnswered === 0) {
+    if (!currentWord || lessonsViewed === 0) {
       history.push("/");
       setShowNav(true);
       return;
@@ -73,6 +79,13 @@ export default function Lessons(props) {
       </p>
       {currentWord ? (
         <div className="lesson-box">
+          {index > 0 ? (
+            <div className="arrow" onClick={() => setIndex(index - 1)}>
+              {previousArrow}
+            </div>
+          ) : (
+            <div className="arrow disabled">{previousArrow}</div>
+          )}
           <div className="lesson-text">
             <h2>{currentWord.hebrew}</h2>
             <h4>{currentWord.hebrew_with_nikkud}</h4>
@@ -80,7 +93,7 @@ export default function Lessons(props) {
             <h4>{currentWord.meaning}</h4>
           </div>
           <div
-            className="next-arrow"
+            className="arrow"
             onClick={() =>
               userLessons.length > 1 ? getNextWord() : submitVocab()
             }
