@@ -9,9 +9,10 @@ export default function Reviews(props) {
   const [currentWord, setCurrentWord] = useState({});
   const [removedWord, setRemovedWord] = useState({});
   const [message, setMessage] = useState("");
-  const [correctAnswer, setCorrectAnswer] = useState([]);
+  const [correctMeaning, setCorrectMeaning] = useState([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answer, setAnswer] = useState("");
+  const [meaningType, setMeaningType] = useState(true);
   const history = useHistory();
 
   let nextArrow = ">";
@@ -25,10 +26,10 @@ export default function Reviews(props) {
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
-        let correctAnswerArray = userVocab[0].meaning
+        let correctMeaningArray = userVocab[0].meaning
           .split(", ")
           .map((word) => word.toLowerCase());
-        setCorrectAnswer(correctAnswerArray);
+        setCorrectMeaning(correctMeaningArray);
       }
     }
 
@@ -37,7 +38,7 @@ export default function Reviews(props) {
       let correctAnswerArray = userVocab[0].meaning
         .split(", ")
         .map((word) => word.toLowerCase());
-      setCorrectAnswer(correctAnswerArray);
+      setCorrectMeaning(correctAnswerArray);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
 
@@ -52,12 +53,21 @@ export default function Reviews(props) {
   function checkAnswer() {
     let answerToUse = answer.toLowerCase().trim();
     let message;
-    if (correctAnswer.includes(answerToUse)) {
-      message = "correct";
+    if (meaningType) {
+      if (correctMeaning.includes(answerToUse)) {
+        message = "correct";
+      } else {
+        message = "incorrect";
+      }
+      setMessage(message);
     } else {
-      message = "incorrect";
+      if (answerToUse === currentWord.reading) {
+        message = "correct";
+      } else {
+        message = "incorrect";
+      }
+      setMessage(message);
     }
-    setMessage(message);
     let rankChange = message === "correct" ? 1 : "incorrect" ? -1 : 0;
     setRankVocab(rankChange);
   }
@@ -117,18 +127,32 @@ export default function Reviews(props) {
         console.log(err);
       });
   }
+  console.log("responeType:", meaningType);
 
   return (
     <div className="main-page">
-      <p className="no-header-dashboard-button" onClick={submitVocab}>
-        Dashboard
-      </p>
+      <div className="review-nav">
+        <p className="no-header-dashboard-button" onClick={submitVocab}>
+          Dashboard
+        </p>
+        <p className="toggle" onClick={() => setMeaningType(!meaningType)}>
+          {meaningType ? "Reading" : "Meaning"}
+        </p>
+      </div>
       {userVocab.length > 0 ? (
         <div className="review-box">
           <div className="review-header">
-            <h2>{currentWord.hebrew}</h2>
-            <h4>{currentWord.hebrew_with_nikkud}</h4>
-            <h4>"{currentWord.reading}"</h4>
+            {meaningType ? (
+              <div className="meaning">
+                <h2>{currentWord.hebrew}</h2>
+                <h4>{currentWord.hebrew_with_nikkud}</h4>
+                <h4>"{currentWord.reading}"</h4>
+              </div>
+            ) : (
+              <div className="reading">
+                <h2>{currentWord.meaning}</h2>
+              </div>
+            )}
           </div>
           <div
             className={
@@ -142,7 +166,9 @@ export default function Reviews(props) {
             <input
               className="answer-input"
               autoFocus="autofocus"
-              placeholder="meaning"
+              placeholder={
+                meaningType ? "Enter the meaning" : "Enter the reading"
+              }
               name="answer"
               type="text"
               value={answer}

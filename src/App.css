@@ -385,3 +385,16 @@ li {
   height: 3rem;
   width: 3rem;
 }
+
+.review-nav {
+  display: flex;
+  justify-content: space-between;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* border: #000000 1px solid; */
+  margin: 2%;
+}
+
+.toggle {
+  font-size: 1.6rem;
+}
