@@ -90,7 +90,10 @@ export default function Lessons(props) {
             <h2>{currentWord.hebrew}</h2>
             <h4>{currentWord.hebrew_with_nikkud}</h4>
             <h4>"{currentWord.reading}"</h4>
-            <h4>{currentWord.meaning}</h4>
+            <h4>
+              {currentWord.meaning}
+              {currentWord.gender ? ` (${currentWord.gender[0]})` : ""}
+            </h4>
           </div>
           <div
             className="arrow"

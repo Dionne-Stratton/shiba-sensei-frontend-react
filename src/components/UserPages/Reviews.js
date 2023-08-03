@@ -24,6 +24,7 @@ export default function Reviews(props) {
       if (user.user_vocab.length > 0) {
         let idFiltered = user.user_vocab.map((word) => word._id);
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
+        randomizeArray(userVocab);
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
         let correctMeaningArray = userVocab[0].meaning
@@ -42,6 +43,20 @@ export default function Reviews(props) {
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
 
+  function randomizeArray(array) {
+    let currentIndex = array.length;
+    let randomIndex;
+    let tempValue;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      tempValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = tempValue;
+    }
+    return array;
+  }
+
   function handleChange(e) {
     if (!message) {
       setAnswer(e.target.value);
@@ -52,6 +67,8 @@ export default function Reviews(props) {
 
   function checkAnswer() {
     let answerToUse = answer.toLowerCase().trim();
+    console.log("answerToUse:", answerToUse);
+    console.log("correctMeaning:", correctMeaning);
     let message;
     if (meaningType) {
       if (correctMeaning.includes(answerToUse)) {
@@ -143,15 +160,21 @@ export default function Reviews(props) {
         <div className="review-box">
           <div className="review-header">
             {meaningType ? (
-              <div className="meaning">
-                <h2>{currentWord.hebrew}</h2>
-                <h4>{currentWord.hebrew_with_nikkud}</h4>
+              <div className="review-meaning">
+                <h2>
+                  {currentWord.hebrew}
+                  {currentWord.hebrew_with_nikkud
+                    ? ` /${currentWord.hebrew_with_nikkud}`
+                    : ""}
+                </h2>
                 <h4>"{currentWord.reading}"</h4>
               </div>
             ) : (
-              <div className="reading">
-                <h2>{currentWord.meaning}</h2>
-                <h4>{currentWord.gender}</h4>
+              <div className="review-reading">
+                <h2>
+                  {currentWord.meaning}
+                  {currentWord.gender ? ` (${currentWord.gender[0]})` : ""}
+                </h2>
               </div>
             )}
           </div>
@@ -199,7 +222,7 @@ export default function Reviews(props) {
           </div>
           {message && meaningType ? (
             <div className="correctAnswer">
-              <h3>{currentWord.meaning[0]}</h3>
+              <h3>{currentWord.meaning}</h3>
             </div>
           ) : message && !meaningType ? (
             <div className="correctAnswer">
