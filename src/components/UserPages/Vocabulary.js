@@ -15,7 +15,6 @@ export default function Vocabulary(props) {
         (_, index) => index + 1
       );
       let rankArray = combineArrays(user.user_vocab, vocabLessons);
-      console.log("rankArray:", rankArray);
       setAvailableLessons(testing);
       setVocabLessons(rankArray);
     } //eslint-disable-next-line

@@ -24,6 +24,12 @@ export default function Reviews(props) {
       if (user.user_vocab.length > 0) {
         let idFiltered = user.user_vocab.map((word) => word._id);
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
+        let availableReviews = user.user_vocab.filter((word) => {
+          let date = new Date(word.next_review);
+          let now = new Date();
+          return date < now;
+        });
+        console.log("availableReviews:", availableReviews);
         randomizeArray(userVocab);
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
@@ -42,6 +48,53 @@ export default function Reviews(props) {
       setCorrectMeaning(correctAnswerArray);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
+
+  //function to add a certain number of hours to the current time based on the rank of the word
+  // for rank 1 + 2 hours, rank 2 + 4 hours, rank 3 + 8 hours, rank 4 + 24 hours, rank 5 + 48 hours, rank 6 + 1 week, rank 7 + 2 weeks, rank 8 + 1 month, rank 9 + 2 months, rank 10 + 4 months, rank 11 + 6 months, rank 12 = "burned"
+  function addHoursByRank(date, rank) {
+    let hours;
+    switch (rank) {
+      case 0:
+        hours = 0;
+        break;
+      case 1:
+        hours = 2;
+        break;
+      case 2:
+        hours = 4;
+        break;
+      case 3:
+        hours = 8;
+        break;
+      case 4:
+        hours = 24;
+        break;
+      case 5:
+        hours = 48;
+        break;
+      case 6:
+        hours = 168;
+        break;
+      case 7:
+        hours = 336;
+        break;
+      case 8:
+        hours = 720;
+        break;
+      case 9:
+        hours = 1440;
+        break;
+      case 10:
+        hours = 2880;
+        break;
+      case 11:
+        hours = 4320;
+        break;
+      default:
+        hours = 0;
+    }
+    return new Date(date.getTime() + hours * 60 * 60 * 1000);
+  }
 
   function randomizeArray(array) {
     let currentIndex = array.length;
@@ -98,10 +151,16 @@ export default function Reviews(props) {
       (word) => word._id === currentWord._id
     );
     let wordRank = allVocab[replacementIndex].rank;
-
     let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab;
-
+    console.log("newRank:", newRank);
+    console.log("wordRank:", wordRank);
+    console.log("rankVocab:", rankVocab);
+    console.log("word id:", allVocab[replacementIndex]._id);
+    let newDate = addHoursByRank(new Date(), newRank);
+    console.log("newDate:", newDate);
+    allVocab[replacementIndex].next_review = newDate;
     allVocab[replacementIndex].rank = newRank;
+    console.log("allVocab:", allVocab);
     setRemovedWord(userVocab.shift());
     setAnswer("");
     return allVocab;
@@ -137,7 +196,7 @@ export default function Reviews(props) {
         available_lesson: lessonToPut,
       })
       .then((res) => {
-        console.log("res:", res);
+        console.log("res:", res.data);
         setUser(res.data);
       })
       .catch((err) => {

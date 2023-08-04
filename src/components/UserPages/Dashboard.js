@@ -6,6 +6,17 @@ const Dashboard = (props) => {
 
   useEffect(() => {}, [vocab, user]);
 
+  function availableReviews() {
+    let reviews = user.user_vocab.filter((word) => {
+      let today = new Date();
+      let nextReview = new Date(word.next_review);
+      return nextReview <= today;
+    });
+    console.log("reviews:", reviews);
+    return reviews.length;
+  }
+  const availableReviewsLength = availableReviews();
+
   return (
     <div className="main-page">
       {user.user_vocab ? (
@@ -20,7 +31,7 @@ const Dashboard = (props) => {
 
             <div className="reviews-box">
               <NavLink to="/reviews">
-                <h3>Reviews: {user.user_vocab.length}</h3>
+                <h3>Reviews: {availableReviewsLength}</h3>
               </NavLink>
             </div>
           </div>

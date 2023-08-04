@@ -33,7 +33,12 @@ export default function Lessons(props) {
   function getNextWord() {
     setAddVocab([
       ...addVocab,
-      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+      {
+        _id: currentWord._id,
+        rank: 0,
+        lesson_number: currentWord.lesson,
+        next_review: new Date(),
+      },
     ]);
     userLessons.shift();
     setIndex(index + 1);
@@ -50,17 +55,22 @@ export default function Lessons(props) {
     }
     let newVocab = [
       ...addVocab,
-      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+      {
+        _id: currentWord._id,
+        rank: 0,
+        lesson_number: currentWord.lesson,
+        next_review: new Date(),
+      },
     ];
     userLessons.shift();
-
+    console.log("newVocab:", newVocab);
     axiosWithAuth
       .put("profile", {
         user_vocab: [...user.user_vocab, ...newVocab],
         user_lessons: userLessons,
       })
       .then((res) => {
-        console.log("res:", res);
+        console.log("res:", res.data);
         setUser(res.data);
       })
       .catch((err) => {
@@ -71,6 +81,8 @@ export default function Lessons(props) {
         setShowNav(true);
       });
   }
+  let currentTime = new Date();
+  console.log("currentTime:", currentTime);
 
   return (
     <div className="main-page">
