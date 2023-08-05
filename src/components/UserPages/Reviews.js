@@ -3,7 +3,14 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Reviews(props) {
-  const { user, setUser, vocab, setShowNav } = props;
+  const {
+    user,
+    setUser,
+    vocab,
+    setShowNav,
+    availableReviews,
+    getAvailableReviews,
+  } = props;
   const [rankVocab, setRankVocab] = useState(0);
   const [userVocab, setUserVocab] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
@@ -21,25 +28,24 @@ export default function Reviews(props) {
     setShowNav(false);
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
-      if (user.user_vocab.length > 0) {
-        let idFiltered = user.user_vocab.map((word) => word._id);
+      console.log("availableReviews:", availableReviews);
+      if (availableReviews.length > 0) {
+        let idFiltered = availableReviews.map((word) => word._id);
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
-        let availableReviews = user.user_vocab.filter((word) => {
-          let date = new Date(word.next_review);
-          let now = new Date();
-          return date < now;
-        });
         console.log("availableReviews:", availableReviews);
         randomizeArray(userVocab);
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
+        console.log("userVocab[0]:", userVocab[0]);
         let correctMeaningArray = userVocab[0].meaning
           .split(", ")
           .map((word) => word.toLowerCase());
         setCorrectMeaning(correctMeaningArray);
+      } else {
+        getAvailableReviews();
       }
     }
-
+    // console.log("user:", user);
     if (userVocab.length > 0) {
       setCurrentWord(userVocab[0]);
       let correctAnswerArray = userVocab[0].meaning
@@ -120,8 +126,8 @@ export default function Reviews(props) {
 
   function checkAnswer() {
     let answerToUse = answer.toLowerCase().trim();
-    console.log("answerToUse:", answerToUse);
-    console.log("correctMeaning:", correctMeaning);
+    // console.log("answerToUse:", answerToUse);
+    // console.log("correctMeaning:", correctMeaning);
     let message;
     if (meaningType) {
       if (correctMeaning.includes(answerToUse)) {
@@ -152,22 +158,22 @@ export default function Reviews(props) {
     );
     let wordRank = allVocab[replacementIndex].rank;
     let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab;
-    console.log("newRank:", newRank);
-    console.log("wordRank:", wordRank);
-    console.log("rankVocab:", rankVocab);
-    console.log("word id:", allVocab[replacementIndex]._id);
+    // console.log("newRank:", newRank);
+    // console.log("wordRank:", wordRank);
+    // console.log("rankVocab:", rankVocab);
+    // console.log("word id:", allVocab[replacementIndex]._id);
     let newDate = addHoursByRank(new Date(), newRank);
-    console.log("newDate:", newDate);
+    // console.log("newDate:", newDate);
     allVocab[replacementIndex].next_review = newDate;
     allVocab[replacementIndex].rank = newRank;
-    console.log("allVocab:", allVocab);
+    // console.log("allVocab:", allVocab);
     setRemovedWord(userVocab.shift());
     setAnswer("");
     return allVocab;
   }
 
   async function submitVocab() {
-    if (!currentWord || questionsAnswered === 0) {
+    if (!currentWord.lesson) {
       history.push("/");
       setShowNav(true);
       return;
@@ -203,7 +209,7 @@ export default function Reviews(props) {
         console.log(err);
       });
   }
-  console.log("responeType:", meaningType);
+  // console.log("responeType:", meaningType);
 
   return (
     <div className="main-page">
@@ -271,7 +277,7 @@ export default function Reviews(props) {
               onClick={() =>
                 userVocab.length > 1 && message
                   ? getNextWord()
-                  : userVocab.length > 1 && !message
+                  : userVocab.length > 0 && !message
                   ? checkAnswer()
                   : submitVocab()
               }

@@ -21,20 +21,27 @@ import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews";
 
 function App() {
-  const [auth, setAuth] = useState(false);
-  const [user, setUser] = useState({});
-  const [userLessons, setUserLessons] = useState([]);
-  const [vocab, setVocab] = useState([]);
-  const [lesson1, setLesson1] = useState([]);
-  const [selectedLesson, setSelectedLesson] = useState("");
-  const token = localStorage.getItem("token");
-  const [showNav, setShowNav] = useState(true);
+  //needs to be in app.js?
+  const [auth, setAuth] = useState(false); //yes
+  const [user, setUser] = useState({}); //yes
+  const [userLessons, setUserLessons] = useState([]); //yes
+  const [vocab, setVocab] = useState([]); //yes
+  const [lesson1, setLesson1] = useState([]); //probably
+  const [selectedLesson, setSelectedLesson] = useState(""); //no
+  const [showNav, setShowNav] = useState(true); //yes
+  const [availableReviews, setAvailableReviews] = useState([]); //yes
+
+  const token = localStorage.getItem("token"); //yes
 
   useEffect(() => {
     getVocab();
     if (token) {
       setAuth(true);
       getUser();
+      if (user.user_vocab) {
+        getAvailableReviews();
+        console.log("app useEffect");
+      }
     } else {
       setAuth(false);
     } //eslint-disable-next-line
@@ -66,6 +73,18 @@ function App() {
     }
   }
 
+  function getAvailableReviews() {
+    // console.log("get reviews, user:", user.user_vocab);
+    let reviews = user.user_vocab.filter((word) => {
+      let today = new Date();
+      let nextReview = new Date(word.next_review);
+      // console.log("nextReview:", nextReview);
+      // console.log("today:", today);
+      return nextReview <= today;
+    });
+    setAvailableReviews(reviews);
+  }
+
   const navToUse =
     auth && showNav ? (
       <AuthorizedNav setAuth={setAuth} />
@@ -75,10 +94,11 @@ function App() {
   const landingPage = auth ? (
     <Dashboard
       user={user}
-      vocab={vocab}
       setUser={setUser}
       setUserLessons={setUserLessons}
       userLessons={userLessons}
+      availableReviews={availableReviews}
+      getAvailableReviews={getAvailableReviews}
     />
   ) : (
     <LandingPage />
@@ -129,6 +149,8 @@ function App() {
             setUser={setUser}
             vocab={vocab}
             setShowNav={setShowNav}
+            availableReviews={availableReviews}
+            getAvailableReviews={getAvailableReviews}
           />
         </Route>
       </Switch>
