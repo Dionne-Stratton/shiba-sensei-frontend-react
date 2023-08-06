@@ -3,7 +3,14 @@ import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../Auth/axiosWithAuth";
 
 export default function Reviews(props) {
-  const { user, setUser, vocab, setShowNav } = props;
+  const {
+    user,
+    setUser,
+    vocab,
+    setShowNav,
+    availableReviews,
+    getAvailableReviews,
+  } = props;
   const [rankVocab, setRankVocab] = useState(0);
   const [userVocab, setUserVocab] = useState([]);
   const [currentWord, setCurrentWord] = useState({});
@@ -21,15 +28,19 @@ export default function Reviews(props) {
     setShowNav(false);
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage("");
-      if (user.user_vocab.length > 0) {
-        let idFiltered = user.user_vocab.map((word) => word._id);
+      if (availableReviews.length > 0) {
+        let idFiltered = availableReviews.map((word) => word._id);
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
+
+        randomizeArray(userVocab);
         setUserVocab(userVocab);
         setCurrentWord(userVocab[0]);
         let correctMeaningArray = userVocab[0].meaning
           .split(", ")
           .map((word) => word.toLowerCase());
         setCorrectMeaning(correctMeaningArray);
+      } else {
+        getAvailableReviews();
       }
     }
 
@@ -42,6 +53,67 @@ export default function Reviews(props) {
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
 
+  //function to add a certain number of hours to the current time based on the rank of the word
+  // for rank 1 + 2 hours, rank 2 + 4 hours, rank 3 + 8 hours, rank 4 + 24 hours, rank 5 + 48 hours, rank 6 + 1 week, rank 7 + 2 weeks, rank 8 + 1 month, rank 9 + 2 months, rank 10 + 4 months, rank 11 + 6 months, rank 12 = "burned"
+  function addHoursByRank(date, rank) {
+    let hours;
+    switch (rank) {
+      case 0:
+        hours = 0;
+        break;
+      case 1:
+        hours = 0.25;
+        break;
+      case 2:
+        hours = 4;
+        break;
+      case 3:
+        hours = 8;
+        break;
+      case 4:
+        hours = 24;
+        break;
+      case 5:
+        hours = 48;
+        break;
+      case 6:
+        hours = 168;
+        break;
+      case 7:
+        hours = 336;
+        break;
+      case 8:
+        hours = 720;
+        break;
+      case 9:
+        hours = 1440;
+        break;
+      case 10:
+        hours = 2880;
+        break;
+      case 11:
+        hours = 4320;
+        break;
+      default:
+        hours = 0;
+    }
+    return new Date(date.getTime() + hours * 60 * 60 * 1000);
+  }
+
+  function randomizeArray(array) {
+    let currentIndex = array.length;
+    let randomIndex;
+    let tempValue;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      tempValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = tempValue;
+    }
+    return array;
+  }
+
   function handleChange(e) {
     if (!message) {
       setAnswer(e.target.value);
@@ -52,6 +124,8 @@ export default function Reviews(props) {
 
   function checkAnswer() {
     let answerToUse = answer.toLowerCase().trim();
+    // console.log("answerToUse:", answerToUse);
+    // console.log("correctMeaning:", correctMeaning);
     let message;
     if (meaningType) {
       if (correctMeaning.includes(answerToUse)) {
@@ -81,9 +155,12 @@ export default function Reviews(props) {
       (word) => word._id === currentWord._id
     );
     let wordRank = allVocab[replacementIndex].rank;
-
     let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab;
-
+    // console.log("newRank:", newRank);
+    // console.log("wordRank:", wordRank);
+    // console.log("rankVocab:", rankVocab);
+    let newDate = addHoursByRank(new Date(), newRank);
+    allVocab[replacementIndex].next_review = newDate;
     allVocab[replacementIndex].rank = newRank;
     setRemovedWord(userVocab.shift());
     setAnswer("");
@@ -91,7 +168,7 @@ export default function Reviews(props) {
   }
 
   async function submitVocab() {
-    if (!currentWord || questionsAnswered === 0) {
+    if (!currentWord.lesson) {
       history.push("/");
       setShowNav(true);
       return;
@@ -120,14 +197,16 @@ export default function Reviews(props) {
         available_lesson: lessonToPut,
       })
       .then((res) => {
-        console.log("res:", res);
+        console.log("res:", res.data);
         setUser(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  console.log("responeType:", meaningType);
+  // console.log("responeType:", meaningType);
+  // console.log("availableReviews:", availableReviews);
+  // console.log("user:", user);
 
   return (
     <div className="main-page">
@@ -143,15 +222,21 @@ export default function Reviews(props) {
         <div className="review-box">
           <div className="review-header">
             {meaningType ? (
-              <div className="meaning">
-                <h2>{currentWord.hebrew}</h2>
-                <h4>{currentWord.hebrew_with_nikkud}</h4>
+              <div className="review-meaning">
+                <h2>
+                  {currentWord.hebrew}
+                  {currentWord.hebrew_with_nikkud
+                    ? ` /${currentWord.hebrew_with_nikkud}`
+                    : ""}
+                </h2>
                 <h4>"{currentWord.reading}"</h4>
               </div>
             ) : (
-              <div className="reading">
-                <h2>{currentWord.meaning}</h2>
-                <h4>{currentWord.gender}</h4>
+              <div className="review-reading">
+                <h2>
+                  {currentWord.meaning}
+                  {currentWord.gender ? ` (${currentWord.gender[0]})` : ""}
+                </h2>
               </div>
             )}
           </div>
@@ -189,7 +274,7 @@ export default function Reviews(props) {
               onClick={() =>
                 userVocab.length > 1 && message
                   ? getNextWord()
-                  : userVocab.length > 1 && !message
+                  : userVocab.length > 0 && !message
                   ? checkAnswer()
                   : submitVocab()
               }
@@ -199,7 +284,7 @@ export default function Reviews(props) {
           </div>
           {message && meaningType ? (
             <div className="correctAnswer">
-              <h3>{currentWord.meaning[0]}</h3>
+              <h3>{currentWord.meaning}</h3>
             </div>
           ) : message && !meaningType ? (
             <div className="correctAnswer">

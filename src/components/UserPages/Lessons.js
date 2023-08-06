@@ -17,29 +17,38 @@ export default function Lessons(props) {
   useEffect(() => {
     setShowNav(false);
     if (user.user_lessons && vocab.length > 0 && userLessons.length === 0) {
-      let userLessons = vocab.filter((word) =>
+      let lessons = vocab.filter((word) =>
         user.user_lessons.includes(word._id)
       );
-      setUserLessons(userLessons);
-      setMoveLessons(userLessons);
-      setCurrentWord(userLessons[0]);
+      console.log("userLessons:", userLessons);
+      setUserLessons(user.user_lessons);
+      setMoveLessons(lessons);
+      setCurrentWord(moveLessons[index]);
     }
     if (userLessons.length > 0) {
       setCurrentWord(moveLessons[index]);
     }
     //eslint-disable-next-line
-  }, [user, vocab, addVocab, index]);
+  }, [user, vocab, addVocab, index, userLessons]);
 
   function getNextWord() {
+    if (index < lessonsViewed) {
+      setIndex(index + 1);
+      return;
+    }
+    console.log("here");
     setAddVocab([
       ...addVocab,
-      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+      {
+        _id: currentWord._id,
+        rank: 0,
+        lesson_number: currentWord.lesson,
+        next_review: new Date(),
+      },
     ]);
     userLessons.shift();
     setIndex(index + 1);
     setLessonsViewed(lessonsViewed + 1);
-    console.log("userLessons:", userLessons);
-    console.log("index:", index);
   }
 
   function submitVocab() {
@@ -50,7 +59,12 @@ export default function Lessons(props) {
     }
     let newVocab = [
       ...addVocab,
-      { _id: currentWord._id, rank: 0, lesson_number: currentWord.lesson },
+      {
+        _id: currentWord._id,
+        rank: 0,
+        lesson_number: currentWord.lesson,
+        next_review: new Date(),
+      },
     ];
     userLessons.shift();
 
@@ -60,7 +74,7 @@ export default function Lessons(props) {
         user_lessons: userLessons,
       })
       .then((res) => {
-        console.log("res:", res);
+        console.log("res:", res.data);
         setUser(res.data);
       })
       .catch((err) => {
@@ -71,6 +85,11 @@ export default function Lessons(props) {
         setShowNav(true);
       });
   }
+
+  // console.log("userLessons:", userLessons);
+  // console.log("addVocab:", addVocab);
+  // console.log("index:", index);
+  // console.log("lessonsViewed:", lessonsViewed);
 
   return (
     <div className="main-page">
@@ -90,7 +109,10 @@ export default function Lessons(props) {
             <h2>{currentWord.hebrew}</h2>
             <h4>{currentWord.hebrew_with_nikkud}</h4>
             <h4>"{currentWord.reading}"</h4>
-            <h4>{currentWord.meaning}</h4>
+            <h4>
+              {currentWord.meaning}
+              {currentWord.gender ? ` (${currentWord.gender[0]})` : ""}
+            </h4>
           </div>
           <div
             className="arrow"
