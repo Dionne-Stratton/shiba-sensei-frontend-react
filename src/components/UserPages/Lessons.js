@@ -86,10 +86,10 @@ export default function Lessons(props) {
       });
   }
 
-  console.log("userLessons:", userLessons);
-  console.log("addVocab:", addVocab);
-  console.log("index:", index);
-  console.log("lessonsViewed:", lessonsViewed);
+  // console.log("userLessons:", userLessons);
+  // console.log("addVocab:", addVocab);
+  // console.log("index:", index);
+  // console.log("lessonsViewed:", lessonsViewed);
 
   return (
     <div className="main-page">

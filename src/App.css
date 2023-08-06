@@ -291,6 +291,11 @@ input[name="answer"] {
   margin: 2%;
 }
 
+.next-review {
+  display: flex;
+  justify-content: center;
+}
+
 .toggle {
   font-size: 1.6rem;
   cursor: pointer;
