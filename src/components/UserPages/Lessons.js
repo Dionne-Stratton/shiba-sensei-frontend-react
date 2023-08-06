@@ -17,20 +17,26 @@ export default function Lessons(props) {
   useEffect(() => {
     setShowNav(false);
     if (user.user_lessons && vocab.length > 0 && userLessons.length === 0) {
-      let userLessons = vocab.filter((word) =>
+      let lessons = vocab.filter((word) =>
         user.user_lessons.includes(word._id)
       );
-      setUserLessons(userLessons);
-      setMoveLessons(userLessons);
-      setCurrentWord(userLessons[0]);
+      console.log("userLessons:", userLessons);
+      setUserLessons(user.user_lessons);
+      setMoveLessons(lessons);
+      setCurrentWord(moveLessons[index]);
     }
     if (userLessons.length > 0) {
       setCurrentWord(moveLessons[index]);
     }
     //eslint-disable-next-line
-  }, [user, vocab, addVocab, index]);
+  }, [user, vocab, addVocab, index, userLessons]);
 
   function getNextWord() {
+    if (index < lessonsViewed) {
+      setIndex(index + 1);
+      return;
+    }
+    console.log("here");
     setAddVocab([
       ...addVocab,
       {
@@ -43,8 +49,6 @@ export default function Lessons(props) {
     userLessons.shift();
     setIndex(index + 1);
     setLessonsViewed(lessonsViewed + 1);
-    console.log("userLessons:", userLessons);
-    console.log("index:", index);
   }
 
   function submitVocab() {
@@ -63,7 +67,7 @@ export default function Lessons(props) {
       },
     ];
     userLessons.shift();
-    console.log("newVocab:", newVocab);
+
     axiosWithAuth
       .put("profile", {
         user_vocab: [...user.user_vocab, ...newVocab],
@@ -81,8 +85,11 @@ export default function Lessons(props) {
         setShowNav(true);
       });
   }
-  let currentTime = new Date();
-  console.log("currentTime:", currentTime);
+
+  console.log("userLessons:", userLessons);
+  console.log("addVocab:", addVocab);
+  console.log("index:", index);
+  console.log("lessonsViewed:", lessonsViewed);
 
   return (
     <div className="main-page">

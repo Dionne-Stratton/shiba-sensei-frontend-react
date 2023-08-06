@@ -64,7 +64,7 @@ export default function Reviews(props) {
         hours = 0;
         break;
       case 1:
-        hours = 2;
+        hours = 0.25;
         break;
       case 2:
         hours = 4;
