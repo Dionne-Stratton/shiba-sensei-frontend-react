@@ -21,37 +21,39 @@ import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews";
 
 function App() {
-  //needs to be in app.js?
-  const [auth, setAuth] = useState(false); //yes
-  const [user, setUser] = useState({}); //yes
-  const [userLessons, setUserLessons] = useState([]); //yes
-  const [vocab, setVocab] = useState([]); //yes
-  const [lesson1, setLesson1] = useState([]); //probably
-  const [selectedLesson, setSelectedLesson] = useState(""); //no
-  const [showNav, setShowNav] = useState(true); //yes
-  const [availableReviews, setAvailableReviews] = useState([]); //yes
+  const [auth, setAuth] = useState(false);
+  const [user, setUser] = useState({});
+  const [userLessons, setUserLessons] = useState([]);
+  const [vocab, setVocab] = useState([]);
+  const [lesson1, setLesson1] = useState([]);
+  const [selectedLesson, setSelectedLesson] = useState("");
+  const [showNav, setShowNav] = useState(true);
+  const [availableReviews, setAvailableReviews] = useState([]);
 
-  const token = localStorage.getItem("token"); //yes
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    getVocab();
+    getVocab(); //runs on page load
     if (token) {
-      setAuth(true);
-      getUser();
+      //run the following if there is a token
+      setAuth(true); //set auth to true
+      getUser(); //get the user data
       if (user.user_vocab) {
-        getAvailableReviews();
-        console.log("app useEffect");
+        //if the user has vocab
+        getAvailableReviews(); //get the available reviews
       }
     } else {
-      setAuth(false);
+      //if there is no token
+      setAuth(false); //set auth to false
     } //eslint-disable-next-line
-  }, [auth]);
+  }, [auth]); //run this function when auth changes
 
   function getVocab() {
     axiosWithAuth
       .get("vocab")
       .then((res) => {
         setVocab(res.data);
+        //set lesson1 to all words with a lesson number of 1
         let lesson1set = res.data.filter((word) => word.lesson === 1);
         setLesson1(lesson1set);
       })
@@ -74,12 +76,9 @@ function App() {
   }
 
   function getAvailableReviews() {
-    // console.log("get reviews, user:", user.user_vocab);
     let reviews = user.user_vocab.filter((word) => {
       let today = new Date();
       let nextReview = new Date(word.next_review);
-      // console.log("nextReview:", nextReview);
-      // console.log("today:", today);
       return nextReview <= today;
     });
     setAvailableReviews(reviews);

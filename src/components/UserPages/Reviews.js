@@ -43,7 +43,7 @@ export default function Reviews(props) {
         getAvailableReviews();
       }
     }
-
+    // console.log("user:", user);
     if (userVocab.length > 0) {
       setCurrentWord(userVocab[0]);
       let correctAnswerArray = userVocab[0].meaning
@@ -62,7 +62,7 @@ export default function Reviews(props) {
         hours = 0;
         break;
       case 1:
-        hours = 0.25;
+        hours = 0.1;
         break;
       case 2:
         hours = 4;
@@ -98,6 +98,16 @@ export default function Reviews(props) {
         hours = 0;
     }
     return new Date(date.getTime() + hours * 60 * 60 * 1000);
+  }
+
+  function roundTimeMinutes(time) {
+    var timeToReturn = new Date(time);
+
+    timeToReturn.setMilliseconds(
+      Math.round(timeToReturn.getMilliseconds() / 1000) * 1000
+    );
+    timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
+    return timeToReturn;
   }
 
   function randomizeArray(array) {
@@ -159,9 +169,13 @@ export default function Reviews(props) {
     // console.log("newRank:", newRank);
     // console.log("wordRank:", wordRank);
     // console.log("rankVocab:", rankVocab);
+    // console.log("word id:", allVocab[replacementIndex]._id);
     let newDate = addHoursByRank(new Date(), newRank);
+    newDate = roundTimeMinutes(newDate);
+    // console.log("newDate:", newDate);
     allVocab[replacementIndex].next_review = newDate;
     allVocab[replacementIndex].rank = newRank;
+    // console.log("allVocab:", allVocab);
     setRemovedWord(userVocab.shift());
     setAnswer("");
     return allVocab;
@@ -205,8 +219,6 @@ export default function Reviews(props) {
       });
   }
   // console.log("responeType:", meaningType);
-  // console.log("availableReviews:", availableReviews);
-  // console.log("user:", user);
 
   return (
     <div className="main-page">

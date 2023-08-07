@@ -10,12 +10,12 @@ export default function Vocabulary(props) {
       let vocabLessons = vocab.filter((vocabItem) => {
         return vocabItem.lesson === Number(selectedLesson);
       });
-      let testing = Array.from(
+      let lessons = Array.from(
         { length: user.available_lesson },
         (_, index) => index + 1
       );
       let rankArray = combineArrays(user.user_vocab, vocabLessons);
-      setAvailableLessons(testing);
+      setAvailableLessons(lessons);
       setVocabLessons(rankArray);
     } //eslint-disable-next-line
   }, [selectedLesson]);
