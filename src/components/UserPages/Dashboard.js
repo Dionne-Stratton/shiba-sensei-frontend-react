@@ -8,16 +8,18 @@ const Dashboard = (props) => {
   useEffect(() => {
     if (user.user_vocab) {
       getAvailableReviews();
-      getNextReview();
+      if (user.user_vocab.length > 0) {
+        getNextReview();
+      }
     } //eslint-disable-next-line
   }, [user, nextAvailableReview]);
 
   function getNextReview() {
     let vocab = user.user_vocab;
-    let nextReview;
+    let nextReview = vocab[0].next_review;
     for (let i = 1; i < vocab.length; i++) {
       //find the next review date that is the soonest
-      if (vocab[i].next_review < vocab[i - 1].next_review) {
+      if (vocab[i].next_review < nextReview) {
         nextReview = vocab[i].next_review;
       }
     }
@@ -46,8 +48,14 @@ const Dashboard = (props) => {
     }
     setNextAvailableReview(nextReview);
   }
+  // let roundedDate = new Date(Math.floor()).getTime() / 1000);
+  // let roundedDate = new Date(Math.floor(new Date().getTime() / 1000) * 1000);
 
   // console.log("availableReviews:", availableReviews);
+  console.log("nextAvailableReview:", nextAvailableReview);
+  // console.log("new Date():", new Date().toString());
+  // console.log("new date rounded down:", roundedDate);
+  // console.log("new date rounded down:", new Date(roundedDate).toString());
 
   return (
     <div className="main-page">
@@ -67,9 +75,13 @@ const Dashboard = (props) => {
               </NavLink>
             </div>
           </div>
-          <p className="next-review">
-            Next available Review: {nextAvailableReview}
-          </p>
+          {nextAvailableReview ? (
+            <p className="next-review">
+              Next available Review: {nextAvailableReview}
+            </p>
+          ) : (
+            <p className="next-review">Go do some lessons!</p>
+          )}
         </div>
       ) : (
         <p>Loading...</p>
