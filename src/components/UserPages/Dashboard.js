@@ -25,10 +25,18 @@ const Dashboard = (props) => {
     }
     nextReview = new Date(nextReview).toString();
     nextReview = nextReview.slice(0, 21);
+    // console.log("nextReview:", nextReview);
     //convert from military time to standard time
     let currentTime = new Date().toString();
     currentTime = currentTime.slice(0, 21);
-    if (nextReview <= currentTime) {
+    // console.log("currentTime:", currentTime);
+    //convert date to integer
+    let nextReviewCompare = new Date(nextReview).getTime() / 1000;
+    let currentTimeCompare = new Date(currentTime).getTime() / 1000;
+    console.log("nextReview:", nextReviewCompare);
+    console.log("currentTime:", currentTimeCompare);
+    //compare the two dates
+    if (nextReviewCompare <= currentTimeCompare) {
       nextReview = "now";
     }
     let hour = nextReview.slice(16, 18);
