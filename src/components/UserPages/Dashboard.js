@@ -25,16 +25,12 @@ const Dashboard = (props) => {
     }
     nextReview = new Date(nextReview).toString();
     nextReview = nextReview.slice(0, 21);
-    // console.log("nextReview:", nextReview);
     //convert from military time to standard time
     let currentTime = new Date().toString();
     currentTime = currentTime.slice(0, 21);
-    // console.log("currentTime:", currentTime);
     //convert date to integer
     let nextReviewCompare = new Date(nextReview).getTime() / 1000;
     let currentTimeCompare = new Date(currentTime).getTime() / 1000;
-    console.log("nextReview:", nextReviewCompare);
-    console.log("currentTime:", currentTimeCompare);
     //compare the two dates
     if (nextReviewCompare <= currentTimeCompare) {
       nextReview = "now";
@@ -42,6 +38,7 @@ const Dashboard = (props) => {
     let hour = nextReview.slice(16, 18);
     let hourInt = parseInt(hour);
     let amPm;
+    console.log(hourInt);
     if (hourInt < 12) {
       amPm = "am";
     }
@@ -50,20 +47,15 @@ const Dashboard = (props) => {
     }
     if (hourInt > 12) {
       hourInt -= 12;
-      hour = hourInt.toString();
-      nextReview =
-        nextReview.slice(3, 11) + "- " + hour + nextReview.slice(18) + amPm;
     }
+    if (hourInt === 0) {
+      hourInt = 12;
+    }
+    hour = hourInt.toString();
+    nextReview =
+      nextReview.slice(3, 10) + ", " + hour + nextReview.slice(18) + amPm;
     setNextAvailableReview(nextReview);
   }
-  // let roundedDate = new Date(Math.floor()).getTime() / 1000);
-  // let roundedDate = new Date(Math.floor(new Date().getTime() / 1000) * 1000);
-
-  // console.log("availableReviews:", availableReviews);
-  console.log("nextAvailableReview:", nextAvailableReview);
-  // console.log("new Date():", new Date().toString());
-  // console.log("new date rounded down:", roundedDate);
-  // console.log("new date rounded down:", new Date(roundedDate).toString());
 
   return (
     <div className="main-page">
