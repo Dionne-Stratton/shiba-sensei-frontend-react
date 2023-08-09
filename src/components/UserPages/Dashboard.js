@@ -17,19 +17,17 @@ const Dashboard = (props) => {
   }, [user, nextAvailableReview]);
 
   function reviewsProgress() {
-    let vocab = user.user_vocab;
-    let totalWords = vocab.length;
+    let currentLessonVocab = user.user_vocab.filter(
+      (word) => word.lesson_number === user.available_lesson
+    );
+    let totalWords = currentLessonVocab.length;
     let lessonNumber = user.available_lesson;
-    // console.log("lessonNumber:", lessonNumber);
-    // console.log("vocab:", vocab);
     //get the number of words rank 3 or higher from current next lessons number
-    let wordsToReview = vocab.filter((word) => word.rank >= 3);
+    let wordsToReview = currentLessonVocab.filter((word) => word.rank >= 3);
     //filter out words that are not in the current lesson
     wordsToReview = wordsToReview.filter(
       (word) => word.lesson_number === lessonNumber
     ).length;
-    // console.log("wordsToReview", wordsToReview);
-    // console.log(wordsToReview.length);
     let progress = wordsToReview / totalWords;
     setProgress(progress);
     // return progress;
@@ -110,7 +108,7 @@ const Dashboard = (props) => {
                 className="progress-done"
                 style={{ width: `${progress * 100}%` }}
               >
-                {/* {Math.floor(progress * 100)}% */}
+                {Math.floor(progress * 100)}%
               </div>
             </div>
           </div>
