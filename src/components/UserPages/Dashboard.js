@@ -33,7 +33,10 @@ const Dashboard = (props) => {
     let currentTimeCompare = new Date(currentTime).getTime() / 1000;
     //compare the two dates
     if (nextReviewCompare <= currentTimeCompare) {
+      console.log("next review is now");
       nextReview = "now";
+      setNextAvailableReview(nextReview);
+      return;
     }
     let hour = nextReview.slice(16, 18);
     let hourInt = parseInt(hour);
