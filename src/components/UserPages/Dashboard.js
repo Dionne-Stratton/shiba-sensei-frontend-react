@@ -4,15 +4,36 @@ import { NavLink } from "react-router-dom";
 const Dashboard = (props) => {
   const { user, availableReviews, getAvailableReviews } = props;
   const [nextAvailableReview, setNextAvailableReview] = useState("");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (user.user_vocab) {
       getAvailableReviews();
       if (user.user_vocab.length > 0) {
         getNextReview();
+        reviewsProgress();
       }
     } //eslint-disable-next-line
   }, [user, nextAvailableReview]);
+
+  function reviewsProgress() {
+    let vocab = user.user_vocab;
+    let totalWords = vocab.length;
+    let lessonNumber = user.available_lesson;
+    // console.log("lessonNumber:", lessonNumber);
+    // console.log("vocab:", vocab);
+    //get the number of words rank 3 or higher from current next lessons number
+    let wordsToReview = vocab.filter((word) => word.rank >= 3);
+    //filter out words that are not in the current lesson
+    wordsToReview = wordsToReview.filter(
+      (word) => word.lesson_number === lessonNumber
+    ).length;
+    // console.log("wordsToReview", wordsToReview);
+    // console.log(wordsToReview.length);
+    let progress = wordsToReview / totalWords;
+    setProgress(progress);
+    // return progress;
+  }
 
   function getNextReview() {
     let vocab = user.user_vocab;
@@ -33,7 +54,6 @@ const Dashboard = (props) => {
     let currentTimeCompare = new Date(currentTime).getTime() / 1000;
     //compare the two dates
     if (nextReviewCompare <= currentTimeCompare) {
-      console.log("next review is now");
       nextReview = "now";
       setNextAvailableReview(nextReview);
       return;
@@ -41,7 +61,6 @@ const Dashboard = (props) => {
     let hour = nextReview.slice(16, 18);
     let hourInt = parseInt(hour);
     let amPm;
-    console.log(hourInt);
     if (hourInt < 12) {
       amPm = "am";
     }
@@ -64,7 +83,6 @@ const Dashboard = (props) => {
     <div className="main-page">
       {user.user_vocab ? (
         <div className="dashboard-box">
-          <h2>Welcome, {user.email}!</h2>
           <div className="lessons-reviews-box">
             <div className="lessons-box">
               <NavLink to="/lessons">
@@ -85,6 +103,17 @@ const Dashboard = (props) => {
           ) : (
             <p className="next-review">Go do some lessons!</p>
           )}
+          <div className="progress-bar">
+            <p>Mastery: </p>
+            <div className="progress">
+              <div
+                className="progress-done"
+                style={{ width: `${progress * 100}%` }}
+              >
+                {/* {Math.floor(progress * 100)}% */}
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <p>Loading...</p>
