@@ -24,7 +24,7 @@ body {
 }
 
 header {
-  background-color: #e9f5f5;
+  background-color: #ffffff;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center top;
@@ -45,13 +45,13 @@ header {
 nav {
   display: flex;
   justify-content: center;
-  background-color: azure;
+  background-color: #2d5288;
   /* border: #000000 1px solid; */
 }
 
 nav a,
 a {
-  color: #000000;
+  color: #ffffff;
   text-decoration: none;
   padding: 0 3%;
   font-size: 2.6rem;
@@ -61,7 +61,7 @@ a {
 
 nav a:hover,
 a:hover {
-  color: #058585;
+  color: #b1ffff;
 }
 
 .header-title {
@@ -121,7 +121,7 @@ button {
 
 .lessons-box a,
 .reviews-box a {
-  color: #000000;
+  color: #ffffff;
   text-decoration: none;
   width: 100%;
   font-size: 2.6rem;
@@ -132,17 +132,17 @@ button {
 
 .lesson-box {
   display: flex;
-  /* flex-direction: column; */
-  align-items: center;
+  height: 50vh;
   justify-content: center;
   margin-top: 5%;
   width: 100%;
-  /* border: none; */
+  /* border: #000000 1px solid; */
 }
 
 .lesson-text {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 50%;
   /* border: red 1px solid; */
@@ -153,13 +153,13 @@ button {
   cursor: default;
 }
 
-.review-header,
-.lesson-header {
+.review-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(245, 245, 220);
+  background-color: #2d5288;
+  color: #ffffff;
   margin: 0 5%;
   width: 100%;
   /* border: #9e0d0d 1px solid; */
@@ -227,7 +227,7 @@ button {
 .neutral,
 .neutral .answer-input {
   display: flex;
-  background-color: rgb(220, 241, 245);
+  background-color: #addfe8;
   width: 100%;
   font-size: 3rem;
   /* border: #4a76fa 1px solid; */
@@ -259,7 +259,6 @@ input[name="answer"] {
 
 .lessons-reviews-box {
   display: flex;
-  /* background-color: aliceblue; */
   width: 100%;
   padding: 5%;
   /* border: #000000 1px solid; */
@@ -268,7 +267,8 @@ input[name="answer"] {
 .lessons-box {
   display: flex;
   align-items: center;
-  background-color: beige;
+  background-color: #689b40;
+  color: #ffffff;
   justify-content: center;
   margin: 0 5%;
   width: 50%;
@@ -278,7 +278,7 @@ input[name="answer"] {
 .reviews-box {
   display: flex;
   align-items: center;
-  background-color: beige;
+  background-color: #e8a33d;
   justify-content: center;
   margin: 0 5%;
   width: 50%;
@@ -301,16 +301,50 @@ input[name="answer"] {
   cursor: pointer;
 }
 
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: #000000 1px solid; */
+  margin: 2%;
+}
+
+.progress {
+  margin-left: 1%;
+  background-color: #addfe8;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  /* border-radius: 20px; */
+  height: 30px;
+  width: 300px;
+  /* border: #000000 1px solid; */
+}
+
+.progress-done {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: repeating-linear-gradient(
+    to left,
+    #86af66,
+    #3bbeed,
+    #56749f
+  );
+  /* box-shadow: 0 5px 5px -6px #84b1ff, 0 3px 7px #1172f9; */
+  /* border-radius: 20px; */
+  color: #fff;
+  height: 100%;
+  width: 0;
+  transition: 1s ease 0.3s;
+  /* border: #000000 1px solid; */
+}
 /* vocab page */
 
 .toRow {
   display: flex;
   border: #000000 1px solid;
 }
-
-/* .toRow p {
-  margin-right: 2%;
-} */
 
 .vocab-page {
   display: flex;
@@ -323,11 +357,12 @@ input[name="answer"] {
 .vocab-words {
   display: flex;
   flex-wrap: wrap;
-  border: #000000 1px solid;
+  border: #2d5288 2px solid;
   width: 100%;
-  /* margin: 1%; */
+  margin-top: 0.5%;
   padding: 1%;
-  background-color: rgb(220, 245, 238);
+  background-color: #addfe8;
+  box-shadow: 0 5px 5px -6px #addfe8, 0 3px 7px #2d5288;
   justify-content: space-between;
 }
 
