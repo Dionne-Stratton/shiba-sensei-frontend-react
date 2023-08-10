@@ -6,19 +6,23 @@ export default function Vocabulary(props) {
   const [availableLessons, setAvailableLessons] = useState([]);
 
   useEffect(() => {
+    //if vocab is loaded and a lesson is selected and the user has an available lesson
     if (vocab.length > 0 && selectedLesson !== "" && user.available_lesson) {
+      //filter the vocab to only include words from the selected lesson
       let vocabLessons = vocab.filter((vocabItem) => {
         return vocabItem.lesson === Number(selectedLesson);
       });
+      //create an array of the available lesson numbers
       let lessons = Array.from(
         { length: user.available_lesson },
         (_, index) => index + 1
       );
+      //combine the user vocab and the vocab lessons into one array
       let rankArray = combineArrays(user.user_vocab, vocabLessons);
-      setAvailableLessons(lessons);
-      setVocabLessons(rankArray);
+      setAvailableLessons(lessons); //set the available lessons to the array of available lesson numbers
+      setVocabLessons(rankArray); //set the vocab lessons to the combined array
     } //eslint-disable-next-line
-  }, [selectedLesson]);
+  }, [selectedLesson]); //run this function when the selected lesson changes
 
   const handleClick = (e) => {
     setSelectedLesson(e.target.value);
@@ -30,7 +34,7 @@ export default function Vocabulary(props) {
     array1.forEach((item1) => {
       array2.forEach((item2) => {
         if (item1._id === item2._id) {
-          combinedArray.push({ ...item1, ...item2 });
+          combinedArray.push({ ...item1, ...item2 }); //combine the two objects into one object
         }
       });
     });
@@ -57,8 +61,9 @@ export default function Vocabulary(props) {
           );
         })}
       </select>
+      {/* if a lesson is selected, display the vocab words from that lesson number */}
       <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
-      {vocabLessons.length === 0 && (
+      {vocabLessons.length === 0 && ( //if vocab lessons is empty display loading
         <p>Loading... Please select a lesson number.</p>
       )}
       <div className="vocab-page">
@@ -67,7 +72,7 @@ export default function Vocabulary(props) {
             <div className="vocab-words" key={vocabItem._id}>
               <div className="vocab-left">
                 <p>
-                  {vocabItem.hebrew_with_nikkud
+                  {vocabItem.hebrew_with_nikkud //if the word has nikkud, display it otherwise display the word without nikkud
                     ? vocabItem.hebrew_with_nikkud
                     : vocabItem.hebrew}
                 </p>
@@ -77,6 +82,7 @@ export default function Vocabulary(props) {
                 <p>
                   {vocabItem.meaning}
                   {vocabItem.gender ? ` (${vocabItem.gender[0]})` : ""}
+                  {/* if there is a gender on the vocab word show only the first letter in () otherwise don't display anything */}
                 </p>
                 <p>"{vocabItem.reading}"</p>
               </div>
