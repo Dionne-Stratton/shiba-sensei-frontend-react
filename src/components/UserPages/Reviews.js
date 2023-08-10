@@ -169,9 +169,12 @@ export default function Reviews(props) {
   }
 
   function getNextWord() {
+    let allVocab = user.user_vocab; //set the all vocab to the user vocab array
+    if (!message) {
+      return allVocab; //if there is no message then return the all vocab array
+    }
     setQuestionsAnswered(questionsAnswered + 1); //increment the questions answered
     setMessage(""); //reset the message
-    let allVocab = user.user_vocab; //set the all vocab to the user vocab array
 
     let replacementIndex = allVocab.findIndex(
       //find the index of the word to be replaced
@@ -190,11 +193,11 @@ export default function Reviews(props) {
 
   async function submitVocab() {
     //if there is no current word or no questions answered then return to the dashboard and show the nav bar, doing nothing else
-    if (!currentWord.lesson || questionsAnswered === 0) {
-      history.push("/");
-      setShowNav(true);
-      return;
-    }
+    // if (!currentWord.lesson || (!message && questionsAnswered === 0)) {
+    //   history.push("/");
+    //   setShowNav(true);
+    //   return;
+    // }
     let allVocab = await getNextWord(); //get the next word
     let lessonFiltered = allVocab.filter(
       //filter the all vocab array to only include words from the current lesson
@@ -203,6 +206,7 @@ export default function Reviews(props) {
     let rankFiltered = lessonFiltered.filter((word) => word.rank > 2); //filter the lesson filtered array to only include words with a rank greater than 2
     let lessonToPut;
     let lessonsToPut;
+    // lessonsToPut = vocab.filter((word) => word.lesson === user.available_lesson);
     //if the number of words with a rank greater than 2 is greater than or equal to 80% of the number of words in the current lesson then set the lesson to put to the current lesson number plus 1 and set the lessons to put to the vocab filtered to only include words from the lesson to put number
     if (rankFiltered.length / lessonFiltered.length >= 0.8) {
       lessonToPut = user.available_lesson + 1;
@@ -215,6 +219,8 @@ export default function Reviews(props) {
 
     history.push("/"); //push to the dashboard
     setShowNav(true); //show the nav bar
+    console.log("lessonsToPut:", lessonsToPut);
+    console.log("vocab:", vocab);
     axiosWithAuth //put the user with the updated vocab and lessons
       .put("profile", {
         user_vocab: allVocab,
