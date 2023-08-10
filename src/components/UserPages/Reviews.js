@@ -23,6 +23,7 @@ export default function Reviews(props) {
   const history = useHistory();
 
   let nextArrow = ">";
+  let regexPattern = /[^A-Za-z]/g;
 
   useEffect(() => {
     setShowNav(false);
@@ -37,7 +38,8 @@ export default function Reviews(props) {
         setCurrentWord(userVocab[0]);
         let correctMeaningArray = userVocab[0].meaning
           .split(", ")
-          .map((word) => word.toLowerCase());
+          .map((word) => word.toLowerCase().replace(regexPattern, ""));
+
         setCorrectMeaning(correctMeaningArray);
       } else {
         getAvailableReviews();
@@ -47,7 +49,7 @@ export default function Reviews(props) {
       setCurrentWord(userVocab[0]);
       let correctAnswerArray = userVocab[0].meaning
         .split(", ")
-        .map((word) => word.toLowerCase());
+        .map((word) => word.toLowerCase().replace(regexPattern, ""));
       setCorrectMeaning(correctAnswerArray);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]);
@@ -132,7 +134,11 @@ export default function Reviews(props) {
   }
 
   function checkAnswer() {
+    // let regexPattern = /[^A-Za-z]/g;
     let answerToUse = answer.toLowerCase().trim();
+    answerToUse = answerToUse.replace(regexPattern, "");
+    console.log("answerToUse", answerToUse);
+    console.log("correctMeaning", correctMeaning);
     let message;
     if (meaningType) {
       if (correctMeaning.includes(answerToUse)) {

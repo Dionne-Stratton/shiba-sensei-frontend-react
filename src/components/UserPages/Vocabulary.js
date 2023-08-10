@@ -66,10 +66,11 @@ export default function Vocabulary(props) {
           return (
             <div className="vocab-words" key={vocabItem._id}>
               <div className="vocab-left">
-                <h4>
-                  {vocabItem.hebrew_with_nikkud}
-                  {vocabItem.hebrew}
-                </h4>
+                <p>
+                  {vocabItem.hebrew_with_nikkud
+                    ? vocabItem.hebrew_with_nikkud
+                    : vocabItem.hebrew}
+                </p>
                 <p>mastery: {vocabItem.rank}</p>
               </div>
               <div className="vocab-right">

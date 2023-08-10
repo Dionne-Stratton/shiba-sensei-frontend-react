@@ -108,7 +108,7 @@ const Dashboard = (props) => {
                 className="progress-done"
                 style={{ width: `${progress * 100}%` }}
               >
-                {Math.floor(progress * 100)}%
+                {/* {Math.floor(progress * 100)}% */}
               </div>
             </div>
           </div>
