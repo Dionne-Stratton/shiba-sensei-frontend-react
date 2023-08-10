@@ -193,11 +193,11 @@ export default function Reviews(props) {
 
   async function submitVocab() {
     //if there is no current word or no questions answered then return to the dashboard and show the nav bar, doing nothing else
-    // if (!currentWord.lesson || (!message && questionsAnswered === 0)) {
-    //   history.push("/");
-    //   setShowNav(true);
-    //   return;
-    // }
+    if (!currentWord.lesson || (!message && questionsAnswered === 0)) {
+      history.push("/");
+      setShowNav(true);
+      return;
+    }
     let allVocab = await getNextWord(); //get the next word
     let lessonFiltered = allVocab.filter(
       //filter the all vocab array to only include words from the current lesson
