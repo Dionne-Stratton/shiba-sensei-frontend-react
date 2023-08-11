@@ -9,13 +9,17 @@ const HeaderNav = () => {
         <div className="header-title">
           <img className="logo" src={Logo} alt="Rabbi Rabbit Logo" />
           <div className="auth-nav">
-            <NavLink className="main-nav" activeClassName="active" to="/login">
+            <NavLink
+              className="main-nav"
+              activeClassName="active"
+              to="/auth/login"
+            >
               Login
             </NavLink>
             <NavLink
               className="main-nav"
               activeClassName="active"
-              to="/register"
+              to="/auth/register"
             >
               Register
             </NavLink>
