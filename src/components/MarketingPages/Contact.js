@@ -39,6 +39,37 @@ const Contact = () => {
         at dionnestratton@gmail.com.
       </p>
       <p> We'll get back to you as soon as possible.</p>
+      <p>But first, please review the frequently asked questions below.</p>
+      <h3>FAQs</h3>
+      <h4>What is the purpose of this site?</h4>
+      <p>
+        This site is a supplement when learning the Hebrew language. You can
+        learn vocab words and review them on a spaced repition schedule for best
+        retention.
+      </p>
+      <h4>What is the "Mastery" bar at the bottom of my dashboard?</h4>
+      <p>
+        The "Mastery" bar is a visual representation of your progress in
+        mastering the set of lessons that you most recently unlocked. It is
+        based on the number of words from that lesson that you have ranked up to
+        mastery level 3 or higher.
+      </p>
+      <h4>When do I unlock my next set of lessons?</h4>
+      <p>
+        You unlock your next set of lessons when you have mastered 80% of the
+        words in your current set of lessons. A word is considered mastered when
+        you have ranked it up to mastery level 3 or higher.
+      </p>
+      <h4>
+        Where can I see the current mastery rank for words that I've learned?
+      </h4>
+      <p>
+        You can see the current mastery rank for words that you've learned on
+        the "Vocabulary" page. Just select the lesson set you want to review
+        from the dropdown menu. The lesson options will expand as you unlock
+        more lessons and the page will populate with more vocab words as you go
+        through the lessons and words are added to your review que.
+      </p>
       {/* <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">User Name: </label>

@@ -49,10 +49,10 @@ function App() {
   }, [auth]); //run this function when auth changes
 
   function getVocab() {
-    axiosWithAuth
+    axiosWithAuth //get the vocab from the server
       .get("vocab")
       .then((res) => {
-        setVocab(res.data);
+        setVocab(res.data); //set the vocab to the response data
         //set lesson1 to all words with a lesson number of 1
         let lesson1set = res.data.filter((word) => word.lesson === 1);
         setLesson1(lesson1set);
@@ -64,10 +64,11 @@ function App() {
 
   function getUser() {
     if (token) {
-      axiosWithAuth
-        .get("profile")
+      //if there is a token
+      axiosWithAuth //get the user data from the server
+        .get("profile") //hitting the profile endpoint
         .then((res) => {
-          setUser(res.data);
+          setUser(res.data); //set the user to the response data
         })
         .catch((err) => {
           console.log(err);
@@ -76,6 +77,11 @@ function App() {
   }
 
   function getAvailableReviews() {
+    //get the available reviews
+    //filter the user vocab to only include words that are ready for review
+    //by comparing the next review date to today's date
+    //and only return the words that have a next review date that is less than or equal to today
+    //set the available reviews to the filtered array
     let reviews = user.user_vocab.filter((word) => {
       let today = new Date();
       let nextReview = new Date(word.next_review);
@@ -85,13 +91,14 @@ function App() {
   }
 
   const navToUse =
-    auth && showNav ? (
-      <AuthorizedNav setAuth={setAuth} />
-    ) : showNav ? (
-      <HeaderNav />
-    ) : null;
-  const landingPage = auth ? (
-    <Dashboard
+    auth && showNav ? ( //if auth is true and showNav is true
+      <AuthorizedNav setAuth={setAuth} /> //use the AuthorizedNav
+    ) : showNav ? ( //if showNav is true
+      <HeaderNav /> //use the HeaderNav
+    ) : null; //if showNav is false, don't use a nav
+
+  const landingPage = auth ? ( // if auth is true
+    <Dashboard //use the Dashboard component
       user={user}
       setUser={setUser}
       setUserLessons={setUserLessons}
@@ -100,6 +107,7 @@ function App() {
       getAvailableReviews={getAvailableReviews}
     />
   ) : (
+    //if auth is false use the LandingPage component
     <LandingPage />
   );
 
