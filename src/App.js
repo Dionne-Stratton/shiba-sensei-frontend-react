@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 //Auth
 import axiosWithAuth from "./components/Auth/axiosWithAuth";
-import Register from "./components/Auth/Register";
-import Login from "./components/Auth/LogIn";
+import AuthForm from "./components/Auth/AuthForm";
 //Marketing Pages
 import HeaderNav from "./components/MarketingPages/HeaderNav";
 import LandingPage from "./components/MarketingPages/LandingPage";
@@ -123,11 +122,8 @@ function App() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/contact" component={Contact} />
         {/* Auth Pages */}
-        <Route path="/register">
-          <Register setAuth={setAuth} lesson1={lesson1} />
-        </Route>
-        <Route path="/login">
-          <Login setAuth={setAuth} />
+        <Route path="/auth/:auth">
+          <AuthForm setAuth={setAuth} lesson1={lesson1} />
         </Route>
         {/* User Pages */}
         <Route path="/vocab">
