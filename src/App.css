@@ -237,6 +237,7 @@ button {
   padding-right: 2%;
   font-size: 4rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .answer-input {
@@ -252,6 +253,24 @@ input[name="answer"] {
   border: none;
   background-color: transparent;
   outline: none;
+  /* border: #9e0d0d 1px solid; */
+}
+
+.hebrew-letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  justify-items: reverse;
+  /* background-color: #addfe8; */
+  margin-top: 5%;
+  /* border: #9e0d0d 1px solid; */
+}
+
+.hebrew-letters p {
+  font-size: 5rem;
+  margin: 2%;
+  cursor: pointer;
   /* border: #9e0d0d 1px solid; */
 }
 

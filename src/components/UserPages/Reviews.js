@@ -17,13 +17,15 @@ export default function Reviews(props) {
   const [removedWord, setRemovedWord] = useState({});
   const [message, setMessage] = useState("");
   const [correctMeaning, setCorrectMeaning] = useState([]);
+  const [correctHebrewReading, setCorrectHebrewReading] = useState([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answer, setAnswer] = useState("");
   const [meaningType, setMeaningType] = useState(true);
   const history = useHistory();
 
   let nextArrow = ">";
-  let regexPattern = /[^A-Za-z]/g;
+  let regexEnglishPattern = /[^A-Za-z ]/g;
+  let regexHebrewPattern = /[^א-ת]/g;
 
   useEffect(() => {
     setShowNav(false); // disable the nav bar while on the review page
@@ -41,9 +43,12 @@ export default function Reviews(props) {
         setCurrentWord(userVocab[0]); //set the current word to the first word in the array
         let correctMeaningArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
           .split(", ")
-          .map((word) => word.toLowerCase().replace(regexPattern, ""));
-
+          .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
         setCorrectMeaning(correctMeaningArray);
+        let correctHebrewReadingArray = userVocab[0].hebrew //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
+          .split(", ")
+          .map((word) => word.replace(regexHebrewPattern, ""));
+        setCorrectHebrewReading(correctHebrewReadingArray);
       } else {
         getAvailableReviews();
       }
@@ -53,8 +58,12 @@ export default function Reviews(props) {
       setCurrentWord(userVocab[0]); //set the current word to the first word in the array
       let correctAnswerArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
         .split(", ")
-        .map((word) => word.toLowerCase().replace(regexPattern, ""));
+        .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
       setCorrectMeaning(correctAnswerArray);
+      let correctHebrewReadingArray = userVocab[0].hebrew //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
+        .split(", ")
+        .map((word) => word.replace(regexHebrewPattern, ""));
+      setCorrectHebrewReading(correctHebrewReadingArray);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]); //if the user, vocab, removedWord, or message changes, run this useEffect
 
@@ -70,10 +79,10 @@ export default function Reviews(props) {
         hours = 0.1;
         break;
       case 2:
-        hours = 4;
+        hours = 0.1;
         break;
       case 3:
-        hours = 8;
+        hours = 0.1;
         break;
       case 4:
         hours = 24;
@@ -140,11 +149,69 @@ export default function Reviews(props) {
     }
   }
 
+  function checkLanguageMatch() {
+    let trimmedAnswer = answer.trim();
+    let isEnglish = trimmedAnswer.match(regexHebrewPattern);
+    let isHebrew = trimmedAnswer.match(regexEnglishPattern);
+
+    if (isEnglish === null) {
+      isEnglish = false;
+    }
+    if (isEnglish.length > 0) {
+      while (
+        isEnglish[0] === " " ||
+        isEnglish[0] === "." ||
+        isEnglish[0] === "?"
+      ) {
+        isEnglish.shift();
+      }
+    }
+    if (isEnglish.length === 0) {
+      isEnglish = false;
+    }
+
+    if (isHebrew === null) {
+      isHebrew = false;
+    }
+    if (isHebrew.length > 0) {
+      while (
+        isHebrew[0] === " " ||
+        isHebrew[0] === "." ||
+        isHebrew[0] === "?"
+      ) {
+        isHebrew.shift();
+      }
+    }
+    if (isHebrew.length === 0) {
+      isHebrew = false;
+    }
+
+    //if the meaning type is true and the answer matches the regex english pattern then the answer is in english and the language match is true or the meaning type is false and the answer matches the regex hebrew pattern then the answer is in hebrew and the language match is true otherwise the language match is false
+    if (isEnglish && isHebrew) {
+      alert("Cannot mix Hebrew and English");
+      return false;
+    }
+    if (!isEnglish && !isHebrew) {
+      alert("Enter a valid answer");
+      return false;
+    }
+    if ((meaningType && isEnglish) || (!meaningType && isHebrew)) {
+      console.log("language match true");
+      return true;
+    } else {
+      console.log("language match false");
+      //pop up an alert message saying "Wrong Language"
+      alert("Wrong Language");
+      return false;
+    }
+  }
+
   function checkAnswer() {
-    let answerToUse = answer.toLowerCase().trim(); //convert the answer to lowercase and remove any whitespace
-    answerToUse = answerToUse.replace(regexPattern, ""); //remove any non-alphabetical characters
     let message;
+    let answerToUse; //set the answer to use to the answer
     if (meaningType) {
+      answerToUse = answer.toLowerCase().trim(); //convert the answer to lowercase and remove any whitespace
+      answerToUse = answerToUse.replace(regexEnglishPattern, ""); //remove any non-alphabetical characters
       //if the meaning type is true
       if (correctMeaning.includes(answerToUse)) {
         //if the correct meaning array includes the answer to use then the answer is correct otherwise it is incorrect
@@ -154,8 +221,12 @@ export default function Reviews(props) {
       }
       setMessage(message); //set the message to correct or incorrect
     } else {
+      answerToUse = answer.trim(); // remove any whitespace
+      answerToUse = answerToUse.replace(regexHebrewPattern, ""); //remove any non-hebrew characters
+      console.log("answerToUse:", answerToUse);
+      console.log("correctReading:", correctHebrewReading);
       //if the meaning type is false then the answer is the reading
-      if (answerToUse === currentWord.reading) {
+      if (correctHebrewReading.includes(answerToUse)) {
         //if the answer to use is the same as the reading then the answer is correct otherwise it is incorrect
         message = "correct";
       } else {
@@ -236,6 +307,25 @@ export default function Reviews(props) {
       });
   }
 
+  const onHebrewLetterClick = (e) => {
+    let letter = e.target.innerText;
+    let newAnswer;
+    let input = document.querySelector(".answer-input");
+    let answer = input.value;
+
+    if (letter === "space") {
+      letter = " ";
+    }
+
+    if (letter !== "delete") {
+      newAnswer = answer + letter;
+    } else {
+      newAnswer = answer.slice(0, -1);
+    }
+    console.log("newAnswer:", newAnswer);
+    setAnswer(newAnswer);
+  };
+
   return (
     <div className="main-page">
       <div className="review-nav">
@@ -297,7 +387,9 @@ export default function Reviews(props) {
                 //if the user presses enter and there is user vocab and the message is false then check the answer
                 //if the user presses enter and there is no user vocab then submit the vocab
                 //otherwise do nothing
-                e.key === "Enter" && userVocab.length > 1 && message
+                e.key === "Enter" && !checkLanguageMatch()
+                  ? null
+                  : e.key === "Enter" && userVocab.length > 1 && message
                   ? getNextWord()
                   : e.key === "Enter" && !message
                   ? checkAnswer()
@@ -313,7 +405,9 @@ export default function Reviews(props) {
                 //if there is user vocab and the message is true then get the next word
                 //if there is user vocab and the message is false then check the answer
                 //if there is no user vocab then submit the vocab
-                userVocab.length > 1 && message
+                !checkLanguageMatch()
+                  ? null
+                  : userVocab.length > 1 && message
                   ? getNextWord()
                   : userVocab.length > 0 && !message
                   ? checkAnswer()
@@ -333,7 +427,43 @@ export default function Reviews(props) {
             </div>
           ) : message && !meaningType ? (
             <div className="correctAnswer">
-              <h3>{currentWord.reading}</h3>
+              <h3>
+                {currentWord.reading} / {currentWord.hebrew}
+              </h3>
+            </div>
+          ) : null}
+
+          {!meaningType ? (
+            <div className="hebrew-letters">
+              <p onClick={onHebrewLetterClick}>א</p>
+              <p onClick={onHebrewLetterClick}>ב</p>
+              <p onClick={onHebrewLetterClick}>ג</p>
+              <p onClick={onHebrewLetterClick}>ד</p>
+              <p onClick={onHebrewLetterClick}>ה</p>
+              <p onClick={onHebrewLetterClick}>ו</p>
+              <p onClick={onHebrewLetterClick}>ז</p>
+              <p onClick={onHebrewLetterClick}>ח</p>
+              <p onClick={onHebrewLetterClick}>ט</p>
+              <p onClick={onHebrewLetterClick}>י</p>
+              <p onClick={onHebrewLetterClick}>כ</p>
+              <p onClick={onHebrewLetterClick}>ך</p>
+              <p onClick={onHebrewLetterClick}>ל</p>
+              <p onClick={onHebrewLetterClick}>מ</p>
+              <p onClick={onHebrewLetterClick}>ם</p>
+              <p onClick={onHebrewLetterClick}>נ</p>
+              <p onClick={onHebrewLetterClick}>ן</p>
+              <p onClick={onHebrewLetterClick}>ס</p>
+              <p onClick={onHebrewLetterClick}>ע</p>
+              <p onClick={onHebrewLetterClick}>פ</p>
+              <p onClick={onHebrewLetterClick}>ף</p>
+              <p onClick={onHebrewLetterClick}>צ</p>
+              <p onClick={onHebrewLetterClick}>ץ</p>
+              <p onClick={onHebrewLetterClick}>ק</p>
+              <p onClick={onHebrewLetterClick}>ר</p>
+              <p onClick={onHebrewLetterClick}>ש</p>
+              <p onClick={onHebrewLetterClick}>ת</p>
+              <p onClick={onHebrewLetterClick}>space</p>
+              <p onClick={onHebrewLetterClick}>delete</p>
             </div>
           ) : null}
         </div>
