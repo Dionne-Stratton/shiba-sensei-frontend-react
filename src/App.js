@@ -14,10 +14,10 @@ import Contact from "./components/MarketingPages/Contact";
 import AuthorizedNav from "./components/UserPages/AuthorizedNav";
 import Dashboard from "./components/UserPages/Dashboard";
 import Vocabulary from "./components/UserPages/Vocabulary";
-import Reading from "./components/UserPages/Reading";
+import Study from "./components/UserPages/Study";
 import Account from "./components/UserPages/Account";
 import Lessons from "./components/UserPages/Lessons";
-import Reviews from "./components/UserPages/Reviews";
+import Reviews from "./components/UserPages/Reviews/ReviewsPage";
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -134,7 +134,7 @@ function App() {
             user={user}
           />
         </Route>
-        <Route path="/reading" component={Reading} />
+        <Route path="/study" component={Study} />
         <Route path="/account">
           <Account user={user} setUser={setUser} />
         </Route>

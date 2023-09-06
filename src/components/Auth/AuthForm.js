@@ -72,9 +72,6 @@ export default function AuthForm(props) {
     });
   };
 
-  console.log(form);
-  console.log("auth", auth);
-
   const handleSubmit = () => {
     if (auth === "register") {
       let lessonsID = lesson1.map((word) => word._id);

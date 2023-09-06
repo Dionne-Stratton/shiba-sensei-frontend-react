@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import axiosWithAuth from "../Auth/axiosWithAuth";
+import axiosWithAuth from "../../Auth/axiosWithAuth";
+import {
+  alefBetKeys,
+  nextArrow,
+  regexEnglishPattern,
+  regexHebrewPattern,
+} from "./ReviewsDataSets";
+import {
+  randomizeArray,
+  nextWord,
+  checkLanguageMatch,
+  checkAnswer,
+} from "./ReviewsFunctions";
 
 export default function Reviews(props) {
   const {
@@ -23,10 +35,6 @@ export default function Reviews(props) {
   const [meaningType, setMeaningType] = useState(true);
   const history = useHistory();
 
-  let nextArrow = ">";
-  let regexEnglishPattern = /[^A-Za-z ]/g;
-  let regexHebrewPattern = /[^א-ת]/g;
-
   useEffect(() => {
     setShowNav(false); // disable the nav bar while on the review page
     //if the user has vocab and there is vocab available to review and the user vocab has not been set
@@ -37,7 +45,6 @@ export default function Reviews(props) {
         let idFiltered = availableReviews.map((word) => word._id); //create an array of the ids of the available reviews
         let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
         //filter the vocab to only include words that are in the available reviews array of ids
-
         randomizeArray(userVocab); //randomize the order of the reviews
         setUserVocab(userVocab); //set the user vocab to the randomized array
         setCurrentWord(userVocab[0]); //set the current word to the first word in the array
@@ -67,78 +74,6 @@ export default function Reviews(props) {
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]); //if the user, vocab, removedWord, or message changes, run this useEffect
 
-  //function to add a certain number of hours to the current time based on the rank of the word
-  // for rank 1 +2 hours, rank 2 +4 hours, rank 3 +8 hours, rank 4 +24 hours, rank 5 +48 hours, rank 6 +1 week, rank 7 +2 weeks, rank 8 +1 month, rank 9 +2 months, rank 10 +4 months, rank 11 +6 months, rank 12 = "burned"
-  function addHoursByRank(date, rank) {
-    let hours;
-    switch (rank) {
-      case 0:
-        hours = 0;
-        break;
-      case 1:
-        hours = 0.1;
-        break;
-      case 2:
-        hours = 0.1;
-        break;
-      case 3:
-        hours = 0.1;
-        break;
-      case 4:
-        hours = 24;
-        break;
-      case 5:
-        hours = 48;
-        break;
-      case 6:
-        hours = 168;
-        break;
-      case 7:
-        hours = 336;
-        break;
-      case 8:
-        hours = 720;
-        break;
-      case 9:
-        hours = 1440;
-        break;
-      case 10:
-        hours = 2880;
-        break;
-      case 11:
-        hours = 4320;
-        break;
-      default:
-        hours = 0;
-    }
-    return new Date(date.getTime() + hours * 60 * 60 * 1000); //add the hours to the date and return the new date
-  }
-
-  //function to round the time to the nearest minute
-  function roundTimeMinutes(time) {
-    let timeToReturn = new Date(time);
-    timeToReturn.setMilliseconds(
-      Math.round(timeToReturn.getMilliseconds() / 1000) * 1000
-    );
-    timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
-    return timeToReturn;
-  }
-
-  function randomizeArray(array) {
-    let currentIndex = array.length; //set the current index to the length of the array
-    let randomIndex;
-    let tempValue;
-    while (currentIndex !== 0) {
-      //while the current index is not 0
-      randomIndex = Math.floor(Math.random() * currentIndex); //set the random index to a random number between 0 multiplied by the current index
-      currentIndex--; //decrement the current index
-      tempValue = array[currentIndex]; //set the temp value to the value of the item at the current index of the array passed in
-      array[currentIndex] = array[randomIndex]; //set the value of the item at the current index of the array passed in to the value of the item at the random index
-      array[randomIndex] = tempValue; //set the value of the item at the random index to the temp value. this swaps the two values thus randomizing the array
-    }
-    return array;
-  }
-
   function handleChange(e) {
     if (!message) {
       //if there is no message then set the answer to the value of the input
@@ -149,91 +84,14 @@ export default function Reviews(props) {
     }
   }
 
-  function checkLanguageMatch() {
-    let trimmedAnswer = answer.trim();
-    let isEnglish = trimmedAnswer.match(regexHebrewPattern);
-    let isHebrew = trimmedAnswer.match(regexEnglishPattern);
-
-    if (isEnglish === null) {
-      isEnglish = false;
-    }
-    if (isEnglish.length > 0) {
-      while (
-        isEnglish[0] === " " ||
-        isEnglish[0] === "." ||
-        isEnglish[0] === "?"
-      ) {
-        isEnglish.shift();
-      }
-    }
-    if (isEnglish.length === 0) {
-      isEnglish = false;
-    }
-
-    if (isHebrew === null) {
-      isHebrew = false;
-    }
-    if (isHebrew.length > 0) {
-      while (
-        isHebrew[0] === " " ||
-        isHebrew[0] === "." ||
-        isHebrew[0] === "?"
-      ) {
-        isHebrew.shift();
-      }
-    }
-    if (isHebrew.length === 0) {
-      isHebrew = false;
-    }
-
-    //if the meaning type is true and the answer matches the regex english pattern then the answer is in english and the language match is true or the meaning type is false and the answer matches the regex hebrew pattern then the answer is in hebrew and the language match is true otherwise the language match is false
-    if (isEnglish && isHebrew) {
-      alert("Cannot mix Hebrew and English");
-      return false;
-    }
-    if (!isEnglish && !isHebrew) {
-      alert("Enter a valid answer");
-      return false;
-    }
-    if ((meaningType && isEnglish) || (!meaningType && isHebrew)) {
-      console.log("language match true");
-      return true;
-    } else {
-      console.log("language match false");
-      //pop up an alert message saying "Wrong Language"
-      alert("Wrong Language");
-      return false;
-    }
-  }
-
-  function checkAnswer() {
-    let message;
-    let answerToUse; //set the answer to use to the answer
-    if (meaningType) {
-      answerToUse = answer.toLowerCase().trim(); //convert the answer to lowercase and remove any whitespace
-      answerToUse = answerToUse.replace(regexEnglishPattern, ""); //remove any non-alphabetical characters
-      //if the meaning type is true
-      if (correctMeaning.includes(answerToUse)) {
-        //if the correct meaning array includes the answer to use then the answer is correct otherwise it is incorrect
-        message = "correct";
-      } else {
-        message = "incorrect";
-      }
-      setMessage(message); //set the message to correct or incorrect
-    } else {
-      answerToUse = answer.trim(); // remove any whitespace
-      answerToUse = answerToUse.replace(regexHebrewPattern, ""); //remove any non-hebrew characters
-      console.log("answerToUse:", answerToUse);
-      console.log("correctReading:", correctHebrewReading);
-      //if the meaning type is false then the answer is the reading
-      if (correctHebrewReading.includes(answerToUse)) {
-        //if the answer to use is the same as the reading then the answer is correct otherwise it is incorrect
-        message = "correct";
-      } else {
-        message = "incorrect";
-      }
-      setMessage(message); //set the message to correct or incorrect
-    }
+  function onCheckAnswer() {
+    let message = checkAnswer(
+      answer,
+      meaningType,
+      correctHebrewReading,
+      correctMeaning
+    ); //check the answer
+    setMessage(message); //set the message to correct or incorrect
     //if the answer is correct then set the rank change to 1, if the answer is incorrect set it to -1
     let rankChange = message === "correct" ? 1 : "incorrect" ? -1 : 0;
     setRankVocab(rankChange);
@@ -246,17 +104,7 @@ export default function Reviews(props) {
     }
     setQuestionsAnswered(questionsAnswered + 1); //increment the questions answered
     setMessage(""); //reset the message
-
-    let replacementIndex = allVocab.findIndex(
-      //find the index of the word to be replaced
-      (word) => word._id === currentWord._id //by comparing the id of the current word to the id of the word in the all vocab array
-    );
-    let wordRank = allVocab[replacementIndex].rank; //set the word rank to the rank of the word to be replaced
-    let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab; //if the word rank is less than 1 and the rank vocab is less than 0 then set the new rank to 0 otherwise set it to the word rank plus the rank vocab
-    let newDate = addHoursByRank(new Date(), newRank); //set the new date to the current date plus the hours based on the new rank of the word using the add hours by rank function
-    newDate = roundTimeMinutes(newDate); //round the new date to the nearest minute
-    allVocab[replacementIndex].next_review = newDate; //set the next review date of the word to be replaced to the new date
-    allVocab[replacementIndex].rank = newRank; //set the rank of the word to be replaced to the new rank
+    allVocab = nextWord(allVocab, rankVocab, currentWord); //get the next word
     setRemovedWord(userVocab.shift()); //remove the word from the user vocab array and set it to the removed word
     setAnswer(""); //reset the answer
     return allVocab;
@@ -277,7 +125,6 @@ export default function Reviews(props) {
     let rankFiltered = lessonFiltered.filter((word) => word.rank > 2); //filter the lesson filtered array to only include words with a rank greater than 2
     let lessonToPut;
     let lessonsToPut;
-    // lessonsToPut = vocab.filter((word) => word.lesson === user.available_lesson);
     //if the number of words with a rank greater than 2 is greater than or equal to 80% of the number of words in the current lesson then set the lesson to put to the current lesson number plus 1 and set the lessons to put to the vocab filtered to only include words from the lesson to put number
     if (rankFiltered.length / lessonFiltered.length >= 0.8) {
       lessonToPut = user.available_lesson + 1;
@@ -290,8 +137,6 @@ export default function Reviews(props) {
 
     history.push("/"); //push to the dashboard
     setShowNav(true); //show the nav bar
-    console.log("lessonsToPut:", lessonsToPut);
-    console.log("vocab:", vocab);
     axiosWithAuth //put the user with the updated vocab and lessons
       .put("profile", {
         user_vocab: allVocab,
@@ -316,13 +161,11 @@ export default function Reviews(props) {
     if (letter === "space") {
       letter = " ";
     }
-
     if (letter !== "delete") {
       newAnswer = answer + letter;
     } else {
       newAnswer = answer.slice(0, -1);
     }
-    console.log("newAnswer:", newAnswer);
     setAnswer(newAnswer);
   };
 
@@ -382,36 +225,30 @@ export default function Reviews(props) {
               type="text"
               value={answer}
               onChange={handleChange}
-              onKeyDown={(e) =>
-                //if the user presses enter and there is user vocab and the message is true then get the next word
-                //if the user presses enter and there is user vocab and the message is false then check the answer
-                //if the user presses enter and there is no user vocab then submit the vocab
-                //otherwise do nothing
-                e.key === "Enter" && !checkLanguageMatch()
-                  ? null
-                  : e.key === "Enter" && userVocab.length > 1 && message
-                  ? getNextWord()
-                  : e.key === "Enter" && !message
-                  ? checkAnswer()
-                  : e.key === "Enter"
-                  ? submitVocab()
-                  : null
+              onKeyDown={
+                (e) =>
+                  e.key === "Enter" && !checkLanguageMatch(answer, meaningType) //if the answer does not match the language then do nothing
+                    ? null
+                    : e.key === "Enter" && userVocab.length > 1 && message //if the user presses enter and there is user vocab and the message is true then get the next word
+                    ? getNextWord()
+                    : e.key === "Enter" && !message //if the user presses enter and the message is false then check the answer
+                    ? onCheckAnswer()
+                    : e.key === "Enter" //if the user presses enter and there is no user vocab then submit the vocab
+                    ? submitVocab()
+                    : null //otherwise do nothing
               }
             />
             <div
               className="message"
-              onClick={() =>
-                //when this div is clicked
-                //if there is user vocab and the message is true then get the next word
-                //if there is user vocab and the message is false then check the answer
-                //if there is no user vocab then submit the vocab
-                !checkLanguageMatch()
-                  ? null
-                  : userVocab.length > 1 && message
-                  ? getNextWord()
-                  : userVocab.length > 0 && !message
-                  ? checkAnswer()
-                  : submitVocab()
+              onClick={
+                () =>
+                  !checkLanguageMatch(answer, meaningType) //if the answer does not match the language then do nothing
+                    ? null
+                    : userVocab.length > 1 && message //if there is user vocab and the message is true then get the next word
+                    ? getNextWord()
+                    : userVocab.length > 0 && !message //if there is user vocab and the message is false then check the answer
+                    ? onCheckAnswer()
+                    : submitVocab() //if there is no user vocab then submit the vocab
               }
             >
               {nextArrow}
@@ -435,35 +272,13 @@ export default function Reviews(props) {
 
           {!meaningType ? (
             <div className="hebrew-letters">
-              <p onClick={onHebrewLetterClick}>א</p>
-              <p onClick={onHebrewLetterClick}>ב</p>
-              <p onClick={onHebrewLetterClick}>ג</p>
-              <p onClick={onHebrewLetterClick}>ד</p>
-              <p onClick={onHebrewLetterClick}>ה</p>
-              <p onClick={onHebrewLetterClick}>ו</p>
-              <p onClick={onHebrewLetterClick}>ז</p>
-              <p onClick={onHebrewLetterClick}>ח</p>
-              <p onClick={onHebrewLetterClick}>ט</p>
-              <p onClick={onHebrewLetterClick}>י</p>
-              <p onClick={onHebrewLetterClick}>כ</p>
-              <p onClick={onHebrewLetterClick}>ך</p>
-              <p onClick={onHebrewLetterClick}>ל</p>
-              <p onClick={onHebrewLetterClick}>מ</p>
-              <p onClick={onHebrewLetterClick}>ם</p>
-              <p onClick={onHebrewLetterClick}>נ</p>
-              <p onClick={onHebrewLetterClick}>ן</p>
-              <p onClick={onHebrewLetterClick}>ס</p>
-              <p onClick={onHebrewLetterClick}>ע</p>
-              <p onClick={onHebrewLetterClick}>פ</p>
-              <p onClick={onHebrewLetterClick}>ף</p>
-              <p onClick={onHebrewLetterClick}>צ</p>
-              <p onClick={onHebrewLetterClick}>ץ</p>
-              <p onClick={onHebrewLetterClick}>ק</p>
-              <p onClick={onHebrewLetterClick}>ר</p>
-              <p onClick={onHebrewLetterClick}>ש</p>
-              <p onClick={onHebrewLetterClick}>ת</p>
-              <p onClick={onHebrewLetterClick}>space</p>
-              <p onClick={onHebrewLetterClick}>delete</p>
+              {alefBetKeys.map((letter) => {
+                return (
+                  <p key={letter} onClick={onHebrewLetterClick}>
+                    {letter}
+                  </p>
+                );
+              })}
             </div>
           ) : null}
         </div>

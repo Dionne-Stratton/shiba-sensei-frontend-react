@@ -3,7 +3,7 @@ import hebrewc from "../../assets/hebrewc.gif";
 import nikud from "../../assets/nikud.gif";
 import dagesh from "../../assets/dagesh.gif";
 
-export default function Reading(props) {
+export default function Study(props) {
   return (
     <div className="main-page">
       <div className="alefbet">

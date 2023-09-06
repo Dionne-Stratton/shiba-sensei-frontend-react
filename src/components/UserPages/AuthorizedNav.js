@@ -39,8 +39,8 @@ const HeaderNav = (props) => {
           <NavLink className="main-nav" activeClassName="active" to="/vocab">
             Vocabulary
           </NavLink>
-          <NavLink className="main-nav" activeClassName="active" to="/reading">
-            Reading
+          <NavLink className="main-nav" activeClassName="active" to="/study">
+            Study
           </NavLink>
           <NavLink className="main-nav" activeClassName="active" to="/contact">
             Contact
