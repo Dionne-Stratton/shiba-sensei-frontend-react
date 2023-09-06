@@ -17,7 +17,7 @@ import Vocabulary from "./components/UserPages/Vocabulary";
 import Reading from "./components/UserPages/Reading";
 import Account from "./components/UserPages/Account";
 import Lessons from "./components/UserPages/Lessons";
-import Reviews from "./components/UserPages/Reviews";
+import Reviews from "./components/UserPages/Reviews/ReviewsPage";
 
 function App() {
   const [auth, setAuth] = useState(false);
