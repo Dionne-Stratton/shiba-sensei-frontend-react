@@ -135,7 +135,7 @@ export default function Study(props) {
         </ul>
       </div>
       <div className="nikkud">
-        <h1>Hebrew Nikkud (Vowel Points)</h1>
+        <h2>Hebrew Nikkud (Vowel Points)</h2>
         <div className="paragraph-image">
           <p>
             In Hebrew, the vowels are represented by a set of diacritics called
@@ -239,7 +239,7 @@ export default function Study(props) {
       </div>
       <div>
         <div className="dagesh">
-          <h1>Hebrew Dagesh (Dot inside Bet, Kaf, and Peh)</h1>
+          <h2>Hebrew Dagesh (Dot inside Bet, Kaf, and Peh)</h2>
           <p>
             The dot that appears in the center of some letters is called a
             dagesh. With most letters, the dagesh does not significantly affect

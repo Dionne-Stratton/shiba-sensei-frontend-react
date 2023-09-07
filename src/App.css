@@ -481,3 +481,100 @@ li {
   font-size: 2.6rem;
   margin: 3%;
 }
+
+@media (max-width: 768px) {
+  .vocab-words {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .vocab-right p {
+    justify-content: flex-start;
+  }
+
+  .select {
+    width: 30%;
+  }
+
+  .paragraph-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 3% 0;
+  }
+  .paragraph-image img {
+    width: 80%;
+    margin: 3%;
+  }
+
+  .dagesh h2 {
+    margin: 0 9%;
+  }
+
+  .dagesh img {
+    height: 5rem;
+    margin: 3%;
+  }
+}
+
+@media (max-width: 608px) {
+  .select {
+    width: 35%;
+  }
+
+  .dagesh img {
+    height: 4.5rem;
+    margin: 3%;
+  }
+}
+
+@media (max-width: 480px) {
+  #hnavbuttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+  .lessons-reviews-box {
+    margin: 5% 3%;
+    padding: 0;
+  }
+
+  .lessons-box {
+    margin: 0;
+    padding: 0;
+  }
+
+  .select {
+    width: 50%;
+  }
+
+  .dagesh img {
+    height: 3rem;
+    margin: 3%;
+  }
+}
+
+@media (max-width: 360px) {
+  .select {
+    width: 60%;
+  }
+
+  .lessons-reviews-box {
+    flex-direction: column;
+  }
+
+  .lessons-box {
+    width: 90%;
+  }
+
+  .reviews-box {
+    width: 90%;
+  }
+
+  .dagesh img {
+    height: 2.5rem;
+    margin: 3%;
+  }
+}

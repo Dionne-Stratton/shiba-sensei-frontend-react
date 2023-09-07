@@ -95,7 +95,9 @@ export function checkLanguageMatch(answer, meaningType) {
     while (
       isEnglish[0] === " " ||
       isEnglish[0] === "." ||
-      isEnglish[0] === "?"
+      isEnglish[0] === "?" ||
+      isEnglish[0] === "'" ||
+      isEnglish[0] === "!"
     ) {
       isEnglish.shift();
     }
