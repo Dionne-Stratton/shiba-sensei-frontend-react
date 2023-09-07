@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 export default function Vocabulary(props) {
-  const { vocab, selectedLesson, setSelectedLesson, user } = props;
+  const { vocab, selectedLesson, setSelectedLesson, user, combineArrays } =
+    props;
   const [vocabLessons, setVocabLessons] = useState([]);
   const [availableLessons, setAvailableLessons] = useState([]);
 
@@ -18,28 +19,15 @@ export default function Vocabulary(props) {
         (_, index) => index + 1
       );
       //combine the user vocab and the vocab lessons into one array
-      let rankArray = combineArrays(user.user_vocab, vocabLessons);
+      let combinedArray = combineArrays(user.user_vocab, vocabLessons);
       setAvailableLessons(lessons); //set the available lessons to the array of available lesson numbers
-      setVocabLessons(rankArray); //set the vocab lessons to the combined array
+      setVocabLessons(combinedArray); //set the vocab lessons to the combined array
     } //eslint-disable-next-line
   }, [selectedLesson]); //run this function when the selected lesson changes
 
   const handleClick = (e) => {
     setSelectedLesson(e.target.value);
   };
-
-  function combineArrays(array1, array2) {
-    //combine the two arrays into one array where they have the same _id
-    let combinedArray = [];
-    array1.forEach((item1) => {
-      array2.forEach((item2) => {
-        if (item1._id === item2._id) {
-          combinedArray.push({ ...item1, ...item2 }); //combine the two objects into one object
-        }
-      });
-    });
-    return combinedArray;
-  }
 
   return (
     <div className="main-page">
