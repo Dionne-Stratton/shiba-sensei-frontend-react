@@ -35,11 +35,13 @@ export default function Reviews(props) {
   const [answer, setAnswer] = useState("");
   const [meaningType, setMeaningType] = useState(true);
   const history = useHistory();
+  const withNikkud = localStorage.getItem("withNikkud");
+  const withPronunciation = localStorage.getItem("withPronunciation");
 
   useEffect(() => {
     setShowNav(false); // disable the nav bar while on the review page
     //if the user has vocab and there is vocab available to review and the user vocab has not been set
-    if (vocab.length > 0 && userVocab.length === 0) {
+    if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       setMessage(""); //reset the message
       if (availableReviews.length > 0) {
         //if there are available reviews
@@ -181,6 +183,8 @@ export default function Reviews(props) {
     setAnswer(newAnswer);
   };
 
+  console.log("withNikkud:", withNikkud);
+  console.log("withPronunciation:", withPronunciation);
   return (
     <div className="main-page">
       <div className="review-nav">
@@ -196,13 +200,15 @@ export default function Reviews(props) {
               <div className="review-meaning">
                 <h2>
                   {currentWord.hebrew}
-                  {rankVocab < 6 && currentWord.hebrew_with_nikkud
+                  {withNikkud === "true" && currentWord.hebrew_with_nikkud
                     ? ` /${currentWord.hebrew_with_nikkud}`
                     : ""}
                   {/* //if the word has nikkud then display the word with nikkud otherwise display the word without nikkud */}
                 </h2>
                 {
-                  rankVocab < 3 ? <h4>"{currentWord.reading}"</h4> : null //if the rank vocab is less than 3 then display the reading otherwise display nothing
+                  withPronunciation === "true" ? (
+                    <h4>"{currentWord.reading}"</h4>
+                  ) : null //if the rank vocab is less than 3 then display the reading otherwise display nothing
                 }
               </div>
             ) : (

@@ -110,7 +110,13 @@ export function checkLanguageMatch(answer, meaningType) {
     isHebrew = false;
   }
   if (isHebrew.length > 0) {
-    while (isHebrew[0] === " " || isHebrew[0] === "." || isHebrew[0] === "?") {
+    while (
+      isHebrew[0] === " " ||
+      isHebrew[0] === "." ||
+      isHebrew[0] === "?" ||
+      isHebrew[0] === "'" ||
+      isHebrew[0] === "!"
+    ) {
       isHebrew.shift();
     }
   }

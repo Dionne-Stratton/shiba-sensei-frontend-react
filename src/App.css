@@ -410,6 +410,18 @@ form {
   /* border: #000000 1px solid; */
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+  background-color: blue;
+  justify-content: center;
+  border: #000000 1px solid;
+}
+
+.settings input[type="checkbox"] {
+  margin: 1%;
+}
+
 .checkbox {
   margin-left: 1%;
 }
