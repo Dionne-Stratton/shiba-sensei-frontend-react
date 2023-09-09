@@ -89,6 +89,19 @@ function App() {
     setAvailableReviews(reviews);
   }
 
+  function combineArrays(array1, array2) {
+    //combine the two arrays into one array where they have the same _id
+    let combinedArray = [];
+    array1.forEach((item1) => {
+      array2.forEach((item2) => {
+        if (item1._id === item2._id) {
+          combinedArray.push({ ...item1, ...item2 }); //combine the two objects into one object
+        }
+      });
+    });
+    return combinedArray;
+  }
+
   const navToUse =
     auth && showNav ? ( //if auth is true and showNav is true
       <AuthorizedNav setAuth={setAuth} /> //use the AuthorizedNav
@@ -132,6 +145,7 @@ function App() {
             selectedLesson={selectedLesson}
             setSelectedLesson={setSelectedLesson}
             user={user}
+            combineArrays={combineArrays}
           />
         </Route>
         <Route path="/study" component={Study} />
@@ -154,6 +168,7 @@ function App() {
             setShowNav={setShowNav}
             availableReviews={availableReviews}
             getAvailableReviews={getAvailableReviews}
+            combineArrays={combineArrays}
           />
         </Route>
       </Switch>

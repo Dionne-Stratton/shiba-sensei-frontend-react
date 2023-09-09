@@ -22,6 +22,7 @@ export default function Reviews(props) {
     setShowNav,
     availableReviews,
     getAvailableReviews,
+    combineArrays,
   } = props;
   const [rankVocab, setRankVocab] = useState(0);
   const [userVocab, setUserVocab] = useState([]);
@@ -34,6 +35,8 @@ export default function Reviews(props) {
   const [answer, setAnswer] = useState("");
   const [meaningType, setMeaningType] = useState(true);
   const history = useHistory();
+  const withNikkud = localStorage.getItem("withNikkud");
+  const withPronunciation = localStorage.getItem("withPronunciation");
 
   useEffect(() => {
     setShowNav(false); // disable the nav bar while on the review page
@@ -42,12 +45,17 @@ export default function Reviews(props) {
       setMessage(""); //reset the message
       if (availableReviews.length > 0) {
         //if there are available reviews
-        let idFiltered = availableReviews.map((word) => word._id); //create an array of the ids of the available reviews
-        let userVocab = vocab.filter((word) => idFiltered.includes(word._id));
-        //filter the vocab to only include words that are in the available reviews array of ids
+        let userVocab = combineArrays(availableReviews, vocab); //combine the user vocab and the vocab into one array
         randomizeArray(userVocab); //randomize the order of the reviews
+        console.log("userVocab:", userVocab);
         setUserVocab(userVocab); //set the user vocab to the randomized array
         setCurrentWord(userVocab[0]); //set the current word to the first word in the array
+        if (userVocab[0].rank > 8) {
+          //if the rank of the first word in the array is greater than 2
+          setMeaningType(false); //set the meaning type to false
+        } else {
+          setMeaningType(true); //otherwise set the meaning type to true
+        }
         let correctMeaningArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
           .split(", ")
           .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
@@ -63,6 +71,12 @@ export default function Reviews(props) {
     if (userVocab.length > 0) {
       //if there is user vocab
       setCurrentWord(userVocab[0]); //set the current word to the first word in the array
+      if (userVocab[0].rank > 8) {
+        //if the rank of the first word in the array is greater than 2
+        setMeaningType(false); //set the meaning type to false
+      } else {
+        setMeaningType(true); //otherwise set the meaning type to true
+      }
       let correctAnswerArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
         .split(", ")
         .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
@@ -169,16 +183,15 @@ export default function Reviews(props) {
     setAnswer(newAnswer);
   };
 
+  console.log("withNikkud:", withNikkud);
+  console.log("withPronunciation:", withPronunciation);
   return (
     <div className="main-page">
       <div className="review-nav">
         <p className="no-header-dashboard-button" onClick={submitVocab}>
           Dashboard
         </p>
-        <p className="toggle" onClick={() => setMeaningType(!meaningType)}>
-          {meaningType ? "Reading" : "Meaning"}
-          {/* //toggle between reading and meaning */}
-        </p>
+        <p className="toggle">Reviews Left: {userVocab.length}</p>
       </div>
       {userVocab.length > 0 ? ( //if there is user vocab
         <div className="review-box">
@@ -187,12 +200,16 @@ export default function Reviews(props) {
               <div className="review-meaning">
                 <h2>
                   {currentWord.hebrew}
-                  {currentWord.hebrew_with_nikkud
+                  {withNikkud === "true" && currentWord.hebrew_with_nikkud
                     ? ` /${currentWord.hebrew_with_nikkud}`
                     : ""}
                   {/* //if the word has nikkud then display the word with nikkud otherwise display the word without nikkud */}
                 </h2>
-                <h4>"{currentWord.reading}"</h4>
+                {
+                  withPronunciation === "true" ? (
+                    <h4>"{currentWord.reading}"</h4>
+                  ) : null //if the rank vocab is less than 3 then display the reading otherwise display nothing
+                }
               </div>
             ) : (
               <div className="review-reading">
