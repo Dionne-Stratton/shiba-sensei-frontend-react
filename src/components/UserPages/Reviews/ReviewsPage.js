@@ -12,6 +12,7 @@ import {
   nextWord,
   checkLanguageMatch,
   checkAnswer,
+  splitReviews,
 } from "./ReviewsFunctions";
 
 export default function Reviews(props) {
@@ -33,7 +34,7 @@ export default function Reviews(props) {
   const [correctHebrewReading, setCorrectHebrewReading] = useState([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answer, setAnswer] = useState("");
-  const [meaningType, setMeaningType] = useState(true);
+  const [questionType, setQuestionType] = useState("");
   const history = useHistory();
   const withNikkud = localStorage.getItem("withNikkud");
   const withPronunciation = localStorage.getItem("withPronunciation");
@@ -46,16 +47,12 @@ export default function Reviews(props) {
       if (availableReviews.length > 0) {
         //if there are available reviews
         let userVocab = combineArrays(availableReviews, vocab); //combine the user vocab and the vocab into one array
+        userVocab = splitReviews(userVocab); //split the reviews into meaning and reading reviews
         randomizeArray(userVocab); //randomize the order of the reviews
         console.log("userVocab:", userVocab);
         setUserVocab(userVocab); //set the user vocab to the randomized array
         setCurrentWord(userVocab[0]); //set the current word to the first word in the array
-        if (userVocab[0].rank > 8) {
-          //if the rank of the first word in the array is greater than 2
-          setMeaningType(false); //set the meaning type to false
-        } else {
-          setMeaningType(true); //otherwise set the meaning type to true
-        }
+        setQuestionType(userVocab[0].questionType); //set the meaning type to false
         let correctMeaningArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
           .split(", ")
           .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
@@ -71,12 +68,7 @@ export default function Reviews(props) {
     if (userVocab.length > 0) {
       //if there is user vocab
       setCurrentWord(userVocab[0]); //set the current word to the first word in the array
-      if (userVocab[0].rank > 8) {
-        //if the rank of the first word in the array is greater than 2
-        setMeaningType(false); //set the meaning type to false
-      } else {
-        setMeaningType(true); //otherwise set the meaning type to true
-      }
+      setQuestionType(userVocab[0].questionType); //set the meaning type to false
       let correctAnswerArray = userVocab[0].meaning //create an array of the correct meanings of the word by splitting the string of meanings and removing any non-alphabetical characters and converting to lowercase
         .split(", ")
         .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
@@ -101,7 +93,7 @@ export default function Reviews(props) {
   function onCheckAnswer() {
     let message = checkAnswer(
       answer,
-      meaningType,
+      questionType,
       correctHebrewReading,
       correctMeaning
     ); //check the answer
@@ -196,7 +188,7 @@ export default function Reviews(props) {
       {userVocab.length > 0 ? ( //if there is user vocab
         <div className="review-box">
           <div className="review-header">
-            {meaningType ? (
+            {questionType === "meaning" ? (
               <div className="review-meaning">
                 <h2>
                   {currentWord.hebrew}
@@ -236,7 +228,9 @@ export default function Reviews(props) {
               autoFocus="autofocus"
               placeholder={
                 //if the meaning type is true then the placeholder is "Enter the meaning" otherwise it is "Enter the reading"
-                meaningType ? "Enter the meaning" : "Enter the reading"
+                questionType === "meaning"
+                  ? "Enter the meaning"
+                  : "Enter the reading"
               }
               name="answer"
               type="text"
@@ -244,7 +238,7 @@ export default function Reviews(props) {
               onChange={handleChange}
               onKeyDown={
                 (e) =>
-                  e.key === "Enter" && !checkLanguageMatch(answer, meaningType) //if the answer does not match the language then do nothing
+                  e.key === "Enter" && !checkLanguageMatch(answer, questionType) //if the answer does not match the language then do nothing
                     ? null
                     : e.key === "Enter" && userVocab.length > 1 && message //if the user presses enter and there is user vocab and the message is true then get the next word
                     ? getNextWord()
@@ -259,7 +253,7 @@ export default function Reviews(props) {
               className="message"
               onClick={
                 () =>
-                  !checkLanguageMatch(answer, meaningType) //if the answer does not match the language then do nothing
+                  !checkLanguageMatch(answer, questionType) //if the answer does not match the language then do nothing
                     ? null
                     : userVocab.length > 1 && message //if there is user vocab and the message is true then get the next word
                     ? getNextWord()
@@ -271,7 +265,7 @@ export default function Reviews(props) {
               {nextArrow}
             </div>
           </div>
-          {message && meaningType ? (
+          {message && questionType === "meaning" ? (
             <div className="correctAnswer">
               <h3>
                 {currentWord.meaning}
@@ -279,7 +273,7 @@ export default function Reviews(props) {
                 {/* //if the current word has a gender then display the first letter of the gender in parentheses after the meaning otherwise display nothing */}
               </h3>
             </div>
-          ) : message && !meaningType ? (
+          ) : message && questionType === "reading" ? (
             <div className="correctAnswer">
               <h3>
                 {currentWord.reading} / {currentWord.hebrew}
@@ -287,7 +281,7 @@ export default function Reviews(props) {
             </div>
           ) : null}
 
-          {!meaningType ? (
+          {questionType === "reading" ? (
             <div className="hebrew-letters">
               {alefBetKeys.map((letter) => {
                 return (
