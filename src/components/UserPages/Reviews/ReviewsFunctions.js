@@ -1,4 +1,6 @@
 import { regexHebrewPattern, regexEnglishPattern } from "./ReviewsDataSets";
+let answeredIdArray = [];
+let answeredArray = [];
 
 //function to add a certain number of hours to the current time based on the rank of the word
 // for rank 1 +2 hours, rank 2 +4 hours, rank 3 +8 hours, rank 4 +24 hours, rank 5 +48 hours, rank 6 +1 week, rank 7 +2 weeks, rank 8 +1 month, rank 9 +2 months, rank 10 +4 months, rank 11 +6 months, rank 12 = "burned"
@@ -192,6 +194,7 @@ export function splitReviews(availableReviews) {
       reading: review.reading,
       meaning: review.meaning,
       rank: review.rank,
+      gender: review.gender,
       next_review: review.next_review,
       questionType: "meaning",
     });
@@ -203,6 +206,7 @@ export function splitReviews(availableReviews) {
       reading: review.reading,
       meaning: review.meaning,
       rank: review.rank,
+      gender: review.gender,
       next_review: review.next_review,
       questionType: "reading",
     });
@@ -211,17 +215,44 @@ export function splitReviews(availableReviews) {
   return meaningReviews.concat(readingReviews);
 }
 
-export function checkPair(currentWord) {
-  //if the current word is not in the answered array then add it to the answered array
-  //else if the current word is in the answered array then remove it from the answered array
-  let answeredArray = [];
-  if (answeredArray.includes(currentWord._id)) {
-    answeredArray = answeredArray.filter((word) => word !== currentWord._id);
-    return true; //if the current word is in the answered array then return true because the pair has been answered
-  } else {
-    answeredArray.push(currentWord._id);
-    return false; //if the current word is not in the answered array then return false because the pair has not been answered
+function adjustRank(message) {
+  let newRank = 0;
+  if (message === "correct") {
+    newRank++;
+  } else if (message === "incorrect") {
+    newRank--;
   }
+  return newRank;
+}
+
+export function checkPair(currentWord, message) {
+  let isMatch = false;
+  let rankAdjustment = 0;
+  if (message === "reset") {
+    answeredArray = [];
+    answeredIdArray = [];
+    return;
+  }
+
+  console.log("rankAdjustment start:", rankAdjustment);
+  if (answeredIdArray.includes(currentWord._id)) {
+    let rank = adjustRank(message);
+    let index = answeredIdArray.findIndex((id) => id === currentWord._id);
+    isMatch = true;
+    rankAdjustment = rank + answeredArray[index].rank;
+    console.log("rankAdjustment in if:", rankAdjustment);
+    answeredArray = answeredArray.filter((word) => word.id !== currentWord._id);
+    answeredIdArray = answeredIdArray.filter((id) => id !== currentWord._id);
+  } else {
+    let newAdjustment = adjustRank(message);
+    answeredArray.push({ id: currentWord._id, rank: newAdjustment });
+    answeredIdArray.push(currentWord._id);
+  }
+  console.log("answeredArray:", answeredArray);
+  console.log("rankAdjustment before return:", rankAdjustment);
+  console.log("isMatch:", isMatch);
+  console.log("answeredIdArray:", answeredIdArray);
+  return { rankAdjustment, isMatch };
 }
 
 export function nextWord(allVocab, rankVocab, currentWord) {

@@ -13,6 +13,7 @@ import {
   checkLanguageMatch,
   checkAnswer,
   splitReviews,
+  checkPair,
 } from "./ReviewsFunctions";
 
 export default function Reviews(props) {
@@ -30,6 +31,7 @@ export default function Reviews(props) {
   const [currentWord, setCurrentWord] = useState({});
   const [removedWord, setRemovedWord] = useState({});
   const [message, setMessage] = useState("");
+  const [matched, setMatched] = useState(false);
   const [correctMeaning, setCorrectMeaning] = useState([]);
   const [correctHebrewReading, setCorrectHebrewReading] = useState([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
@@ -38,13 +40,16 @@ export default function Reviews(props) {
   const history = useHistory();
   const withNikkud = localStorage.getItem("withNikkud");
   const withPronunciation = localStorage.getItem("withPronunciation");
+  const [reviewsLeft, setReviewsLeft] = useState(0);
 
   useEffect(() => {
     setShowNav(false); // disable the nav bar while on the review page
     //if the user has vocab and there is vocab available to review and the user vocab has not been set
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
+      //this block is only run once when the page loads
       setMessage(""); //reset the message
       if (availableReviews.length > 0) {
+        setReviewsLeft(availableReviews.length);
         //if there are available reviews
         let userVocab = combineArrays(availableReviews, vocab); //combine the user vocab and the vocab into one array
         userVocab = splitReviews(userVocab); //split the reviews into meaning and reading reviews
@@ -99,8 +104,14 @@ export default function Reviews(props) {
     ); //check the answer
     setMessage(message); //set the message to correct or incorrect
     //if the answer is correct then set the rank change to 1, if the answer is incorrect set it to -1
-    let rankChange = message === "correct" ? 1 : "incorrect" ? -1 : 0;
-    setRankVocab(rankChange);
+    // let rankChange = message === "correct" ? 1 : "incorrect" ? -1 : 0;
+    let { rankAdjustment, isMatch } = checkPair(currentWord, message);
+    setMatched(isMatch);
+    if (rankAdjustment < 1) {
+      setRankVocab(-1);
+    } else {
+      setRankVocab(1);
+    }
   }
 
   function getNextWord() {
@@ -110,15 +121,20 @@ export default function Reviews(props) {
     }
     setQuestionsAnswered(questionsAnswered + 1); //increment the questions answered
     setMessage(""); //reset the message
-    allVocab = nextWord(allVocab, rankVocab, currentWord); //get the next word
+    if (matched) {
+      setReviewsLeft(reviewsLeft - 1);
+      allVocab = nextWord(allVocab, rankVocab, currentWord); //get the next word
+    }
     setRemovedWord(userVocab.shift()); //remove the word from the user vocab array and set it to the removed word
     setAnswer(""); //reset the answer
     return allVocab;
   }
 
   async function submitVocab() {
+    checkPair(currentWord, "reset");
+    console.log("submitVocab");
     //if there is no current word or no questions answered then return to the dashboard and show the nav bar, doing nothing else
-    if (!currentWord.lesson || (!message && questionsAnswered === 0)) {
+    if (!currentWord.questionType || (!message && questionsAnswered === 0)) {
       history.push("/");
       setShowNav(true);
       return;
@@ -175,15 +191,13 @@ export default function Reviews(props) {
     setAnswer(newAnswer);
   };
 
-  console.log("withNikkud:", withNikkud);
-  console.log("withPronunciation:", withPronunciation);
   return (
     <div className="main-page">
       <div className="review-nav">
         <p className="no-header-dashboard-button" onClick={submitVocab}>
           Dashboard
         </p>
-        <p className="toggle">Reviews Left: {userVocab.length}</p>
+        <p className="toggle">Reviews Left: {reviewsLeft}</p>
       </div>
       {userVocab.length > 0 ? ( //if there is user vocab
         <div className="review-box">
