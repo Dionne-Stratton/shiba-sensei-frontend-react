@@ -82,6 +82,9 @@ function App() {
     //and only return the words that have a next review date that is less than or equal to today
     //set the available reviews to the filtered array
     let reviews = user.user_vocab.filter((word) => {
+      if (word.next_review === null) {
+        return false;
+      }
       let today = new Date();
       let nextReview = new Date(word.next_review);
       return nextReview <= today;

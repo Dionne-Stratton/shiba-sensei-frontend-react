@@ -23,7 +23,7 @@ export default function Settings(props) {
       pronunciation = true;
     }
     setWithNikkud(nikkud);
-    setWithPronunciation(pronunciation);
+    setWithPronunciation(pronunciation); //eslint-disable-next-line
   }, []);
 
   onchange = (e) => {

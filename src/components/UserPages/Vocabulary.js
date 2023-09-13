@@ -38,21 +38,21 @@ export default function Vocabulary(props) {
         value={selectedLesson}
         onChange={(e) => setSelectedLesson(e.target.value)}
       >
-        <option value="select" onClick={handleClick}>
-          Select a Lesson
+        <option value="Select" onClick={handleClick}>
+          Select a Set
         </option>
         {availableLessons.map((item) => {
           return (
             <option value={item} onClick={handleClick}>
-              Lesson {item}
+              Level {item}
             </option>
           );
         })}
       </select>
       {/* if a lesson is selected, display the vocab words from that lesson number */}
-      <h2>Vocabulary Lesson {selectedLesson ? selectedLesson : null}</h2>
+      <h2>Vocabulary Set {selectedLesson ? selectedLesson : null}</h2>
       {vocabLessons.length === 0 && ( //if vocab lessons is empty display loading
-        <p>Loading... Please select a lesson number.</p>
+        <p>Loading... Please select a set level.</p>
       )}
       <div className="vocab-page">
         {vocabLessons.map((vocabItem) => {
@@ -64,7 +64,13 @@ export default function Vocabulary(props) {
                     ? vocabItem.hebrew_with_nikkud
                     : vocabItem.hebrew}
                 </p>
-                <p>mastery: {vocabItem.rank}</p>
+                {vocabItem.rank === 0 && <p>New!</p>}
+                {/* if the rank is 0 display new */}
+                {vocabItem.rank > 11 && <p>Mastered!</p>}
+                {/* if the rank is greater than 11 display mastered */}
+                {vocabItem.rank > 0 && vocabItem.rank < 12 && (
+                  <p>Mastery: {vocabItem.rank}</p>
+                )}
               </div>
               <div className="vocab-right">
                 <p>

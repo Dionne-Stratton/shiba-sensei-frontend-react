@@ -1,4 +1,6 @@
 import { regexHebrewPattern, regexEnglishPattern } from "./ReviewsDataSets";
+let answeredIdArray = [];
+let answeredArray = [];
 
 //function to add a certain number of hours to the current time based on the rank of the word
 // for rank 1 +2 hours, rank 2 +4 hours, rank 3 +8 hours, rank 4 +24 hours, rank 5 +48 hours, rank 6 +1 week, rank 7 +2 weeks, rank 8 +1 month, rank 9 +2 months, rank 10 +4 months, rank 11 +6 months, rank 12 = "burned"
@@ -13,44 +15,44 @@ export function addHoursByRank(date, rank) {
       // hours = 2;
       break;
     case 2:
-      hours = 0.1;
-      // hours = 4;
+      // hours = 0.1;
+      hours = 4;
       break;
     case 3:
-      hours = 0.1;
-      // hours = 8;
+      // hours = 0.1;
+      hours = 8;
       break;
     case 4:
-      hours = 0.1;
-      // hours = 24;
+      // hours = 0.1;
+      hours = 24;
       break;
     case 5:
-      hours = 0.1;
-      // hours = 48;
+      // hours = 0.1;
+      hours = 48;
       break;
     case 6:
-      hours = 0.1;
-      // hours = 168;
+      // hours = 0.1;
+      hours = 168;
       break;
     case 7:
-      hours = 0.1;
-      // hours = 336;
+      // hours = 0.1;
+      hours = 336;
       break;
     case 8:
-      hours = 0.1;
-      // hours = 720;
+      // hours = 0.1;
+      hours = 720;
       break;
     case 9:
-      hours = 0.1;
-      // hours = 1440;
+      // hours = 0.1;
+      hours = 1440;
       break;
     case 10:
-      hours = 0.1;
-      // hours = 2880;
+      // hours = 0.1;
+      hours = 2880;
       break;
     case 11:
-      hours = 0.1;
-      // hours = 4320;
+      // hours = 0.1;
+      hours = 4320;
       break;
     default:
       hours = 0;
@@ -83,7 +85,7 @@ export function randomizeArray(array) {
   return array;
 }
 
-export function checkLanguageMatch(answer, meaningType) {
+export function checkLanguageMatch(answer, questionType) {
   let trimmedAnswer = answer.trim();
   let isEnglish = trimmedAnswer.match(regexHebrewPattern);
   let isHebrew = trimmedAnswer.match(regexEnglishPattern);
@@ -133,7 +135,10 @@ export function checkLanguageMatch(answer, meaningType) {
     alert("Enter a valid answer");
     return false;
   }
-  if ((meaningType && isEnglish) || (!meaningType && isHebrew)) {
+  if (
+    (questionType === "meaning" && isEnglish) ||
+    (questionType === "reading" && isHebrew)
+  ) {
     return true;
   } else {
     //pop up an alert message saying "Wrong Language"
@@ -144,13 +149,13 @@ export function checkLanguageMatch(answer, meaningType) {
 
 export function checkAnswer(
   answer,
-  meaningType,
+  questionType,
   correctHebrewReading,
   correctMeaning
 ) {
   let message;
   let answerToUse; //set the answer to use to the answer
-  if (meaningType) {
+  if (questionType === "meaning") {
     answerToUse = answer.toLowerCase().trim(); //convert the answer to lowercase and remove any whitespace
     answerToUse = answerToUse.replace(regexEnglishPattern, ""); //remove any non-alphabetical characters
     //if the meaning type is true
@@ -175,6 +180,81 @@ export function checkAnswer(
   }
 }
 
+//function to take the available reviews and return a new array with both the meaning and reading reviews as separate objects
+export function splitReviews(availableReviews) {
+  let meaningReviews = [];
+  let readingReviews = [];
+  availableReviews.forEach((review) => {
+    //for each review in the available reviews
+    meaningReviews.push({
+      //push an object with the following properties to the meaning reviews array
+      _id: review._id,
+      hebrew: review.hebrew,
+      hebrew_with_nikkud: review.hebrew_with_nikkud,
+      reading: review.reading,
+      meaning: review.meaning,
+      rank: review.rank,
+      gender: review.gender,
+      next_review: review.next_review,
+      questionType: "meaning",
+    });
+    readingReviews.push({
+      //push an object with the following properties to the reading reviews array
+      _id: review._id,
+      hebrew: review.hebrew,
+      hebrew_with_nikkud: review.hebrew_with_nikkud,
+      reading: review.reading,
+      meaning: review.meaning,
+      rank: review.rank,
+      gender: review.gender,
+      next_review: review.next_review,
+      questionType: "reading",
+    });
+  });
+  //combine the meaning and reading reviews arrays into one array and return it
+  return meaningReviews.concat(readingReviews);
+}
+
+function adjustRank(message) {
+  let newRank = 0;
+  if (message === "correct") {
+    newRank++;
+  } else if (message === "incorrect") {
+    newRank--;
+  }
+  return newRank;
+}
+
+export function checkPair(currentWord, message) {
+  let isMatch = false;
+  let rankAdjustment = 0;
+  if (message === "reset") {
+    answeredArray = [];
+    answeredIdArray = [];
+    return;
+  }
+
+  console.log("rankAdjustment start:", rankAdjustment);
+  if (answeredIdArray.includes(currentWord._id)) {
+    let rank = adjustRank(message);
+    let index = answeredIdArray.findIndex((id) => id === currentWord._id);
+    isMatch = true;
+    rankAdjustment = rank + answeredArray[index].rank;
+    console.log("rankAdjustment in if:", rankAdjustment);
+    answeredArray = answeredArray.filter((word) => word.id !== currentWord._id);
+    answeredIdArray = answeredIdArray.filter((id) => id !== currentWord._id);
+  } else {
+    let newAdjustment = adjustRank(message);
+    answeredArray.push({ id: currentWord._id, rank: newAdjustment });
+    answeredIdArray.push(currentWord._id);
+  }
+  console.log("answeredArray:", answeredArray);
+  console.log("rankAdjustment before return:", rankAdjustment);
+  console.log("isMatch:", isMatch);
+  console.log("answeredIdArray:", answeredIdArray);
+  return { rankAdjustment, isMatch };
+}
+
 export function nextWord(allVocab, rankVocab, currentWord) {
   let replacementIndex = allVocab.findIndex(
     //find the index of the word to be replaced
@@ -182,8 +262,12 @@ export function nextWord(allVocab, rankVocab, currentWord) {
   );
   let wordRank = allVocab[replacementIndex].rank; //set the word rank to the rank of the word to be replaced
   let newRank = wordRank < 1 && rankVocab < 0 ? 0 : wordRank + rankVocab; //if the word rank is less than 1 and the rank vocab is less than 0 then set the new rank to 0 otherwise set it to the word rank plus the rank vocab
-  let newDate = addHoursByRank(new Date(), newRank); //set the new date to the current date plus the hours based on the new rank of the word using the add hours by rank function
-  newDate = roundTimeMinutes(newDate); //round the new date to the nearest minute
+  let newDate = null; //set the new date to null
+  if (newRank < 12) {
+    //if the new rank is less than 12
+    newDate = addHoursByRank(new Date(), newRank); //set the new date to the current date plus the hours based on the new rank of the word using the add hours by rank function
+    newDate = roundTimeMinutes(newDate); //round the new date to the nearest minute
+  }
   allVocab[replacementIndex].next_review = newDate; //set the next review date of the word to be replaced to the new date
   allVocab[replacementIndex].rank = newRank; //set the rank of the word to be replaced to the new rank
   return allVocab;
