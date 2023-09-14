@@ -7,6 +7,7 @@ export default function AuthForm(props) {
   const { setAuth, lesson1 } = props;
   const history = useHistory();
   const { auth } = useParams();
+  const [errorMessage, setErrorMessage] = useState("");
 
   let useURL = "";
   if (auth === "register") {
@@ -60,8 +61,9 @@ export default function AuthForm(props) {
     formSchema.isValid(form).then((isFormValid) => {
       setAbleToSubmit(isFormValid);
     });
+    setErrorMessage("");
     //eslint-disable-next-line
-  }, [form]);
+  }, [form, auth]);
 
   const handleChange = (e) => {
     e.persist();
@@ -73,6 +75,7 @@ export default function AuthForm(props) {
   };
 
   const handleSubmit = () => {
+    setErrorMessage("");
     if (auth === "register") {
       let lessonsID = lesson1.map((word) => word._id);
       form.user_lessons = lessonsID;
@@ -86,7 +89,8 @@ export default function AuthForm(props) {
         history.push("/");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data.message);
+        setErrorMessage(err.response.data.message);
       });
   };
 
@@ -113,6 +117,7 @@ export default function AuthForm(props) {
         <button type="button" onClick={handleSubmit} disabled={!ableToSubmit}>
           {auth === "register" ? "Register" : "Login"}
         </button>
+        {errorMessage ? <span>{errorMessage}</span> : null}
       </form>
     </div>
   );
