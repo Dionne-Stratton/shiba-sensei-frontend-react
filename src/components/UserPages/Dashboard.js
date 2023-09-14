@@ -28,7 +28,7 @@ const Dashboard = (props) => {
     //get the current lesson number
     let lessonNumber = user.available_lesson;
     //get an array of words rank 3 or higher
-    let wordsToReview = currentLessonVocab.filter((word) => word.rank >= 3);
+    let wordsToReview = currentLessonVocab.filter((word) => word.rank > 2);
     //filter out words that are not in the current lesson number and get the length of the array
     wordsToReview = wordsToReview.filter(
       (word) => word.lesson_number === lessonNumber

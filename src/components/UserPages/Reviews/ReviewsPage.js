@@ -151,6 +151,7 @@ export default function Reviews(props) {
     if (rankFiltered.length / lessonFiltered.length >= 0.8) {
       lessonToPut = user.available_lesson + 1;
       lessonsToPut = vocab.filter((word) => word.lesson === lessonToPut);
+      lessonsToPut = [...lessonsToPut, ...user.user_lessons];
     } else {
       //otherwise set the lesson to put to the current lesson number and set the lessons to put to the set of user lessons thus not changing the lesson number or adding any new lessons
       lessonToPut = user.available_lesson;
