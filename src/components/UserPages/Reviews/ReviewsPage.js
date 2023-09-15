@@ -140,7 +140,7 @@ export default function Reviews(props) {
       return;
     }
     let allVocab = await getNextWord(); //get the next word
-    let lessonFiltered = allVocab.filter(
+    let lessonFiltered = vocab.filter(
       //filter the all vocab array to only include words from the current lesson
       (word) => word.lesson_number === user.available_lesson
     );

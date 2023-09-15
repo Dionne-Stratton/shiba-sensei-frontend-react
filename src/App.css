@@ -415,7 +415,8 @@ form {
 }
 
 .settings,
-.profile {
+.profile,
+.danger-zone {
   display: flex;
   margin: 2%;
   padding: 5%;
@@ -425,6 +426,15 @@ form {
 
 .settings input[type="checkbox"] {
   margin: 1%;
+}
+
+.danger-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #e8adad;
+  /* border: #000000 1px solid; */
 }
 /* reading page */
 

@@ -15,7 +15,7 @@ import AuthorizedNav from "./components/UserPages/AuthorizedNav";
 import Dashboard from "./components/UserPages/Dashboard";
 import Vocabulary from "./components/UserPages/Vocabulary";
 import Study from "./components/UserPages/Study";
-import Account from "./components/UserPages/Account";
+import Account from "./components/UserPages/AccountPages/Account";
 import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews/ReviewsPage";
 
