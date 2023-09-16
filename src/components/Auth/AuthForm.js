@@ -117,6 +117,9 @@ export default function AuthForm(props) {
         <button type="button" onClick={handleSubmit} disabled={!ableToSubmit}>
           {auth === "register" ? "Register" : "Login"}
         </button>
+        <button type="button" onClick={() => history.push("/forgot")}>
+          Forgot Password
+        </button>
         {errorMessage ? <span>{errorMessage}</span> : null}
       </form>
     </div>
