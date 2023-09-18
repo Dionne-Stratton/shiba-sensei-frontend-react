@@ -15,8 +15,8 @@ export function addHoursByRank(date, rank) {
       // hours = 2;
       break;
     case 2:
-      // hours = 0.1;
-      hours = 4;
+      hours = 0.1;
+      // hours = 4;
       break;
     case 3:
       // hours = 0.1;

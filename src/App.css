@@ -104,7 +104,7 @@ a:hover {
 button {
   background-color: azure;
   font-size: 2rem;
-  margin: 0 1%;
+  margin: 1%;
   padding: 0 2%;
   cursor: pointer;
 }
@@ -402,7 +402,7 @@ input[name="answer"] {
 form {
   display: flex;
   flex-direction: column;
-  background-color: blanchedalmond;
+  background-color: #addfe8;
   padding: 5%;
   margin: 2%;
   align-items: center;
@@ -410,31 +410,32 @@ form {
   /* border: #000000 1px solid; */
 }
 
-.settings {
+.checkbox {
+  margin-left: 1%;
+}
+
+.settings,
+.profile,
+.danger-zone {
   display: flex;
-  flex-direction: column;
-  background-color: blue;
-  justify-content: center;
-  border: #000000 1px solid;
+  margin: 2%;
+  padding: 5%;
+  background-color: #addfe8;
+  /* border: #000000 1px solid; */
 }
 
 .settings input[type="checkbox"] {
   margin: 1%;
 }
 
-.checkbox {
-  margin-left: 1%;
-}
-
-.settings,
-.profile {
+.danger-zone {
   display: flex;
-  margin: 2%;
-  padding: 5%;
-  background-color: rgb(247, 237, 221);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #e8adad;
   /* border: #000000 1px solid; */
 }
-
 /* reading page */
 
 .alefbet {

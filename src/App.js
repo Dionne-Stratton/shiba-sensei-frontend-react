@@ -4,6 +4,8 @@ import { Switch, Route } from "react-router-dom";
 //Auth
 import axiosWithAuth from "./components/Auth/axiosWithAuth";
 import AuthForm from "./components/Auth/AuthForm";
+import ForgotPasswordPage from "./components/Auth/ForgotPasswordPage";
+import ResetPasswordPage from "./components/Auth/ResetPasswordPage";
 //Marketing Pages
 import HeaderNav from "./components/MarketingPages/HeaderNav";
 import LandingPage from "./components/MarketingPages/LandingPage";
@@ -15,7 +17,7 @@ import AuthorizedNav from "./components/UserPages/AuthorizedNav";
 import Dashboard from "./components/UserPages/Dashboard";
 import Vocabulary from "./components/UserPages/Vocabulary";
 import Study from "./components/UserPages/Study";
-import Account from "./components/UserPages/Account";
+import Account from "./components/UserPages/AccountPages/Account";
 import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews/ReviewsPage";
 
@@ -141,6 +143,12 @@ function App() {
         <Route path="/auth/:auth">
           <AuthForm setAuth={setAuth} lesson1={lesson1} />
         </Route>
+        <Route path="/forgot">
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/reset-password">
+          <ResetPasswordPage />
+        </Route>
         {/* User Pages */}
         <Route path="/vocab">
           <Vocabulary
@@ -153,7 +161,12 @@ function App() {
         </Route>
         <Route path="/study" component={Study} />
         <Route path="/account">
-          <Account user={user} setUser={setUser} />
+          <Account
+            user={user}
+            setUser={setUser}
+            setAuth={setAuth}
+            lesson1={lesson1}
+          />
         </Route>
         <Route path="/lessons">
           <Lessons

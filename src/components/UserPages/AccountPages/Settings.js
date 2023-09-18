@@ -38,10 +38,10 @@ export default function Settings(props) {
   };
 
   return (
-    <div className="main-page">
-      <h2>Settings Page</h2>
-      <h3>Hebrew Review:</h3>
-      <div className="settings">
+    <div className="main-page settings">
+      <h2>Settings:</h2>
+      <h3>Hebrew Reviews:</h3>
+      <div>
         <div className="settings-nikkud">
           <label htmlFor="withnikkud">With Nikkud:</label>
           <input
