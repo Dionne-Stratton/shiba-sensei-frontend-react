@@ -27,7 +27,7 @@ export default function Pricing() {
           For new users joining after the beta testing phase, we will offer a
           subscription plan at $10 per month. Unlock full access to Rabbi
           Rabbit's extensive vocabulary library, interactive exercises, and
-          personalized spaced repetition to supercharge your Hebrew language
+          personalized spaced repetition to supercharge your Japanese language
           learning journey.
         </p>
         <button>Subscribe Now</button>

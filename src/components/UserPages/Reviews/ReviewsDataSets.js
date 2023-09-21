@@ -1,6 +1,6 @@
 export const nextArrow = ">";
 export const regexEnglishPattern = /[^A-Za-z ]/g;
-export const regexHebrewPattern = /[^א-ת]/g;
+export const regexKanaPattern = /[^ぁ-んァ-ン一-龯]/g;
 
 export const alefBetKeys = [
   "א",

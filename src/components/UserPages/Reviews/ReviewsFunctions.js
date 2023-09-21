@@ -1,4 +1,4 @@
-import { regexHebrewPattern, regexEnglishPattern } from "./ReviewsDataSets";
+import { regexKanaPattern, regexEnglishPattern } from "./ReviewsDataSets";
 let answeredIdArray = [];
 let answeredArray = [];
 
@@ -87,8 +87,8 @@ export function randomizeArray(array) {
 
 export function checkLanguageMatch(answer, questionType) {
   let trimmedAnswer = answer.trim();
-  let isEnglish = trimmedAnswer.match(regexHebrewPattern);
-  let isHebrew = trimmedAnswer.match(regexEnglishPattern);
+  let isEnglish = trimmedAnswer.match(regexKanaPattern);
+  let isKana = trimmedAnswer.match(regexEnglishPattern);
 
   if (isEnglish === null) {
     isEnglish = false;
@@ -108,36 +108,36 @@ export function checkLanguageMatch(answer, questionType) {
     isEnglish = false;
   }
 
-  if (isHebrew === null) {
-    isHebrew = false;
+  if (isKana === null) {
+    isKana = false;
   }
-  if (isHebrew.length > 0) {
+  if (isKana.length > 0) {
     while (
-      isHebrew[0] === " " ||
-      isHebrew[0] === "." ||
-      isHebrew[0] === "?" ||
-      isHebrew[0] === "'" ||
-      isHebrew[0] === "!"
+      isKana[0] === " " ||
+      isKana[0] === "." ||
+      isKana[0] === "?" ||
+      isKana[0] === "'" ||
+      isKana[0] === "!"
     ) {
-      isHebrew.shift();
+      isKana.shift();
     }
   }
-  if (isHebrew.length === 0) {
-    isHebrew = false;
+  if (isKana.length === 0) {
+    isKana = false;
   }
 
-  //if the meaning type is true and the answer matches the regex english pattern then the answer is in english and the language match is true or the meaning type is false and the answer matches the regex hebrew pattern then the answer is in hebrew and the language match is true otherwise the language match is false
-  if (isEnglish && isHebrew) {
-    alert("Cannot mix Hebrew and English");
+  //if the meaning type is true and the answer matches the regex english pattern then the answer is in english and the language match is true or the meaning type is false and the answer matches the regex kana pattern then the answer is in Japanese and the language match is true otherwise the language match is false
+  if (isEnglish && isKana) {
+    alert("Cannot mix Japanese and English");
     return false;
   }
-  if (!isEnglish && !isHebrew) {
+  if (!isEnglish && !isKana) {
     alert("Enter a valid answer");
     return false;
   }
   if (
     (questionType === "meaning" && isEnglish) ||
-    (questionType === "reading" && isHebrew)
+    (questionType === "reading" && isKana)
   ) {
     return true;
   } else {
@@ -150,7 +150,7 @@ export function checkLanguageMatch(answer, questionType) {
 export function checkAnswer(
   answer,
   questionType,
-  correctHebrewReading,
+  correctReading,
   correctMeaning
 ) {
   let message;
@@ -168,9 +168,9 @@ export function checkAnswer(
     return message; //set the message to correct or incorrect
   } else {
     answerToUse = answer.trim(); // remove any whitespace
-    answerToUse = answerToUse.replace(regexHebrewPattern, ""); //remove any non-hebrew characters
+    answerToUse = answerToUse.replace(regexKanaPattern, ""); //remove any non-kana characters
     //if the meaning type is false then the answer is the reading
-    if (correctHebrewReading.includes(answerToUse)) {
+    if (correctReading.includes(answerToUse)) {
       //if the answer to use is the same as the reading then the answer is correct otherwise it is incorrect
       message = "correct";
     } else {
@@ -189,8 +189,8 @@ export function splitReviews(availableReviews) {
     meaningReviews.push({
       //push an object with the following properties to the meaning reviews array
       _id: review._id,
-      hebrew: review.hebrew,
-      hebrew_with_nikkud: review.hebrew_with_nikkud,
+      kanji: review.kanji,
+      kana: review.kana,
       reading: review.reading,
       meaning: review.meaning,
       rank: review.rank,
@@ -201,8 +201,8 @@ export function splitReviews(availableReviews) {
     readingReviews.push({
       //push an object with the following properties to the reading reviews array
       _id: review._id,
-      hebrew: review.hebrew,
-      hebrew_with_nikkud: review.hebrew_with_nikkud,
+      kanji: review.kanji,
+      kana: review.kana,
       reading: review.reading,
       meaning: review.meaning,
       rank: review.rank,

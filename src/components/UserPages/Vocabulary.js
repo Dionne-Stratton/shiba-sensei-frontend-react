@@ -60,9 +60,9 @@ export default function Vocabulary(props) {
             <div className="vocab-words" key={vocabItem._id}>
               <div className="vocab-left">
                 <p>
-                  {vocabItem.hebrew_with_nikkud //if the word has nikkud, display it otherwise display the word without nikkud
-                    ? vocabItem.hebrew_with_nikkud
-                    : vocabItem.hebrew}
+                  {vocabItem.kanji //if the word has kanji, display it next to the kana with "/" in between, otherwise display the kana only
+                    ? `${vocabItem.kanji} / ${vocabItem.kana}`
+                    : vocabItem.kana}
                 </p>
                 {vocabItem.rank === 0 && <p>New!</p>}
                 {/* if the rank is 0 display new */}

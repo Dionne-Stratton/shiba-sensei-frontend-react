@@ -274,7 +274,7 @@ input[name="answer"] {
   /* border: #9e0d0d 1px solid; */
 }
 
-.hebrew-letters {
+.kana-letters {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -285,7 +285,7 @@ input[name="answer"] {
   /* border: #9e0d0d 1px solid; */
 }
 
-.hebrew-letters p {
+.kana-letters p {
   font-size: 5rem;
   margin: 2%;
   cursor: pointer;
@@ -459,16 +459,6 @@ form {
 }
 /* reading page */
 
-.alefbet {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  /* background-color: seagreen; */
-  padding: 2%;
-  /* border: #000000 1px solid; */
-}
-
 .paragraph-image {
   display: flex;
   align-items: center;
@@ -486,34 +476,6 @@ li {
   list-style: none;
   /* border: #000000 1px solid; */
   margin-bottom: 2%;
-}
-
-.nikkud {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 2%;
-  /* border: #000000 1px solid; */
-}
-
-.dagesh {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 2%;
-  /* border: #000000 1px solid; */
-}
-
-.dagesh img {
-  height: 9rem;
-  margin: 3%;
-}
-
-.dagesh p {
-  font-size: 2.6rem;
-  margin: 3%;
 }
 
 @media (max-width: 768px) {
@@ -541,25 +503,11 @@ li {
     width: 80%;
     margin: 3%;
   }
-
-  .dagesh h2 {
-    margin: 0 9%;
-  }
-
-  .dagesh img {
-    height: 5rem;
-    margin: 3%;
-  }
 }
 
 @media (max-width: 608px) {
   .select {
     width: 35%;
-  }
-
-  .dagesh img {
-    height: 4.5rem;
-    margin: 3%;
   }
 }
 
@@ -583,11 +531,6 @@ li {
   .select {
     width: 50%;
   }
-
-  .dagesh img {
-    height: 3rem;
-    margin: 3%;
-  }
 }
 
 @media (max-width: 360px) {
@@ -605,10 +548,5 @@ li {
 
   .reviews-box {
     width: 90%;
-  }
-
-  .dagesh img {
-    height: 2.5rem;
-    margin: 3%;
   }
 }

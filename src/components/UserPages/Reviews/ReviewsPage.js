@@ -5,7 +5,7 @@ import {
   alefBetKeys,
   nextArrow,
   regexEnglishPattern,
-  regexHebrewPattern,
+  regexKanaPattern,
 } from "./ReviewsDataSets";
 import {
   randomizeArray,
@@ -33,12 +33,12 @@ export default function Reviews(props) {
   const [message, setMessage] = useState("");
   const [matched, setMatched] = useState(false);
   const [correctMeaning, setCorrectMeaning] = useState([]);
-  const [correctHebrewReading, setCorrectHebrewReading] = useState([]);
+  const [correctReading, setCorrectReading] = useState([]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answer, setAnswer] = useState("");
   const [questionType, setQuestionType] = useState("");
   const history = useHistory();
-  const withNikkud = localStorage.getItem("withNikkud");
+  const withKana = localStorage.getItem("withKana");
   const withPronunciation = localStorage.getItem("withPronunciation");
   const [reviewsLeft, setReviewsLeft] = useState(0);
 
@@ -62,10 +62,10 @@ export default function Reviews(props) {
           .split(", ")
           .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
         setCorrectMeaning(correctMeaningArray);
-        let correctHebrewReadingArray = userVocab[0].hebrew //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
+        let correctReadingArray = userVocab[0].kana //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
           .split(", ")
-          .map((word) => word.replace(regexHebrewPattern, ""));
-        setCorrectHebrewReading(correctHebrewReadingArray);
+          .map((word) => word.replace(regexKanaPattern, ""));
+        setCorrectReading(correctReadingArray);
       } else {
         getAvailableReviews();
       }
@@ -78,10 +78,10 @@ export default function Reviews(props) {
         .split(", ")
         .map((word) => word.toLowerCase().replace(regexEnglishPattern, ""));
       setCorrectMeaning(correctAnswerArray);
-      let correctHebrewReadingArray = userVocab[0].hebrew //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
+      let correctReadingArray = userVocab[0].kana //create an array of the correct readings of the word by splitting the string of readings and removing any non-alphabetical characters and converting to lowercase
         .split(", ")
-        .map((word) => word.replace(regexHebrewPattern, ""));
-      setCorrectHebrewReading(correctHebrewReadingArray);
+        .map((word) => word.replace(regexKanaPattern, ""));
+      setCorrectReading(correctReadingArray);
     } //eslint-disable-next-line
   }, [user, vocab, removedWord, message]); //if the user, vocab, removedWord, or message changes, run this useEffect
 
@@ -99,7 +99,7 @@ export default function Reviews(props) {
     let message = checkAnswer(
       answer,
       questionType,
-      correctHebrewReading,
+      correctReading,
       correctMeaning
     ); //check the answer
     setMessage(message); //set the message to correct or incorrect
@@ -175,7 +175,7 @@ export default function Reviews(props) {
       });
   }
 
-  const onHebrewLetterClick = (e) => {
+  const onKanaClick = (e) => {
     let letter = e.target.innerText;
     let newAnswer;
     let input = document.querySelector(".answer-input");
@@ -205,13 +205,15 @@ export default function Reviews(props) {
           <div className="review-header">
             {questionType === "meaning" ? (
               <div className="review-meaning">
-                <h2>
-                  {currentWord.hebrew}
-                  {withNikkud === "true" && currentWord.hebrew_with_nikkud
-                    ? ` /${currentWord.hebrew_with_nikkud}`
-                    : ""}
+                <h2>{currentWord.kanji}</h2>
+                <h3>
+                  {withKana === "true"
+                    ? currentWord.kana
+                    : withKana === "false" && !currentWord.kanji
+                    ? currentWord.kana
+                    : null}
                   {/* //if the word has nikkud then display the word with nikkud otherwise display the word without nikkud */}
-                </h2>
+                </h3>
                 {
                   withPronunciation === "true" ? (
                     <h4>"{currentWord.reading}"</h4>
@@ -290,17 +292,17 @@ export default function Reviews(props) {
             </div>
           ) : message && questionType === "reading" ? (
             <div className="correctAnswer">
-              <h3>
-                {currentWord.reading} / {currentWord.hebrew}
-              </h3>
+              {currentWord.kanji && <h3>{currentWord.kanji}</h3>}
+              <h3>{currentWord.kana}</h3>
+              <h3>{currentWord.reading}</h3>
             </div>
           ) : null}
 
           {questionType === "reading" ? (
-            <div className="hebrew-letters">
+            <div className="kana-letters">
               {alefBetKeys.map((letter) => {
                 return (
-                  <p key={letter} onClick={onHebrewLetterClick}>
+                  <p key={letter} onClick={onKanaClick}>
                     {letter}
                   </p>
                 );

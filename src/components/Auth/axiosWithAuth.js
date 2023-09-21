@@ -1,8 +1,8 @@
 import axios from "axios";
-import { liveURL } from "../../BaseURLs";
+import { liveURL, testURL } from "../../BaseURLs";
 
 const instance = axios.create({
-  baseURL: liveURL,
+  baseURL: testURL,
 });
 
 instance.interceptors.request.use(

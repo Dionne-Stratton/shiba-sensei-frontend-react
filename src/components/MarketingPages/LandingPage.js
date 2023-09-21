@@ -4,20 +4,20 @@ export default function LandingPage() {
   return (
     <div className="main-page">
       <h1>Welcome to Rabbi Rabbit!</h1>
-      <h2>Master Hebrew Vocabulary: Your Gateway to Language Proficiency</h2>
+      <h2>Master Japanese Vocabulary: Your Gateway to Language Proficiency</h2>
       <p>
-        Welcome to the ultimate destination for learning and practicing Hebrew
+        Welcome to the ultimate destination for learning and practicing Japanese
         vocabulary - a dynamic platform designed to propel you towards language
         mastery through interactive typing exercises and cutting-edge spaced
         repetition technology!
       </p>
 
-      <h2>Why Choose Our Hebrew Vocabulary Platform?</h2>
+      <h2>Why Choose Our Japanese Vocabulary Platform?</h2>
       <ol>
         <li>
           <strong>Interactive Learning Experience:</strong> Say goodbye to
           tedious rote memorization! Our platform engages you with interactive
-          typing exercises that make learning Hebrew vocabulary fun and
+          typing exercises that make learning Japanese vocabulary fun and
           effective. The more you type, the more you learn!
         </li>
         <li>
@@ -29,7 +29,7 @@ export default function LandingPage() {
         </li>
         <li>
           <strong>Extensive Word Library:</strong> Dive into an ever-expanding
-          database of Hebrew words curated by language experts. From basic
+          database of Japanese words curated by language experts. From basic
           everyday terms to advanced expressions, we've got you covered across
           all proficiency levels.
         </li>
@@ -54,28 +54,28 @@ export default function LandingPage() {
         <li>
           <strong>Track Your Progress:</strong> Stay motivated by tracking your
           progress and witnessing your improvement. Celebrate milestones as you
-          master more and more Hebrew words, building your confidence along the
-          way.
+          master more and more Japanese words, building your confidence along
+          the way.
         </li>
       </ol>
 
       <h2>What Our Users Say:</h2>
       <blockquote>
         <p>
-          "I've tried several Hebrew language platforms, but this one stands
+          "I've tried several Japanese language platforms, but this one stands
           out! The spaced repetition really makes a difference, and the typing
           exercises are both challenging and enjoyable." - Rachel W.
         </p>
         <p>
-          "Learning Hebrew vocabulary has never been this engaging. The platform
-          keeps me coming back for more, and my language skills have improved
-          significantly in just a few weeks!" - Ethan K.
+          "Learning Japanese vocabulary has never been this engaging. The
+          platform keeps me coming back for more, and my language skills have
+          improved significantly in just a few weeks!" - Ethan K.
         </p>
       </blockquote>
 
-      <h2>Join the Hebrew Vocabulary Revolution:</h2>
+      <h2>Join the Japanese Vocabulary Revolution:</h2>
       <p>
-        Are you ready to embark on an exciting journey towards Hebrew language
+        Are you ready to embark on an exciting journey towards Japanese language
         proficiency? Empower yourself with a powerful tool that utilizes spaced
         repetition and interactive typing exercises to accelerate your
         vocabulary learning.
@@ -83,15 +83,15 @@ export default function LandingPage() {
       <p>
         <strong>
           Sign up now for our limited-time trial offer and take your first step
-          towards Hebrew fluency!
+          towards Japanese fluency!
         </strong>{" "}
         Harness the potential of our platform to unlock new opportunities in
         cultural exchange, travel, business, and personal growth.
       </p>
 
       <p>
-        Begin your transformation today and embrace the richness of the Hebrew
-        language! The world of Hebrew vocabulary awaits you - start your
+        Begin your transformation today and embrace the richness of the Japanese
+        language! The world of Japanese vocabulary awaits you - start your
         adventure now!
       </p>
     </div>

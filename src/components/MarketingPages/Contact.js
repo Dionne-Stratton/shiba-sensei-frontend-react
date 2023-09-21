@@ -43,7 +43,7 @@ const Contact = () => {
       <h3>FAQs</h3>
       <h4>What is the purpose of this site?</h4>
       <p>
-        This site is a supplement when learning the Hebrew language. You can
+        This site is a supplement when learning the Japanese language. You can
         learn vocab words and review them on a spaced repition schedule for best
         retention.
       </p>
