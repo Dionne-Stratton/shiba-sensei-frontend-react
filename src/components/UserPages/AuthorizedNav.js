@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Logo from "../../assets/RabbiRabbitLogo2.png";
+import Logo from "../../assets/shibaseneiover.png";
 import AccountIcon from "../../assets/account-icon.png";
 
 const HeaderNav = (props) => {
@@ -10,7 +10,13 @@ const HeaderNav = (props) => {
     <div className="headernav">
       <header>
         <div className="header-title">
-          <img className="logo" src={Logo} alt="Rabbi Rabbit Logo" />
+          <div className="title">
+            <img className="logo" src={Logo} alt="Rabbi Rabbit Logo" />
+            <div className="title-text">
+              <h2 id="shiba">Shiba</h2>
+              <h2 id="sensei">Sensei</h2>
+            </div>
+          </div>
           <div className="auth-nav">
             <NavLink to="/account">
               <img
