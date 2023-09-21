@@ -39,13 +39,32 @@ header {
 /*header and nav */
 
 .logo {
-  max-width: 16%;
+  max-width: 22%;
+  margin-bottom: -4%;
+}
+
+.title {
+  display: flex;
+}
+.title-text {
+  line-height: 1;
+  padding-top: 3%;
+  font-size: 2rem;
+}
+
+#shiba {
+  padding-top: 2%;
+}
+
+#sensei {
+  /* border: #000000 1px solid; */
+  margin-left: 10%;
 }
 
 nav {
   display: flex;
   justify-content: center;
-  background-color: #2d5288;
+  background-color: #694a52;
   /* border: #000000 1px solid; */
 }
 
@@ -59,9 +78,8 @@ a {
   /* border: #058585 1px solid; */
 }
 
-nav a:hover,
-a:hover {
-  color: #b1ffff;
+nav a:hover {
+  color: #fbd7cc;
 }
 
 .header-title {
@@ -121,7 +139,7 @@ button {
 
 .lessons-box a,
 .reviews-box a {
-  color: #ffffff;
+  /* color: #ffffff; */
   text-decoration: none;
   width: 100%;
   font-size: 2.6rem;
@@ -158,7 +176,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #2d5288;
+  background-color: #694a52;
   color: #ffffff;
   margin: 0 5%;
   width: 100%;
@@ -227,7 +245,7 @@ button {
 .neutral,
 .neutral .answer-input {
   display: flex;
-  background-color: #addfe8;
+  background-color: #f8cfc2;
   width: 100%;
   font-size: 3rem;
   /* border: #4a76fa 1px solid; */
@@ -286,8 +304,9 @@ input[name="answer"] {
 .lessons-box {
   display: flex;
   align-items: center;
-  background-color: #689b40;
-  color: #ffffff;
+  /* background-color: #79b599; */
+  background-color: #e3816f;
+  /* color: #ffffff; */
   justify-content: center;
   margin: 0 5%;
   width: 50%;
@@ -297,7 +316,7 @@ input[name="answer"] {
 .reviews-box {
   display: flex;
   align-items: center;
-  background-color: #e8a33d;
+  background-color: rgb(244, 181, 93);
   justify-content: center;
   margin: 0 5%;
   width: 50%;
@@ -330,7 +349,7 @@ input[name="answer"] {
 
 .progress {
   margin-left: 1%;
-  background-color: #addfe8;
+  background-color: #f8d8ce;
   display: flex;
   justify-self: center;
   align-self: center;
@@ -346,9 +365,9 @@ input[name="answer"] {
   align-items: center;
   background-image: repeating-linear-gradient(
     to left,
-    #86af66,
-    #3bbeed,
-    #56749f
+    #d83957,
+    #ff907c,
+    rgb(244, 181, 93)
   );
   /* box-shadow: 0 5px 5px -6px #84b1ff, 0 3px 7px #1172f9; */
   /* border-radius: 20px; */
@@ -376,12 +395,14 @@ input[name="answer"] {
 .vocab-words {
   display: flex;
   flex-wrap: wrap;
-  border: #2d5288 2px solid;
+  /* border: #98bfad 2px solid; */
+  border: #ffc4b2 2px solid;
   width: 100%;
   margin-top: 0.5%;
   padding: 1%;
-  background-color: #addfe8;
-  box-shadow: 0 5px 5px -6px #addfe8, 0 3px 7px #2d5288;
+  /* background-color: #bbe9d4; */
+  background-color: #fbd9cf;
+  /* box-shadow: 0 5px 5px -6px #addfe8, 0 3px 7px #2d5288; */
   justify-content: space-between;
 }
 
@@ -420,7 +441,7 @@ form {
   display: flex;
   margin: 2%;
   padding: 5%;
-  background-color: #addfe8;
+  background-color: #fbd9cf;
   /* border: #000000 1px solid; */
 }
 
