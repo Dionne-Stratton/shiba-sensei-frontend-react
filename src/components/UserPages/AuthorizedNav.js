@@ -11,7 +11,7 @@ const HeaderNav = (props) => {
       <header>
         <div className="header-title">
           <div className="title">
-            <img className="logo" src={Logo} alt="Rabbi Rabbit Logo" />
+            <img className="logo" src={Logo} alt="Shiba Sensei Logo" />
             <div className="title-text">
               <h2 id="shiba">Shiba</h2>
               <h2 id="sensei">Sensei</h2>
