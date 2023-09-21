@@ -55,7 +55,7 @@ export default function Lessons(props) {
 
   function submitVocab() {
     // if there is no current word or the number of lessons viewed is 0
-    if (!currentWord || lessonsViewed === 0) {
+    if (!currentWord) {
       history.push("/"); // redirect to the dashboard
       setShowNav(true); // set showNav to true to show the nav bar
       return; // exit the function

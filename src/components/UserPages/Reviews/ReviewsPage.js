@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../../Auth/axiosWithAuth";
 import {
-  alefBetKeys,
   nextArrow,
   regexEnglishPattern,
   regexKanaPattern,
+  kanaConvertingTable,
 } from "./ReviewsDataSets";
 import {
   randomizeArray,
@@ -86,12 +86,33 @@ export default function Reviews(props) {
   }, [user, vocab, removedWord, message]); //if the user, vocab, removedWord, or message changes, run this useEffect
 
   function handleChange(e) {
-    if (!message) {
+    let { value } = e.target;
+    console.log("value:", value);
+    if (message) {
       //if there is no message then set the answer to the value of the input
-      setAnswer(e.target.value);
-    } else {
-      //otherwise set the answer to the value of the input so that the answer cannot be changed after the message is set
       setAnswer(answer);
+    }
+    if (!message && questionType === "reading" && value) {
+      //if the value has english letters then create a variable to store just the english
+      //then use findindex to check if they match any romaji
+      //in the kanaConvertingTable and if they do then replace them with the kana
+      //then set the answer to the value of the input
+      let englishLetters = value.match(regexKanaPattern);
+      console.log("englishLetters:", englishLetters);
+      if (englishLetters) {
+        let englishString = englishLetters.join("");
+        let index = kanaConvertingTable.findIndex(
+          (letter) => letter.romaji === englishString
+        );
+        console.log("index:", index);
+        if (index > -1) {
+          value = value.replace(englishString, kanaConvertingTable[index].kana);
+        }
+        console.log("valueNew:", value);
+      }
+      setAnswer(value);
+    } else {
+      setAnswer(value);
     }
   }
 
@@ -174,23 +195,6 @@ export default function Reviews(props) {
         console.log(err);
       });
   }
-
-  const onKanaClick = (e) => {
-    let letter = e.target.innerText;
-    let newAnswer;
-    let input = document.querySelector(".answer-input");
-    let answer = input.value;
-
-    if (letter === "space") {
-      letter = " ";
-    }
-    if (letter !== "delete") {
-      newAnswer = answer + letter;
-    } else {
-      newAnswer = answer.slice(0, -1);
-    }
-    setAnswer(newAnswer);
-  };
 
   return (
     <div className="main-page">
@@ -298,9 +302,9 @@ export default function Reviews(props) {
             </div>
           ) : null}
 
-          {questionType === "reading" ? (
+          {/* {questionType === "reading" ? (
             <div className="kana-letters">
-              {alefBetKeys.map((letter) => {
+              {kanaKeys.map((letter) => {
                 return (
                   <p key={letter} onClick={onKanaClick}>
                     {letter}
@@ -308,7 +312,7 @@ export default function Reviews(props) {
                 );
               })}
             </div>
-          ) : null}
+          ) : null} */}
         </div>
       ) : (
         //if there is no user vocab then display the message "No Reviews Available"
