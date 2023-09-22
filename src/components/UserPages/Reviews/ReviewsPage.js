@@ -87,6 +87,9 @@ export default function Reviews(props) {
 
   function handleChange(e) {
     let { value } = e.target;
+    if (value) {
+      value = value.toLowerCase();
+    }
     console.log("value:", value);
     if (message) {
       //if there is no message then set the answer to the value of the input
@@ -98,7 +101,6 @@ export default function Reviews(props) {
       //in the kanaConvertingTable and if they do then replace them with the kana
       //then set the answer to the value of the input
       let englishLetters = value.match(regexKanaPattern);
-      console.log("englishLetters:", englishLetters);
       if (englishLetters) {
         let englishString = englishLetters.join("");
         let index = kanaConvertingTable.findIndex(
@@ -210,14 +212,11 @@ export default function Reviews(props) {
             {questionType === "meaning" ? (
               <div className="review-meaning">
                 <h2>{currentWord.kanji}</h2>
-                <h3>
-                  {withKana === "true"
-                    ? currentWord.kana
-                    : withKana === "false" && !currentWord.kanji
-                    ? currentWord.kana
-                    : null}
-                  {/* //if the word has nikkud then display the word with nikkud otherwise display the word without nikkud */}
-                </h3>
+                {withKana === "true" ? (
+                  <h3>{currentWord.kana}</h3>
+                ) : withKana === "false" && currentWord.kanji === "" ? (
+                  <h3>{currentWord.kana}</h3>
+                ) : null}
                 {
                   withPronunciation === "true" ? (
                     <h4>"{currentWord.reading}"</h4>
@@ -301,18 +300,6 @@ export default function Reviews(props) {
               <h3>{currentWord.reading}</h3>
             </div>
           ) : null}
-
-          {/* {questionType === "reading" ? (
-            <div className="kana-letters">
-              {kanaKeys.map((letter) => {
-                return (
-                  <p key={letter} onClick={onKanaClick}>
-                    {letter}
-                  </p>
-                );
-              })}
-            </div>
-          ) : null} */}
         </div>
       ) : (
         //if there is no user vocab then display the message "No Reviews Available"

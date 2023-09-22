@@ -25,13 +25,13 @@ export default function Settings(props) {
   }, []);
 
   onchange = (e) => {
-    if (e.target.name === "withnikkud") {
+    if (e.target.name === "withKana") {
       setWithKana(e.target.checked);
     }
     if (e.target.name === "withPronunciation") {
       setWithPronunciation(e.target.checked);
     }
-    localStorage.setItem("withNikkud", withKana);
+    localStorage.setItem("withKana", withKana);
     localStorage.setItem("withPronunciation", withPronunciation);
   };
 
@@ -41,10 +41,10 @@ export default function Settings(props) {
       <h3>Japanese Reviews:</h3>
       <div>
         <div className="settings-kana">
-          <label htmlFor="withnikkud">With Kana:</label>
+          <label htmlFor="withKana">With Kana:</label>
           <input
             type="checkbox"
-            name="withnikkud"
+            name="withKana"
             checked={withKana}
             onChange={onchange}
           />

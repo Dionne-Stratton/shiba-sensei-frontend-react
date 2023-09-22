@@ -3,7 +3,7 @@ export const regexEnglishPattern = /[^A-Za-z ]/g;
 export const regexKanaPattern = /[^ぁ-んァ-ン一-龯]/g;
 
 export const kanaConvertingTable = [
-  { kana: "ぁ", romaji: "a" },
+  { kana: "あ", romaji: "a" },
   { kana: "え", romaji: "e" },
   { kana: "い", romaji: "i" },
   { kana: "お", romaji: "o" },
