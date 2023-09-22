@@ -423,7 +423,7 @@ input[name="answer"] {
 form {
   display: flex;
   flex-direction: column;
-  background-color: #addfe8;
+  background-color: #fbd9cf;
   padding: 5%;
   margin: 2%;
   align-items: center;

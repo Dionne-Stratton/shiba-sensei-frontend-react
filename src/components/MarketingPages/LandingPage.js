@@ -3,7 +3,7 @@ import React from "react";
 export default function LandingPage() {
   return (
     <div className="main-page">
-      <h1>Welcome to Rabbi Rabbit!</h1>
+      <h1>Welcome to Shiba Sensei!</h1>
       <h2>Master Japanese Vocabulary: Your Gateway to Language Proficiency</h2>
       <p>
         Welcome to the ultimate destination for learning and practicing Japanese
