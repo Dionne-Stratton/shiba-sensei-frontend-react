@@ -102,7 +102,7 @@ export default function Reviews(props) {
       //then set the answer to the value of the input
       let englishLetters = value.match(regexKanaPattern);
       if (englishLetters) {
-        let englishString = englishLetters.join("");
+        let englishString = englishLetters.join("").trim();
         let index = kanaConvertingTable.findIndex(
           (letter) => letter.romaji === englishString
         );
