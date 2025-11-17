@@ -10,7 +10,6 @@ Shiba-Sensei helps learners of the Japanese language through a clean and interac
 
 ## Quicklinks
 
-- [Related Repos](#related-repos)
 - [Tech Stack](#tech-stack)
 - [Useful Resources](#useful-resources)
 - [Project MVP Features](#project-mvp-features)
@@ -24,13 +23,6 @@ Shiba-Sensei helps learners of the Japanese language through a clean and interac
 - [Features for Future Release](#features-for-future-release)
   - [Audio Clips](#audio-clips)
   - [Monthly Subscription](#monthly-subscription)
-
----
-
-## Related Repos
-
-- [Desktop Web App](https://github.com/shiba-sensei/frontend-react-desktop)
-- [Mongo Database and Server](https://github.com/shiba-sensei/mongo-db-node-server)
 
 ---
 
