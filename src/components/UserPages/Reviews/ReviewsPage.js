@@ -21,7 +21,6 @@ export default function Reviews(props) {
     user,
     setUser,
     vocab,
-    setShowNav,
     availableReviews,
     getAvailableReviews,
     combineArrays,
@@ -43,7 +42,6 @@ export default function Reviews(props) {
   const [reviewsLeft, setReviewsLeft] = useState(0);
 
   useEffect(() => {
-    setShowNav(false); // disable the nav bar while on the review page
     //if the user has vocab and there is vocab available to review and the user vocab has not been set
     if (user.user_vocab && vocab.length > 0 && userVocab.length === 0) {
       //this block is only run once when the page loads
@@ -156,10 +154,9 @@ export default function Reviews(props) {
   async function submitVocab() {
     checkPair(currentWord, "reset");
     console.log("submitVocab");
-    //if there is no current word or no questions answered then return to the dashboard and show the nav bar, doing nothing else
+    //if there is no current word or no questions answered then return to the dashboard, doing nothing else
     if (!currentWord.questionType || (!message && questionsAnswered === 0)) {
       history.push("/");
-      setShowNav(true);
       return;
     }
     let allVocab = await getNextWord(); //get the next word
@@ -182,7 +179,6 @@ export default function Reviews(props) {
     }
 
     history.push("/"); //push to the dashboard
-    setShowNav(true); //show the nav bar
     axiosWithAuth //put the user with the updated vocab and lessons
       .put("profile", {
         user_vocab: allVocab,

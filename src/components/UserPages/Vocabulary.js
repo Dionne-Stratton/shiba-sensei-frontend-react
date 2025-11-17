@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 
 export default function Vocabulary(props) {
-  const { vocab, selectedLesson, setSelectedLesson, user, combineArrays } =
-    props;
+  const { vocab, selectedLesson, setSelectedLesson } = props;
   const [vocabLessons, setVocabLessons] = useState([]);
   const [availableLessons, setAvailableLessons] = useState([]);
 
   useEffect(() => {
-    //if vocab is loaded and a lesson is selected and the user has an available lesson
-    if (vocab.length > 0 && selectedLesson !== "" && user.available_lesson) {
-      //filter the vocab to only include words from the selected lesson
-      let vocabLessons = vocab.filter((vocabItem) => {
+    // Get all unique lesson numbers from vocab
+    if (vocab.length > 0) {
+      const uniqueLessons = [...new Set(vocab.map((item) => item.lesson))].sort(
+        (a, b) => a - b
+      );
+      setAvailableLessons(uniqueLessons);
+    }
+
+    // Filter vocab by selected lesson
+    if (vocab.length > 0 && selectedLesson !== "" && selectedLesson !== "Select") {
+      let filteredVocab = vocab.filter((vocabItem) => {
         return vocabItem.lesson === Number(selectedLesson);
       });
-      //create an array of the available lesson numbers
-      let lessons = Array.from(
-        { length: user.available_lesson },
-        (_, index) => index + 1
-      );
-      //combine the user vocab and the vocab lessons into one array
-      let combinedArray = combineArrays(user.user_vocab, vocabLessons);
-      setAvailableLessons(lessons); //set the available lessons to the array of available lesson numbers
-      setVocabLessons(combinedArray); //set the vocab lessons to the combined array
-    } //eslint-disable-next-line
-  }, [selectedLesson]); //run this function when the selected lesson changes
+      // Sort by lesson number, then by _id for consistent ordering
+      filteredVocab.sort((a, b) => {
+        if (a.lesson !== b.lesson) return a.lesson - b.lesson;
+        return a._id.localeCompare(b._id);
+      });
+      setVocabLessons(filteredVocab);
+    } else {
+      setVocabLessons([]);
+    }
+    //eslint-disable-next-line
+  }, [vocab, selectedLesson]); //run this function when vocab or selected lesson changes
 
   const handleClick = (e) => {
     setSelectedLesson(e.target.value);
@@ -64,13 +70,6 @@ export default function Vocabulary(props) {
                     ? `${vocabItem.kanji} / ${vocabItem.kana}`
                     : vocabItem.kana}
                 </p>
-                {vocabItem.rank === 0 && <p>New!</p>}
-                {/* if the rank is 0 display new */}
-                {vocabItem.rank > 11 && <p>Mastered!</p>}
-                {/* if the rank is greater than 11 display mastered */}
-                {vocabItem.rank > 0 && vocabItem.rank < 12 && (
-                  <p>Mastery: {vocabItem.rank}</p>
-                )}
               </div>
               <div className="vocab-right">
                 <p>

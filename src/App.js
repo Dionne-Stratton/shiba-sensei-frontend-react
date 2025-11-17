@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 //Auth
 import axiosWithAuth from "./components/Auth/axiosWithAuth";
 import AuthForm from "./components/Auth/AuthForm";
@@ -22,32 +22,56 @@ import Lessons from "./components/UserPages/Lessons";
 import Reviews from "./components/UserPages/Reviews/ReviewsPage";
 
 function App() {
-  const [auth, setAuth] = useState(false);
+  // Initialize auth state based on token presence (prevents flash)
+  const [auth, setAuth] = useState(() => {
+    return !!localStorage.getItem("token");
+  });
   const [user, setUser] = useState({});
   const [userLessons, setUserLessons] = useState([]);
   const [vocab, setVocab] = useState([]);
   const [lesson1, setLesson1] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState("");
-  const [showNav, setShowNav] = useState(true);
   const [availableReviews, setAvailableReviews] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const location = useLocation();
+  // Routes that should hide navigation
+  const routesWithoutNav = ["/lessons", "/reviews"];
+  const showNav = !routesWithoutNav.includes(location.pathname);
 
   useEffect(() => {
     getVocab(); //runs on page load
+    validateToken(); //validate token on mount
+    //eslint-disable-next-line
+  }, []); //run this function once on mount
+
+  useEffect(() => {
+    if (auth && user.user_vocab) {
+      //if the user has vocab
+      getAvailableReviews(); //get the available reviews
+    }
+    //eslint-disable-next-line
+  }, [user.user_vocab]); //run when user vocab changes
+
+  // Validate token via API call on mount
+  function validateToken() {
+    const token = localStorage.getItem("token");
     if (token) {
-      //run the following if there is a token
-      setAuth(true); //set auth to true
-      getUser(); //get the user data
-      if (user.user_vocab) {
-        //if the user has vocab
-        getAvailableReviews(); //get the available reviews
-      }
+      axiosWithAuth
+        .get("profile")
+        .then((res) => {
+          setUser(res.data);
+          setAuth(true);
+        })
+        .catch((err) => {
+          localStorage.removeItem("token");
+          setAuth(false);
+          setUser({});
+        });
     } else {
-      //if there is no token
-      setAuth(false); //set auth to false
-    } //eslint-disable-next-line
-  }, [auth]); //run this function when auth changes
+      setAuth(false);
+      setUser({});
+    }
+  }
 
   function getVocab() {
     axiosWithAuth //get the vocab from the server
@@ -63,19 +87,6 @@ function App() {
       });
   }
 
-  function getUser() {
-    if (token) {
-      //if there is a token
-      axiosWithAuth //get the user data from the server
-        .get("profile") //hitting the profile endpoint
-        .then((res) => {
-          setUser(res.data); //set the user to the response data
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }
 
   function getAvailableReviews() {
     //get the available reviews
@@ -155,8 +166,6 @@ function App() {
             vocab={vocab}
             selectedLesson={selectedLesson}
             setSelectedLesson={setSelectedLesson}
-            user={user}
-            combineArrays={combineArrays}
           />
         </Route>
         <Route path="/study" component={Study} />
@@ -173,7 +182,6 @@ function App() {
             user={user}
             setUser={setUser}
             vocab={vocab}
-            setShowNav={setShowNav}
           />
         </Route>
         <Route path="/reviews">
@@ -181,7 +189,6 @@ function App() {
             user={user}
             setUser={setUser}
             vocab={vocab}
-            setShowNav={setShowNav}
             availableReviews={availableReviews}
             getAvailableReviews={getAvailableReviews}
             combineArrays={combineArrays}
