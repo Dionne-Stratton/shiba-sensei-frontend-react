@@ -1,70 +1,148 @@
-# Getting Started with Create React App
+# Shiba-Sensei
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### An app designed to supplement Japanese language learning by providing a simple yet engaging way to review vocabulary.
 
-## Available Scripts
+Shiba-Sensei helps learners of the Japanese language through a clean and interactive app that uses direct input for review questions and implements a spaced repetition system.
 
-In the project directory, you can run:
+## 🌐 [Live Website](https://shiba-sensei-frontend-react.pages.dev/)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Quicklinks
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- [Related Repos](#related-repos)
+- [Tech Stack](#tech-stack)
+- [Useful Resources](#useful-resources)
+- [Project MVP Features](#project-mvp-features)
+  - [Authorization](#authorization)
+  - [Dashboard](#dashboard)
+  - [Lessons](#lessons)
+  - [Reviews](#reviews)
+  - [Vocabulary](#vocabulary)
+  - [Account Settings](#account-settings)
+  - [Danger Zone](#danger-zone)
+- [Features for Future Release](#features-for-future-release)
+  - [Audio Clips](#audio-clips)
+  - [Monthly Subscription](#monthly-subscription)
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Related Repos
 
-### `npm run build`
+- [Desktop Web App](https://github.com/shiba-sensei/frontend-react-desktop)
+- [Mongo Database and Server](https://github.com/shiba-sensei/mongo-db-node-server)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- React
+- JavaScript
+- CSS
+- Validation with Yup
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Useful Resources
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [Contribution Guidelines](https://github.com/Grow-Work/.github/blob/main/GENERAL-CONTRIBUTING.md)
+- [Markdown Basics](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [MongoDB University](https://university.mongodb.com/learning_paths/developer)
+- [React Native Docs](https://reactnative.dev/docs/getting-started)
+- [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Project MVP Features
 
-## Learn More
+Minimum viable product features across the entire project: desktop frontend and backend server.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Authorization
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Sign Up**
 
-### Code Splitting
+  - Creates a new user with level 1, first lesson set, email, and hashed password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Sign In**
 
-### Analyzing the Bundle Size
+  - Redirects to the dashboard and updates nav items.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Sign Out**
 
-### Making a Progressive Web App
+  - Redirects to the landing page and resets nav items.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Password Reset**
+  - Sends a reset pin to the user’s email. If the correct pin, email, and new password are entered, the password is updated and the user is redirected to login.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Dashboard
 
-### Deployment
+- Buttons with counts for available Lessons and Reviews
+- Displays next available review date/time
+- Mastery progress bar for the current level
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+### Lessons
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Displays Japanese (kanji and kana), pronunciation, and meaning (word or phrase)
+- Viewing lessons adds them to the reviews list with rank 1 (“New”) and makes them available for review immediately
+- Forward/backward navigation through lessons
+- New lessons are unlocked when 80% of the current set reaches mastery rank 3+
+- New lessons are added to existing lesson lists
+
+---
+
+### Reviews
+
+- Randomizes available reviews
+- Direct input for answers
+- Built-in Japanese "keyboard" for reading input
+- Language detection and enforcement
+- Gives feedback (correct/incorrect) and shows correct answer
+- Requires correct meaning **and** reading to rank up
+- Items answered incorrectly are ranked down (unless already at minimum rank)
+- Next review date calculated using spaced repetition based on new rank
+- Completing all reviews or clicking Dashboard submits vocab item data
+
+---
+
+### Vocabulary
+
+- Displays: Japanese (kanji and kana), meaning, pronunciation, level, and mastery rank
+
+---
+
+### Account Settings
+
+- Checkbox: Show kana during reviews
+- Checkbox: Show pronunciation during reviews
+- Settings saved in localStorage
+
+---
+
+### Danger Zone
+
+- Reset all learning progress
+- Delete account
+
+---
+
+## Features for Future Release
+
+Planned additions for all platforms.
+
+### Audio Clips
+
+- Listen to native speakers pronounce each vocabulary item.
+
+### Monthly Subscription
+
+- Paid access model beyond level 3.
+
+---
+
+## Got ideas for more features?
+
+📬 Reach out — I’d love to hear from you!
